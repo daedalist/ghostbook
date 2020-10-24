@@ -1,0 +1,98 @@
+[
+    {
+        "name": "Banshee",
+        "evidence_list": [
+            "EMF Level 5",
+            "Fingerprints",
+            "Freezing temperatures"
+        ]
+    },
+    {
+        "name": "Demon",
+        "evidence_list": [
+            "Spirit box",
+            "Ghost writing",
+            "Freezing temperatures"
+        ]
+    },
+    {
+        "name": "Jinn",
+        "evidence_list": [
+            "EMF Level 5",
+            "Spirit box",
+            "Ghost orb"
+        ]
+    },
+    {
+        "name": "Mare",
+        "evidence_list": [
+            "Spirit box",
+            "Freezing temperatures",
+            "Ghost orb"
+        ]
+    },
+    {
+        "name": "Oni",
+        "evidence_list": [
+            "EMF Level 5",
+            "Ghost writing",
+            "Spirit box"
+        ]
+    },
+    {
+        "name": "Phantom",
+        "evidence_list": [
+            "EMF Level 5",
+            "Freezing temperatures",
+            "Ghost orb"
+        ]
+    },
+    {
+        "name": "Poltergeist",
+        "evidence_list": [
+            "Fingerprints",
+            "Spirit box",
+            "Ghost orb"
+        ]
+    },
+    {
+        "name": "Revenant",
+        "evidence_list": [
+            "EMF Level 5",
+            "Ghost writing",
+            "Fingerprints"
+        ]
+    },
+    {
+        "name": "Shade",
+        "evidence_list": [
+            "EMF Level 5",
+            "Ghost writing",
+            "Ghost orb"
+        ]
+    },
+    {
+        "name": "Spirit",
+        "evidence_list": [
+            "Ghost writing",
+            "Fingerprints",
+            "Spirit box"
+        ]
+    },
+    {
+        "name": "Wraith",
+        "evidence_list": [
+            "Fingerprints",
+            "Spirit box",
+            "Freezing temperatures"
+        ]
+    },
+    {
+        "name": "Yurei",
+        "evidence_list": [
+            "Ghost writing",
+            "Freezing temperatures",
+            "Ghost orb"
+        ]
+    }
+]
