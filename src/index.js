@@ -5,14 +5,31 @@ import './index.css';
 import Ghost, { evidence } from './ghost';
 import data from './ghost_data.json';
 
+function EvidenceButton(props) {
+    return (
+        <li className="evidenceButton" onClick={props.onClick}>
+            {props.evidence}
+        </li>
+    );
+}
+
 class ObservationList extends React.Component {
+    renderEvidenceButton(evidence) {
+        return (
+            <EvidenceButton
+                evidence={evidence}
+                onClick={() => this.props.onClick(evidence)}
+            />
+        );
+    }
+
     render() {
         return (
             <section className="observations">
                 <h1>My observations</h1>
-                <div className="observationList">
-                    Observations
-            </div></section >
+                <ul className="observationList">
+                    {Object.values(evidence).map(this.renderEvidenceButton)}
+                </ul></section>
         );
     }
 }
