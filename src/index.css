@@ -1,0 +1,17 @@
+.ghostBook {
+
+}
+
+.candidateList {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.observationList {
+
+}
+
+.ghost {
+    width: 200px;
+}

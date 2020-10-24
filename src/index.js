@@ -1,10 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import './index.css';
 
 import Ghost, { evidence } from './ghost';
 import data from './ghost_data.json';
 
-class Ghostbook extends React.Component {
+class ObservationList extends React.Component {
+    render() {
+        return (
+            <section className="observations">
+                <h1>My observations</h1>
+                <div className="observationList">
+                    Observations
+            </div></section >
+        );
+    }
+}
+
+class CandidateList extends React.Component {
     read_ghost_data() {
         const ghosts = data.map((i) => {
             return (
@@ -19,10 +32,26 @@ class Ghostbook extends React.Component {
 
     render() {
         return (
-            this.read_ghost_data()
+            <section className="candidates">
+                <h1> Possible ghosts</h1>
+                <div className="candidateList">
+                    {this.read_ghost_data()}
+                </div></section >
+
         );
     }
 
+}
+
+class Ghostbook extends React.Component {
+    render() {
+        return (
+            <div class="ghostBook">
+                <ObservationList />
+                <CandidateList />
+            </div>
+        );
+    }
 }
 
 // === Run the app ===
