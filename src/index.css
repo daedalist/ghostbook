@@ -26,3 +26,18 @@
 section {
     margin-top: 2em;
 }
+
+.evidenceSelected{
+    background-color: green;
+    color :black;
+}
+
+.evidenceNotSelected {
+    background-color: yellow;
+    color: black;
+}
+
+.evidenceDisabled{
+    background-color: white;
+    color: grey;
+}

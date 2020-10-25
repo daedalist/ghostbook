@@ -17,11 +17,11 @@ class Ghost extends React.Component {
     render() {
         const evidences = this.props.evidence_list.map(
             (e) => {
-                return (<li>{e}</li>);
+                return (<li key={e}>{e}</li>);
             }
         );
         return (
-            <div className="ghost">
+            <div className="ghost" key={this.props.name}>
                 <div className="name">{this.props.name}</div>
                 <ul className="evidenceList">
                     {evidences}

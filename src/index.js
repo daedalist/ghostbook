@@ -6,19 +6,17 @@ import Ghost, { evidence } from './ghost';
 import data from './ghost_data.json';
 
 const evidence_state = {
-    SELECTED: 1,
-    NOT_SELECTED: 2,
-    DISABLED: 3
+    SELECTED: 'evidenceSelected',
+    NOT_SELECTED: 'evidenceNotSelected',
+    DISABLED: 'evidenceDisabled'
 }
 
-class EvidenceButton extends React.Component {
-    render() {
-        return (
-            <li className="evidenceButton" onClick={this.props.onClick}>
-                {this.props.evidence_name}
-            </li>
-        );
-    }
+function EvidenceButton(props) {
+    const classNames = "evidenceButton " + props.state;
+    return (
+        <li className={classNames} onClick={props.onClick} key={props.name}>
+            {props.name}
+        </li>)
 }
 
 class ObservationList extends React.Component {
@@ -29,11 +27,14 @@ class ObservationList extends React.Component {
         }
     }
 
-    renderEvidenceButton(value) {
+    renderEvidenceButton = (value) => {
+        const evidence_name = value[0];
+        const evidence_state = value[1];
         return (
             < EvidenceButton
-                evidence_name={value[0]}
-                evidence_state={value[1]}
+                name={evidence_name}
+                state={evidence_state}
+                onClick={() => this.props.handleEvidenceClick(evidence_name)}
             />
         );
     }
@@ -90,9 +91,27 @@ class Ghostbook extends React.Component {
         };
     }
 
-    handleEvidenceClick(e) {
+    async handleEvidenceClick(selected_evidence) {
+        // TODO: I don't know why I can't make this immutable with a new Map().
         const observed_evidence = this.state.observed_evidence;
-        let selected_evidence = observed_evidence
+        const current_status = observed_evidence.get(selected_evidence);
+        switch (current_status) {
+            case evidence_state.NOT_SELECTED:
+                observed_evidence.set(selected_evidence,
+                    evidence_state.SELECTED);
+                break;
+            case evidence_state.SELECTED:
+                observed_evidence.set(selected_evidence,
+                    evidence_state.NOT_SELECTED);
+                break;
+            case evidence_state.DISABLED:
+                break; // User cannot directly change if it is disabled.
+            default:
+                break;
+        }
+        await this.setState({
+            observed_evidence: observed_evidence
+        });
     }
 
     render() {
@@ -100,7 +119,7 @@ class Ghostbook extends React.Component {
             <div className="ghostBook" >
                 <ObservationList
                     observed_evidence={this.state.observed_evidence}
-                    onClick={e => this.handleEvidenceClick(e)}
+                    handleEvidenceClick={e => this.handleEvidenceClick(e)}
                 />
                 <CandidateList />
             </div >
