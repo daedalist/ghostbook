@@ -14,9 +14,10 @@ const evidence_state = {
 function EvidenceButton(props) {
     const classNames = "evidenceButton " + props.state;
     return (
-        <li className={classNames} onClick={props.onClick} key={props.name}>
+        <li className={classNames} onClick={props.onClick}>
             {props.name}
-        </li>)
+        </li>
+    )
 }
 
 class ObservationList extends React.Component {
@@ -35,6 +36,7 @@ class ObservationList extends React.Component {
                 name={evidence_name}
                 state={evidence_state}
                 onClick={() => this.props.handleEvidenceClick(evidence_name)}
+                key={evidence_name}
             />
         );
     }
@@ -66,6 +68,7 @@ class CandidateList extends React.Component {
             <Ghost
                 name={name}
                 evidence_list={evidence_list}
+                key={name}
             />
         )
     }

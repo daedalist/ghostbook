@@ -17,7 +17,7 @@ class Ghost extends React.Component {
             }
         );
         return (
-            <div className="ghost" key={this.props.name}>
+            <div className="ghost">
                 <div className="name">{this.props.name}</div>
                 <ul className="evidenceList">
                     {evidences}
