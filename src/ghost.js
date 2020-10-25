@@ -10,10 +10,6 @@ export const evidence = {
 }
 
 class Ghost extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         const evidences = this.props.evidence_list.map(
             (e) => {

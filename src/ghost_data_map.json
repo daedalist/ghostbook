@@ -1,0 +1,88 @@
+[
+    {
+        "Banshee": {
+            "evidence_list": [
+                "EMF Level 5",
+                "Fingerprints",
+                "Freezing temperatures"
+            ]
+        },
+        "Demon": {
+            "evidence_list": [
+                "Spirit box",
+                "Ghost writing",
+                "Freezing temperatures"
+            ]
+        },
+        "Jinn": {
+            "evidence_list": [
+                "EMF Level 5",
+                "Spirit box",
+                "Ghost orb"
+            ]
+        },
+        "Mare": {
+            "evidence_list": [
+                "Spirit box",
+                "Freezing temperatures",
+                "Ghost orb"
+            ]
+        },
+        "Oni": {
+            "evidence_list": [
+                "EMF Level 5",
+                "Ghost writing",
+                "Spirit box"
+            ]
+        },
+        "Phantom": {
+            "evidence_list": [
+                "EMF Level 5",
+                "Freezing temperatures",
+                "Ghost orb"
+            ]
+        },
+        "Poltergeist": {
+            "evidence_list": [
+                "Fingerprints",
+                "Spirit box",
+                "Ghost orb"
+            ]
+        },
+        "Revenant": {
+            "evidence_list": [
+                "EMF Level 5",
+                "Ghost writing",
+                "Fingerprints"
+            ]
+        },
+        "Shade": {
+            "evidence_list": [
+                "EMF Level 5",
+                "Ghost writing",
+                "Ghost orb"
+            ]
+        },
+        "Spirit": {
+            "evidence_list": [
+                "Ghost writing",
+                "Fingerprints",
+                "Spirit box"
+            ]
+        },
+        "Wraith": {
+            "evidence_list": [
+                "Fingerprints",
+                "Spirit box",
+                "Freezing temperatures"
+            ]
+        },
+        "Yurei": {
+            "evidence_list": [
+                "Ghost writing",
+                "Freezing temperatures",
+                "Ghost orb"
+            ]
+        }
+    }
+]
