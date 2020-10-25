@@ -5,20 +5,35 @@ import './index.css';
 import Ghost, { evidence } from './ghost';
 import data from './ghost_data.json';
 
-function EvidenceButton(props) {
-    return (
-        <li className="evidenceButton" onClick={props.onClick}>
-            {props.evidence}
-        </li>
-    );
+const evidence_state = {
+    SELECTED: 1,
+    NOT_SELECTED: 2,
+    DISABLED: 3
+}
+
+class EvidenceButton extends React.Component {
+    render() {
+        return (
+            <li className="evidenceButton" onClick={this.props.onClick}>
+                {this.props.evidence_name}
+            </li>
+        );
+    }
 }
 
 class ObservationList extends React.Component {
-    renderEvidenceButton(evidence) {
+    constructor(props) {
+        super(props);
+        this.state = {
+            observed_evidence: props.observed_evidence,
+        }
+    }
+
+    renderEvidenceButton(value) {
         return (
-            <EvidenceButton
-                evidence={evidence}
-                onClick={() => this.props.onClick(evidence)}
+            < EvidenceButton
+                evidence_name={value[0]}
+                evidence_state={value[1]}
             />
         );
     }
@@ -28,7 +43,8 @@ class ObservationList extends React.Component {
             <section className="observations">
                 <h1>My observations</h1>
                 <ul className="observationList">
-                    {Object.values(evidence).map(this.renderEvidenceButton)}
+                    {Array.from(this.state.observed_evidence.entries())
+                        .map(this.renderEvidenceButton)}
                 </ul></section>
         );
     }
@@ -61,12 +77,33 @@ class CandidateList extends React.Component {
 }
 
 class Ghostbook extends React.Component {
+    constructor(props) {
+        super(props);
+        const observed_evidence = new Map();
+        Object.values(evidence).forEach((e) => {
+            observed_evidence.set(
+                e, evidence_state.NOT_SELECTED);
+        });
+
+        this.state = {
+            observed_evidence: observed_evidence,
+        };
+    }
+
+    handleEvidenceClick(e) {
+        const observed_evidence = this.state.observed_evidence;
+        let selected_evidence = observed_evidence
+    }
+
     render() {
         return (
-            <div class="ghostBook">
-                <ObservationList />
+            <div className="ghostBook" >
+                <ObservationList
+                    observed_evidence={this.state.observed_evidence}
+                    onClick={e => this.handleEvidenceClick(e)}
+                />
                 <CandidateList />
-            </div>
+            </div >
         );
     }
 }
