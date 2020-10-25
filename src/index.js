@@ -91,7 +91,7 @@ class Ghostbook extends React.Component {
         };
     }
 
-    async handleEvidenceClick(selected_evidence) {
+    handleEvidenceClick(selected_evidence) {
         // TODO: I don't know why I can't make this immutable with a new Map().
         const observed_evidence = this.state.observed_evidence;
         const current_status = observed_evidence.get(selected_evidence);
@@ -109,7 +109,7 @@ class Ghostbook extends React.Component {
             default:
                 break;
         }
-        await this.setState({
+        this.setState({
             observed_evidence: observed_evidence
         });
     }
