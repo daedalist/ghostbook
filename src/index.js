@@ -90,15 +90,26 @@ class CandidateList extends React.Component {
     }
 
     render() {
-        return (
-            <section className="candidates">
-                <h1> Possible ghosts</h1>
-                <div className="candidateList">
-                    {Array.from(this.get_visible_ghosts().entries())
-                        .map(this.renderGhostEntry)}
-                </div></section >
+        if (this.get_visible_ghosts().size > 0) {
+            return (
+                <section className="candidates">
+                    <h1> Possible ghosts</h1>
+                    <div className="candidateList">
+                        {Array.from(this.get_visible_ghosts().entries())
+                            .map(this.renderGhostEntry)}
+                    </div></section >
 
-        );
+            );
+        } else {
+            return (
+                <section className="candidates">
+                    <h1> Possible ghosts</h1>
+                    <div className="candidateList">
+                        <p>No ghosts match the selected evidence.</p>
+                    </div></section >
+
+            );
+        }
     }
 
 }
@@ -180,7 +191,8 @@ class Ghostbook extends React.Component {
                     handleEvidenceClick={e => this.handleEvidenceClick(e)}
                 />
                 <CandidateList
-                    candidate_scores={this.state.candidate_scores} />
+                    candidate_scores={this.state.candidate_scores}
+                />
             </div >
         );
     }
