@@ -1,3 +1,10 @@
+body {
+    background-color: black;
+    color: white;
+    font-family:'Cutive Mono', monospace, sans-serif;
+    padding: 1em;
+}
+
 .ghostBook {
 
 }
@@ -14,8 +21,8 @@
 
 .observationList li {
     list-style-type: none;
-    border: 1px solid black;
-    padding: .2em;
+    padding: .3em;
+    padding-left: 1em;
     margin: .2em;
 }
 
@@ -28,16 +35,20 @@ section {
 }
 
 .evidenceSelected{
-    background-color: green;
+    border: 1px solid white;
+    background-color: white;
     color :black;
 }
 
 .evidenceNotSelected {
-    background-color: yellow;
-    color: black;
+    border: 1px solid white;
+    background-color: black;
+    color: white;
 }
 
 .evidenceDisabled{
-    background-color: white;
+    border: 1px solid grey;
+    background-color: black;
     color: grey;
+    text-decoration: line-through;
 }

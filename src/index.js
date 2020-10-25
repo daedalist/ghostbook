@@ -11,6 +11,14 @@ const evidence_state = {
     DISABLED: 'evidenceDisabled'
 }
 
+function Header(props) {
+    return (
+        <header>
+            <h1>Phasmophobia Ghostbook</h1>
+        </header >
+    );
+}
+
 function EvidenceButton(props) {
     const classNames = "evidenceButton " + props.state;
     return (
@@ -186,6 +194,7 @@ class Ghostbook extends React.Component {
     render() {
         return (
             <div className="ghostBook" >
+                <Header />
                 <ObservationList
                     observed_evidence={this.state.observed_evidence}
                     handleEvidenceClick={e => this.handleEvidenceClick(e)}
