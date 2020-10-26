@@ -183,12 +183,33 @@ class Ghostbook extends React.Component {
                 }
             }
             candidate_scores.set(ghost_name, score);
-
-            this.setState({
-                observed_evidence: observed_evidence,
-                candidate_scores: candidate_scores
-            });
         }
+
+        // Disable evidence that can be ruled out.
+        const possible_evidence = new Set();
+        for (const [ghost_name, score] of candidate_scores.entries()) {
+            if (score > 0) {
+                const evidence_list = Array.from(
+                    ghost_data_map[0][ghost_name]['evidence_list']);
+                evidence_list.forEach((v) => possible_evidence.add(v));
+            }
+        }
+        if (possible_evidence.size > 0) {
+            for (const [ev, st] of observed_evidence) {
+                if (!possible_evidence.has(ev)
+                    && st === evidence_state.NOT_SELECTED) {
+                    observed_evidence.set(ev, evidence_state.DISABLED);
+                } else if (possible_evidence.has(ev)
+                    && st === evidence_state.DISABLED) {
+                    observed_evidence.set(ev, evidence_state.NOT_SELECTED);
+                }
+            }
+        }
+
+        this.setState({
+            observed_evidence: observed_evidence,
+            candidate_scores: candidate_scores
+        });
     }
 
     render() {
