@@ -13,17 +13,25 @@ body {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    align-items: flex-start;
+}
+
+.observations {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: 40%;
 }
 
 .observationList {
-    width: 40%;
+    margin: .2em;
+    padding-left: 0;
 }
 
 .observationList li {
     list-style-type: none;
     padding: .3em;
     padding-left: 1em;
-    margin: .2em;
 }
 
 .ghost {
@@ -51,4 +59,20 @@ section {
     background-color: black;
     color: grey;
     text-decoration: line-through;
+}
+
+.resetButton {
+    display: inline-block;
+    align-self: right;
+    padding: .3em 1em .3em 1em;
+    margin: 0;
+    margin-left: auto;
+    margin-top: .4em;
+    border: 1px solid grey;
+    background-color: grey;
+    color:black;
+}
+
+.button {
+    cursor: pointer;
 }

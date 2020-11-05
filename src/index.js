@@ -20,12 +20,12 @@ function Header(props) {
 }
 
 function ResetButton(props) {
-    const classNames = "button reset-button"
+    const classNames = "button resetButton"
     return (<div className={classNames} onClick={props.onClick}>Reset</div>)
 }
 
 function EvidenceButton(props) {
-    const classNames = "evidenceButton " + props.state;
+    const classNames = "evidenceButton button " + props.state;
     return (
         <li className={classNames} onClick={props.onClick}>
             {props.name}
@@ -58,13 +58,14 @@ class ObservationList extends React.Component {
         return (
             <section className="observations">
                 <h1>My observations</h1>
-                <ResetButton
-                    onClick={() => this.props.handleResetClick()}
-                />
                 <ul className="observationList">
                     {Array.from(this.state.observed_evidence.entries())
                         .map(this.renderEvidenceButton)}
-                </ul></section>
+                </ul>
+                <ResetButton
+                    onClick={() => this.props.handleResetClick()}
+                />
+            </section>
         );
     }
 }
