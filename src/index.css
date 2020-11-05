@@ -4,6 +4,7 @@ body {
     background-color: black;
     color: white;
     font-family:'Cutive Mono', monospace, sans-serif;
+    font-size: 100%;
     padding: 1em;
 }
 
@@ -11,8 +12,13 @@ section {
     margin: 2em;
 }
 
+h1 {
+    font-size: 1.5em;
+}
+
 .button {
     cursor: pointer;
+    font-size: 1.2em;
 }
 
 .content {
@@ -92,11 +98,16 @@ section {
 
 .ghost {
     width: 200px;
+    font-size: 1.2em;
 }
 
 /* Media queries */
 
 @media only screen and (max-width: 900px) {
+
+    body {
+        font-size: 1.1em;
+    }
     section {
         margin:0;
         margin-bottom: 1em;
