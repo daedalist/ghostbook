@@ -122,7 +122,7 @@ class CandidateList extends React.Component {
                 <section className="candidates">
                     <h1> Possible ghosts</h1>
                     <div className="candidateList">
-                        <p>No ghosts match the selected evidence.</p>
+                        <div>No ghosts match the selected evidence.</div>
                     </div></section >
 
             );
@@ -242,14 +242,16 @@ class Ghostbook extends React.Component {
         return (
             <div className="ghostBook" >
                 <Header />
-                <ObservationList
-                    observed_evidence={this.state.observed_evidence}
-                    handleEvidenceClick={e => this.handleEvidenceClick(e)}
-                    handleResetClick={() => this.handleResetClick()}
-                />
-                <CandidateList
-                    candidate_scores={this.state.candidate_scores}
-                />
+                <section class="content">
+                    <ObservationList
+                        observed_evidence={this.state.observed_evidence}
+                        handleEvidenceClick={e => this.handleEvidenceClick(e)}
+                        handleResetClick={() => this.handleResetClick()}
+                    />
+                    <CandidateList
+                        candidate_scores={this.state.candidate_scores}
+                    />
+                </section>
             </div >
         );
     }

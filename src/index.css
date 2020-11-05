@@ -1,3 +1,5 @@
+/* General Styles  */
+
 body {
     background-color: black;
     color: white;
@@ -5,22 +7,33 @@ body {
     padding: 1em;
 }
 
-.ghostBook {
-
+section {
+    margin: 2em;
 }
 
-.candidateList {
+.button {
+    cursor: pointer;
+}
+
+.content {
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
+    align-content: flex-start;
     align-items: flex-start;
 }
 
+.ghostBook {
+    /* nothing right now */
+}
+
+/* Observation section  */
+
 .observations {
+    flex-grow: 0;
+    flex-shrink: 0;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    width: 40%;
 }
 
 .observationList {
@@ -32,14 +45,6 @@ body {
     list-style-type: none;
     padding: .3em;
     padding-left: 1em;
-}
-
-.ghost {
-    width: 200px;
-}
-
-section {
-    margin-top: 2em;
 }
 
 .evidenceSelected{
@@ -73,6 +78,15 @@ section {
     color:black;
 }
 
-.button {
-    cursor: pointer;
+/* Ghost section  */
+
+.candidateList {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+}
+
+.ghost {
+    width: 200px;
 }
