@@ -242,7 +242,7 @@ class Ghostbook extends React.Component {
         return (
             <div className="ghostBook" >
                 <Header />
-                <section class="content">
+                <section className="content">
                     <ObservationList
                         observed_evidence={this.state.observed_evidence}
                         handleEvidenceClick={e => this.handleEvidenceClick(e)}

@@ -43,8 +43,11 @@ section {
 
 .observationList li {
     list-style-type: none;
-    padding: .3em;
+    padding: .5em;
     padding-left: 1em;
+    padding-right: 1em;
+    margin-top: .5em;
+    margin-bottom: .5em;
 }
 
 .evidenceSelected{
@@ -89,4 +92,19 @@ section {
 
 .ghost {
     width: 200px;
+}
+
+/* Media queries */
+
+@media only screen and (max-width: 900px) {
+    .content {
+        /* display: flex; */
+        flex-direction: column;
+        /* align-content: flex-start; */
+        align-items: stretch;
+    }
+    
+    .observations {
+        max-width: 60%;
+    }
 }
