@@ -2,14 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-import Ghost, { evidence } from './ghost';
+import { evidence } from './ghost';
 import ghost_data_map from './ghost_data_map.json';
-
-const evidence_state = {
-    SELECTED: 'evidenceSelected',
-    NOT_SELECTED: 'evidenceNotSelected',
-    DISABLED: 'evidenceDisabled'
-}
+import ObservationList, { evidence_state } from './observation_list';
+import CandidateList from './candidate_list';
 
 function Header(props) {
     return (
@@ -17,118 +13,6 @@ function Header(props) {
             <h1>Phasmophobia Ghostbook</h1>
         </header >
     );
-}
-
-function ResetButton(props) {
-    const classNames = "button resetButton"
-    return (<div className={classNames} onClick={props.onClick}>Reset</div>)
-}
-
-function EvidenceButton(props) {
-    const classNames = "evidenceButton button " + props.state;
-    return (
-        <li className={classNames} onClick={props.onClick}>
-            {props.name}
-        </li>
-    )
-}
-
-class ObservationList extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            observed_evidence: props.observed_evidence,
-        }
-    }
-
-    renderEvidenceButton = (value) => {
-        const evidence_name = value[0];
-        const evidence_state = value[1];
-        return (
-            <EvidenceButton
-                name={evidence_name}
-                state={evidence_state}
-                onClick={() => this.props.handleEvidenceClick(evidence_name)}
-                key={evidence_name}
-            />
-        );
-    }
-
-    render() {
-        return (
-            <section className="observations">
-                <h1>My observations</h1>
-                <ul className="observationList">
-                    {Array.from(this.state.observed_evidence.entries())
-                        .map(this.renderEvidenceButton)}
-                </ul>
-                <ResetButton
-                    onClick={() => this.props.handleResetClick()}
-                />
-            </section>
-        );
-    }
-}
-
-class CandidateList extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            candidate_scores: props.candidate_scores
-        }
-    }
-
-    renderGhostEntry = (value) => {
-        const name = value[0];
-        const evidence_list = value[1]["evidence_list"];
-        return (
-            <Ghost
-                name={name}
-                evidence_list={evidence_list}
-                key={name}
-            />
-        )
-    }
-
-    get_visible_ghosts() {
-        const ghosts = new Map();
-        for (const [ghost_name, score] of this.state.candidate_scores) {
-            if (score > 0) {
-                ghosts.set(ghost_name,
-                    {
-                        "evidence_list":
-                            ghost_data_map[0][ghost_name]["evidence_list"],
-                        "score": 0
-                    }
-                )
-            }
-        }
-        return ghosts;
-    }
-
-    render() {
-        if (this.get_visible_ghosts().size > 0) {
-            return (
-                <section className="candidates">
-                    <h1> Possible ghosts</h1>
-                    <div className="candidateList">
-                        {Array.from(this.get_visible_ghosts().entries())
-                            .map(this.renderGhostEntry)}
-                    </div></section >
-
-            );
-        } else {
-            return (
-                <section className="candidates">
-                    <h1> Possible ghosts</h1>
-                    <div className="candidateList">
-                        <div>No ghosts match the selected evidence.</div>
-                    </div></section >
-
-            );
-        }
-    }
-
 }
 
 class Ghostbook extends React.Component {
