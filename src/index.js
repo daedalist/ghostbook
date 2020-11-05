@@ -19,6 +19,11 @@ function Header(props) {
     );
 }
 
+function ResetButton(props) {
+    const classNames = "button reset-button"
+    return (<div className={classNames} onClick={props.onClick}>Reset</div>)
+}
+
 function EvidenceButton(props) {
     const classNames = "evidenceButton " + props.state;
     return (
@@ -53,6 +58,9 @@ class ObservationList extends React.Component {
         return (
             <section className="observations">
                 <h1>My observations</h1>
+                <ResetButton
+                    onClick={() => this.props.handleResetClick()}
+                />
                 <ul className="observationList">
                     {Array.from(this.state.observed_evidence.entries())
                         .map(this.renderEvidenceButton)}
@@ -212,6 +220,23 @@ class Ghostbook extends React.Component {
         });
     }
 
+    handleResetClick() {
+        const observed_evidence = this.state.observed_evidence;
+        for (const key of observed_evidence.keys()) {
+            observed_evidence.set(key, evidence_state.NOT_SELECTED);
+        }
+
+        const candidate_scores = this.state.candidate_scores;
+        for (const key of candidate_scores.keys()) {
+            candidate_scores.set(key, 0);
+        }
+
+        this.setState({
+            observed_evidence: observed_evidence,
+            candidate_scores: candidate_scores
+        });
+    }
+
     render() {
         return (
             <div className="ghostBook" >
@@ -219,6 +244,7 @@ class Ghostbook extends React.Component {
                 <ObservationList
                     observed_evidence={this.state.observed_evidence}
                     handleEvidenceClick={e => this.handleEvidenceClick(e)}
+                    handleResetClick={() => this.handleResetClick()}
                 />
                 <CandidateList
                     candidate_scores={this.state.candidate_scores}
