@@ -3,7 +3,8 @@ import React from 'react';
 export const evidence_state = {
     SELECTED: 'evidenceSelected',
     NOT_SELECTED: 'evidenceNotSelected',
-    DISABLED: 'evidenceDisabled'
+    DISABLED: 'evidenceDisabled',
+    RULED_OUT: 'evidenceRuledOut'
 }
 
 function ResetButton(props) {

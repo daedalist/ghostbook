@@ -26,7 +26,7 @@ class CandidateList extends React.Component {
     get_visible_ghosts() {
         const ghosts = new Map();
         for (const [ghost_name, score] of this.state.candidate_scores) {
-            if (score > 0) {
+            if (score >= 0) {
                 ghosts.set(ghost_name,
                     {
                         "evidence_list":
@@ -40,7 +40,9 @@ class CandidateList extends React.Component {
     }
 
     render() {
-        if (this.get_visible_ghosts().size > 0) {
+        const total_ghost_count = Object.keys(ghost_data_map[0]).length;
+        if (this.get_visible_ghosts().size < total_ghost_count
+            && this.get_visible_ghosts().size > 0) {
             return (
                 <section className="candidates">
                     <h1> Possible ghosts</h1>
