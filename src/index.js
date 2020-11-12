@@ -43,6 +43,7 @@ class Ghostbook extends React.Component {
         const current_status = observed_evidence.get(clicked_evidence);
         const candidate_scores = this.state.candidate_scores;
 
+        // Change the status of the clicked evidence.
         switch (current_status) {
             case evidence_state.NOT_SELECTED:
                 observed_evidence.set(clicked_evidence,
@@ -51,7 +52,12 @@ class Ghostbook extends React.Component {
 
             case evidence_state.SELECTED:
                 observed_evidence.set(clicked_evidence,
-                    evidence_state.NOT_SELECTED);
+                    evidence_state.RULED_OUT);
+                break;
+
+            case evidence_state.RULED_OUT:
+                observed_evidence.set(clicked_evidence,
+                    evidence_state.NOT_SELECTED)
                 break;
 
             case evidence_state.DISABLED:
@@ -61,6 +67,9 @@ class Ghostbook extends React.Component {
         }
 
         // Recalculate candidate scores.
+        // Score > 0: candidate is a possibility.
+        // Score = 0: no evidence either way.
+        // Score < 0: ruled out.
         for (const ghost_name of candidate_scores.keys()) {
             let score = 0;
             const evidence_list =
@@ -70,7 +79,12 @@ class Ghostbook extends React.Component {
                     if (evidence_list.includes(evidence_name)) {
                         score += 10;
                     } else {
-                        score = 0;
+                        score = -10;
+                        break;
+                    }
+                } else if (status === evidence_state.RULED_OUT) {
+                    if (evidence_list.includes(evidence_name)) {
+                        score = -10;
                         break;
                     }
                 }
@@ -81,7 +95,7 @@ class Ghostbook extends React.Component {
         // Disable evidence that can be ruled out.
         const possible_evidence = new Set();
         for (const [ghost_name, score] of candidate_scores.entries()) {
-            if (score > 0) {
+            if (score >= 0) {
                 const evidence_list = Array.from(
                     ghost_data_map[0][ghost_name]['evidence_list']);
                 evidence_list.forEach((v) => possible_evidence.add(v));
