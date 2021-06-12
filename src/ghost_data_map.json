@@ -14,6 +14,13 @@
                 "Freezing temperatures"
             ]
         },
+        "Hantu": {
+            "evidence_list": [
+                "Fingerprints",
+                "Ghost orb",
+                "Ghost writing"
+            ]
+        },
         "Jinn": {
             "evidence_list": [
                 "EMF Level 5",
@@ -75,6 +82,13 @@
                 "Fingerprints",
                 "Spirit box",
                 "Freezing temperatures"
+            ]
+        },
+        "Yokai": {
+            "evidence_list": [
+                "Spirit box",
+                "Ghost orb",
+                "Ghost writing"
             ]
         },
         "Yurei": {
