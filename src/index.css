@@ -109,6 +109,8 @@ h1 {
 
 /* Media queries */
 
+
+/* TODO: delete this legacy query
 @media only screen and (max-width: 900px) {
 
     body {
@@ -127,4 +129,16 @@ h1 {
     .observations {
         max-width: 60%;
     }
+} */
+
+/* Vieports based on https://ricostacruz.com/til/css-media-query-breakpoints
+Mobile-portrait: Default
+Mobile-landscape (and larger): min-width: 480px
+Tablet-portrait (and larger): min-width: 768px
+Tablet-landscape (and larger): min-width: 992px
+Laptops (and langer): min-width: 1200px
+*/
+
+@media only screen and (min-width: 768px) {
+
 }
