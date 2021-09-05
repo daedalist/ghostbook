@@ -2,15 +2,15 @@
     {
         "name": "Banshee",
         "evidence_list": [
-            "EMF Level 5",
             "Fingerprints",
-            "Freezing temperatures"
+            "Ghost orb",
+            "D.O.T.S projector"
         ]
     },
     {
         "name": "Demon",
         "evidence_list": [
-            "Spirit box",
+            "Fingerprints",
             "Ghost writing",
             "Freezing temperatures"
         ]
@@ -20,83 +20,19 @@
         "evidence_list": [
             "Fingerprints",
             "Ghost orb",
-            "Ghost writing"
+            "Freezing temperatures"
         ]
     },
     {
         "name": "Jinn",
         "evidence_list": [
             "EMF Level 5",
-            "Spirit box",
-            "Ghost orb"
-        ]
-    },
-    {
-        "name": "Mare",
-        "evidence_list": [
-            "Spirit box",
-            "Freezing temperatures",
-            "Ghost orb"
-        ]
-    },
-    {
-        "name": "Oni",
-        "evidence_list": [
-            "EMF Level 5",
-            "Ghost writing",
-            "Spirit box"
-        ]
-    },
-    {
-        "name": "Phantom",
-        "evidence_list": [
-            "EMF Level 5",
-            "Freezing temperatures",
-            "Ghost orb"
-        ]
-    },
-    {
-        "name": "Poltergeist",
-        "evidence_list": [
             "Fingerprints",
-            "Spirit box",
-            "Ghost orb"
-        ]
-    },
-    {
-        "name": "Revenant",
-        "evidence_list": [
-            "EMF Level 5",
-            "Ghost writing",
-            "Fingerprints"
-        ]
-    },
-    {
-        "name": "Shade",
-        "evidence_list": [
-            "EMF Level 5",
-            "Ghost writing",
-            "Ghost orb"
-        ]
-    },
-    {
-        "name": "Spirit",
-        "evidence_list": [
-            "Ghost writing",
-            "Fingerprints",
-            "Spirit box"
-        ]
-    },
-    {
-        "name": "Wraith",
-        "evidence_list": [
-            "Fingerprints",
-            "Spirit box",
             "Freezing temperatures"
         ]
     },
     {
-        "name": "Yokai",
+        "name": "Mare",
         "evidence_list": [
             "Spirit box",
             "Ghost orb",
@@ -104,11 +40,91 @@
         ]
     },
     {
+        "name": "Oni",
+        "evidence_list": [
+            "EMF Level 5",
+            "Freezing temperatures",
+            "D.O.T.S projector"
+        ]
+    },
+    {
+        "name": "Phantom",
+        "evidence_list": [
+            "Spirit box",
+            "Fingerprints",
+            "D.O.T.S projector"
+        ]
+    },
+    {
+        "name": "Poltergeist",
+        "evidence_list": [
+            "Spirit box",
+            "Fingerprints",
+            "Ghost writing"
+        ]
+    },
+    {
+        "name": "Revenant",
+        "evidence_list": [
+            "Ghost orb",
+            "Ghost writing",
+            "Freezing temperatures"
+        ]
+    },
+    {
+        "name": "Shade",
+        "evidence_list": [
+            "EMF Level 5",
+            "Ghost writing",
+            "Freezing temperatures"
+        ]
+    },
+    {
+        "name": "Spirit",
+        "evidence_list": [
+            "EMF Level 5",
+            "Spirit box",
+            "Ghost writing"
+        ]
+    },
+    {
+        "name": "Wraith",
+        "evidence_list": [
+            "EMF Level 5",
+            "Spirit box",
+            "D.O.T.S projector"
+        ]
+    },
+    {
+        "name": "Yokai",
+        "evidence_list": [
+            "Spirit box",
+            "Ghost orb",
+            "D.O.T.S projector"
+        ]
+    },
+    {
         "name": "Yurei",
         "evidence_list": [
-            "Ghost writing",
+            "Ghost orb",
             "Freezing temperatures",
-            "Ghost orb"
+            "D.O.T.S projector"
+        ]
+    },
+    {
+        "name": "Goryo",
+        "evidence_list": [
+            "EMF Level 5",
+            "Fingerprints",
+            "D.O.T.S projector"
+        ]
+    },
+    {
+        "name": "Myling",
+        "evidence_list": [
+            "EMF Level 5",
+            "Fingerprints",
+            "Ghost writing"
         ]
     }
 ]
