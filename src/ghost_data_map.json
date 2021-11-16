@@ -49,11 +49,25 @@
                 "Ghost writing"
             ]
         },
+        "Obake": {
+            "evidence_list": [
+                "EMF Level 5",
+                "Ghost orb",
+                "Fingerprints"
+            ]
+        },
         "Oni": {
             "evidence_list": [
                 "EMF Level 5",
                 "Freezing temperatures",
                 "D.O.T.S projector"
+            ]
+        },
+        "Onryo": {
+            "evidence_list": [
+                "Ghost orb",
+                "Spirit box",
+                "Freezing temperatures"
             ]
         },
         "Phantom": {
@@ -70,6 +84,13 @@
                 "Ghost writing"
             ]
         },
+        "Raiju": {
+            "evidence_list": [
+                "EMF Level 5",
+                "Ghost orb",
+                "D.O.T.S projector"
+            ]
+        },
         "Revenant": {
             "evidence_list": [
                 "Ghost orb",
@@ -81,6 +102,13 @@
             "evidence_list": [
                 "EMF Level 5",
                 "Ghost writing",
+                "Freezing temperatures"
+            ]
+        },
+        "The Twins": {
+            "evidence_list": [
+                "EMF Level 5",
+                "Spirit box",
                 "Freezing temperatures"
             ]
         },

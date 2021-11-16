@@ -40,11 +40,27 @@
         ]
     },
     {
+        "name": "Obake",
+        "evidence_list": [
+            "EMF Level 5",
+            "Ghost orb",
+            "Fingerprints"
+        ]
+    },
+    {
         "name": "Oni",
         "evidence_list": [
             "EMF Level 5",
             "Freezing temperatures",
             "D.O.T.S projector"
+        ]
+    },
+    {
+        "name": "Onryo",
+        "evidence_list": [
+            "Ghost orb",
+            "Spirit box",
+            "Freezing temperatures"
         ]
     },
     {
@@ -61,6 +77,14 @@
             "Spirit box",
             "Fingerprints",
             "Ghost writing"
+        ]
+    },
+    {
+        "name": "Raiju",
+        "evidence_list": [
+            "EMF Level 5",
+            "Ghost orb",
+            "D.O.T.S projector"
         ]
     },
     {
@@ -85,6 +109,14 @@
             "EMF Level 5",
             "Spirit box",
             "Ghost writing"
+        ]
+    },
+    {
+        "name": "The Twins",
+        "evidence_list": [
+            "EMF Level 5",
+            "Spirit box",
+            "Freezing temperatures"
         ]
     },
     {
