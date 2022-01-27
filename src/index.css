@@ -116,31 +116,19 @@ li.fakeEvidence {
     color: grey;
 }
 
-div.ghostDetail {
-    font-size: 0.9em;
-}
-
-input#showDetails {
-    display: none;
-}
-input#showDetails + label {
+.detailsButton {
     text-decoration: underline;
-    font-size: 0.8em;
+    cursor: pointer;
 }
 
-input#showDetails + label:before {
-    content: "+ "
+div.ghostDetailsShown {
+    font-size: 0.9em;
+    padding-right: 1em;
 }
 
-input#showDetails:checked + label:before {
-    content: "- "
-}
-
-input#showDetails:checked + label + div.ghostDetail {
-    display: block;
-}
-
-input#showDetails + label + div.ghostDetail {
+div.ghostDetailsHidden {
+    font-size: 0.9em;
+    padding-right: 1em;
     display: none;
 }
 
