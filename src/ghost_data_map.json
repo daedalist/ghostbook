@@ -6,7 +6,9 @@
                 "Ghost orb",
                 "D.O.T.S projector"
             ],
-            "fake_evidence_list": []
+            "fake_evidence_list": [],
+            "strength": "Will target only one player at a time",
+            "weakness": "Crucifix effectiveness is increased to 5m against one"
         },
         "Demon": {
             "evidence_list": [
@@ -14,7 +16,9 @@
                 "Ghost writing",
                 "Freezing temperatures"
             ],
-            "fake_evidence_list": []
+            "fake_evidence_list": [],
+            "strength": "Can initiate hunts more often",
+            "weakness": "Using cursed possessions will lower sanity less"
         },
         "Goryo": {
             "evidence_list": [
@@ -22,7 +26,9 @@
                 "Fingerprints",
                 "D.O.T.S projector"
             ],
-            "fake_evidence_list": []
+            "fake_evidence_list": [],
+            "strength": "Can only be seen interacting with D.O.T.S. through a camera when nobody is nearby",
+            "weakness": "Tends to wander away less from its ghost room"
         },
         "Hantu": {
             "evidence_list": [
@@ -30,7 +36,9 @@
                 "Ghost orb",
                 "Freezing temperatures"
             ],
-            "fake_evidence_list": []
+            "fake_evidence_list": [],
+            "strength": "Lower temperatures allow the Hantu to move faster",
+            "weakness": "Warmer areas slow the Hantu's movement"
         },
         "Jinn": {
             "evidence_list": [
@@ -38,7 +46,9 @@
                 "Fingerprints",
                 "Freezing temperatures"
             ],
-            "fake_evidence_list": []
+            "fake_evidence_list": [],
+            "strength": "Travels at faster speeds if its victim is far away",
+            "weakness": "Cannot use its ability if the site's fuse box is off"
         },
         "Mare": {
             "evidence_list": [
@@ -46,7 +56,9 @@
                 "Ghost orb",
                 "Ghost writing"
             ],
-            "fake_evidence_list": []
+            "fake_evidence_list": [],
+            "strength": "Has an increased chance to attack in the dark",
+            "weakness": "Turning the lights on will reduce the chance of an attack"
         },
         "Myling": {
             "evidence_list": [
@@ -54,7 +66,9 @@
                 "Fingerprints",
                 "Ghost writing"
             ],
-            "fake_evidence_list": []
+            "fake_evidence_list": [],
+            "strength": "Has quieter footsteps during a hunt",
+            "weakness": "Produces paranormal sounds more frequently"
         },
         "Obake": {
             "evidence_list": [
@@ -62,7 +76,9 @@
                 "Ghost orb",
                 "Fingerprints"
             ],
-            "fake_evidence_list": []
+            "fake_evidence_list": [],
+            "strength": "May leave fingerprints that disappear quicker",
+            "weakness": "Has a small chance of leaving six-fingered handprints"
         },
         "Oni": {
             "evidence_list": [
@@ -70,7 +86,9 @@
                 "Freezing temperatures",
                 "D.O.T.S projector"
             ],
-            "fake_evidence_list": []
+            "fake_evidence_list": [],
+            "strength": "Increased activity and ghost events",
+            "weakness": "An Oni's increased activity makes them easier to find"
         },
         "Onryo": {
             "evidence_list": [
@@ -78,7 +96,9 @@
                 "Spirit box",
                 "Freezing temperatures"
             ],
-            "fake_evidence_list": []
+            "fake_evidence_list": [],
+            "strength": "A flame extinguishing can cause an Onryo to attack",
+            "weakness": "The presence of flames reduces the Onryo's ability to attack"
         },
         "Phantom": {
             "evidence_list": [
@@ -86,7 +106,9 @@
                 "Fingerprints",
                 "D.O.T.S projector"
             ],
-            "fake_evidence_list": []
+            "fake_evidence_list": [],
+            "strength": "Looking at a Phantom will lower the player's sanity considerably",
+            "weakness": "Taking a photo of the Phantom will cause it to briefly disappear"
         },
         "Poltergeist": {
             "evidence_list": [
@@ -94,7 +116,9 @@
                 "Fingerprints",
                 "Ghost writing"
             ],
-            "fake_evidence_list": []
+            "fake_evidence_list": [],
+            "strength": "Capable of throwing multiple objects at once",
+            "weakness": "Becomes powerless with no throwables nearby"
         },
         "Raiju": {
             "evidence_list": [
@@ -102,7 +126,9 @@
                 "Ghost orb",
                 "D.O.T.S projector"
             ],
-            "fake_evidence_list": []
+            "fake_evidence_list": [],
+            "strength": "Moves faster near electrical devices",
+            "weakness": "Disrupts electronic equipment from further away when it hunts"
         },
         "Revenant": {
             "evidence_list": [
@@ -110,7 +136,9 @@
                 "Ghost writing",
                 "Freezing temperatures"
             ],
-            "fake_evidence_list": []
+            "fake_evidence_list": [],
+            "strength": "Can travel significantly faster if a player is spotted during a hunt",
+            "weakness": "Moves very slowly when not chasing a player"
         },
         "Shade": {
             "evidence_list": [
@@ -118,7 +146,19 @@
                 "Ghost writing",
                 "Freezing temperatures"
             ],
-            "fake_evidence_list": []
+            "fake_evidence_list": [],
+            "strength": "Being shy makes it more difficult to locate and obtain evidence",
+            "weakness": "Less likely to hunt if multiple people are nearby"
+        },
+        "Spirit": {
+            "evidence_list": [
+                "EMF Level 5",
+                "Spirit box",
+                "Ghost writing"
+            ],
+            "fake_evidence_list": [],
+            "strength": "None",
+            "weakness": "Smudge sticks are more effective, preventing a hunt for longer"
         },
         "The Mimic": {
             "evidence_list": [
@@ -128,7 +168,9 @@
             ],
             "fake_evidence_list": [
                 "Ghost orb"
-            ]
+            ],
+            "strength": "Can mimic the abilities and traits of other ghosts",
+            "weakness": "Will present Ghost Orbs as a secondary evidence"
         },
         "The Twins": {
             "evidence_list": [
@@ -136,15 +178,9 @@
                 "Spirit box",
                 "Freezing temperatures"
             ],
-            "fake_evidence_list": []
-        },
-        "Spirit": {
-            "evidence_list": [
-                "EMF Level 5",
-                "Spirit box",
-                "Ghost writing"
-            ],
-            "fake_evidence_list": []
+            "fake_evidence_list": [],
+            "strength": "Either Twin may start a hunt, though not at the same time",
+            "weakness": "Will often interact with the environment at the same time"
         },
         "Wraith": {
             "evidence_list": [
@@ -152,7 +188,9 @@
                 "Spirit box",
                 "D.O.T.S projector"
             ],
-            "fake_evidence_list": []
+            "fake_evidence_list": [],
+            "strength": "Does not leave UV footprints after stepping in salt",
+            "weakness": "Will become more active if it steps in salt"
         },
         "Yokai": {
             "evidence_list": [
@@ -160,7 +198,9 @@
                 "Ghost orb",
                 "D.O.T.S projector"
             ],
-            "fake_evidence_list": []
+            "fake_evidence_list": [],
+            "strength": "Talking near the Yokai will anger it, increasing the chance to attack",
+            "weakness": "Can only hear voices close to it during a hunt"
         },
         "Yurei": {
             "evidence_list": [
@@ -168,7 +208,9 @@
                 "Freezing temperatures",
                 "D.O.T.S projector"
             ],
-            "fake_evidence_list": []
+            "fake_evidence_list": [],
+            "strength": "Has a stronger effect on sanity",
+            "weakness": "Smudging the Yurei's ghost room will reduce how often it wanders"
         }
     }
 ]

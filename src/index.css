@@ -104,11 +104,44 @@ h1 {
 
 .ghost {
     width: 200px;
+    font-size: 1em;
+    margin-bottom: 2em;
+}
+
+.ghostName {
     font-size: 1.2em;
 }
 
 li.fakeEvidence {
     color: grey;
+}
+
+div.ghostDetail {
+    font-size: 0.9em;
+}
+
+input#showDetails {
+    display: none;
+}
+input#showDetails + label {
+    text-decoration: underline;
+    font-size: 0.8em;
+}
+
+input#showDetails + label:before {
+    content: "+ "
+}
+
+input#showDetails:checked + label:before {
+    content: "- "
+}
+
+input#showDetails:checked + label + div.ghostDetail {
+    display: block;
+}
+
+input#showDetails + label + div.ghostDetail {
+    display: none;
 }
 
 /* Media queries */
