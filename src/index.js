@@ -37,6 +37,7 @@ class Ghostbook extends React.Component {
         };
     }
 
+    /** When user clicks an observation, calculate which ghosts are eligible. */
     handleEvidenceClick(clicked_evidence) {
         // TODO: I don't know why I can't make this immutable with a new Map().
         const observed_evidence = this.state.observed_evidence;
@@ -74,10 +75,14 @@ class Ghostbook extends React.Component {
             let score = 0;
             const evidence_list =
                 Array.from(ghost_data_map[0][ghost_name]['evidence_list']);
+            const fake_evidence_list =
+                Array.from(ghost_data_map[0][ghost_name]['fake_evidence_list']);
             for (const [evidence_name, status] of observed_evidence) {
                 if (status === evidence_state.SELECTED) {
                     if (evidence_list.includes(evidence_name)) {
                         score += 10;
+                    } else if (fake_evidence_list.includes(evidence_name)) {
+                        score += 5
                     } else {
                         score = -10;
                         break;
@@ -119,6 +124,7 @@ class Ghostbook extends React.Component {
         });
     }
 
+    /** When user clicks the reset button, reset all observations. */
     handleResetClick() {
         const observed_evidence = this.state.observed_evidence;
         for (const key of observed_evidence.keys()) {

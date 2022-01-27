@@ -14,16 +14,19 @@ class CandidateList extends React.Component {
     renderGhostEntry = (value) => {
         const name = value[0];
         const evidence_list = value[1]["evidence_list"];
+        const fake_evidence_list = value[1]["fake_evidence_list"];
         return (
             <Ghost
                 name={name}
                 evidence_list={evidence_list}
+                fake_evidence_list={fake_evidence_list}
                 key={name}
             />
         )
     }
 
-    get_visible_ghosts() {
+    /** Return a map of Ghost names to their evidences and candidate scores. */
+    getVisibleGhosts() {
         const ghosts = new Map();
         for (const [ghost_name, score] of this.state.candidate_scores) {
             if (score >= 0) {
@@ -31,6 +34,8 @@ class CandidateList extends React.Component {
                     {
                         "evidence_list":
                             ghost_data_map[0][ghost_name]["evidence_list"],
+                        "fake_evidence_list":
+                            ghost_data_map[0][ghost_name]["fake_evidence_list"],
                         "score": 0
                     }
                 )
@@ -41,13 +46,13 @@ class CandidateList extends React.Component {
 
     render() {
         const total_ghost_count = Object.keys(ghost_data_map[0]).length;
-        if (this.get_visible_ghosts().size < total_ghost_count
-            && this.get_visible_ghosts().size > 0) {
+        if (this.getVisibleGhosts().size < total_ghost_count
+            && this.getVisibleGhosts().size > 0) {
             return (
                 <section className="candidates">
                     <h1> Possible ghosts</h1>
                     <div className="candidateList">
-                        {Array.from(this.get_visible_ghosts().entries())
+                        {Array.from(this.getVisibleGhosts().entries())
                             .map(this.renderGhostEntry)}
                     </div></section >
 

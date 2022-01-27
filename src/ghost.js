@@ -17,11 +17,17 @@ class Ghost extends React.Component {
                 return (<li key={e}>{e}</li>);
             }
         );
+        const fake_evidences = this.props.fake_evidence_list.map(
+            (e) => {
+                return (<li className="fakeEvidence" key={e}>{e}</li>);
+            }
+        )
         return (
             <div className="ghost">
                 <div className="name">{this.props.name}</div>
                 <ul className="evidenceList">
                     {evidences}
+                    {fake_evidences}
                 </ul>
             </div>
         );
