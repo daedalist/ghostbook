@@ -28,10 +28,10 @@ class GhostDetails extends React.Component {
     render() {
         return (
             <div>
-                <a
+                <button
                     className="detailsButton"
                     onClick={this.handleDetailsClick}>
-                    {this.state.showDetails ? "-" : "+"} details</a>
+                    {this.state.showDetails ? "-" : "+"} details</button>
                 <div
                     className={this.state.showDetails ? "ghostDetailsShown" : "ghostDetailsHidden"}>
                     <p>{this.props.strength}</p>

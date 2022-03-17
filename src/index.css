@@ -119,6 +119,11 @@ li.fakeEvidence {
 .detailsButton {
     text-decoration: underline;
     cursor: pointer;
+    background-color: black;
+    color: white;
+    font-family:'Cutive Mono', monospace, sans-serif;
+    font-size: 100%;
+    border: none;
 }
 
 div.ghostDetailsShown {
