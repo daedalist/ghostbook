@@ -8,7 +8,7 @@
             ],
             "fake_evidence_list": [],
             "strength": "Will target only one player at a time",
-            "weakness": "Crucifix effectiveness is increased to 5m against one"
+            "weakness": "Makes unique paranormal sounds on a parabolic microphone"
         },
         "Demon": {
             "evidence_list": [
@@ -18,7 +18,7 @@
             ],
             "fake_evidence_list": [],
             "strength": "Can initiate hunts more often",
-            "weakness": "Using cursed possessions will lower sanity less"
+            "weakness": "Increased effective crucifix range"
         },
         "Goryo": {
             "evidence_list": [
