@@ -20,6 +20,16 @@
             "strength": "Can initiate hunts more often",
             "weakness": "Increased effective crucifix range"
         },
+        "Deogen": {
+            "evidence_list": [
+                "Spirit Box",
+                "Ghost writing",
+                "D.O.T.S projector"
+            ],
+            "fake_evidence_list": [],
+            "strength": "Always knows where players are during a hunt",
+            "weakness": "Significantly slows down when in line-of-sight and near the player"
+        },
         "Goryo": {
             "evidence_list": [
                 "EMF Level 5",
@@ -59,6 +69,16 @@
             "fake_evidence_list": [],
             "strength": "Has an increased chance to attack in the dark",
             "weakness": "Turning the lights on will reduce the chance of an attack"
+        },
+        "Moroi": {
+            "evidence_list": [
+                "Spirit box",
+                "Ghost writing",
+                "Freezing temperatures"
+            ],
+            "fake_evidence_list": [],
+            "strength": "Become more active with lower player sanity",
+            "weakness": "Strongly affected by smudge sticks"
         },
         "Myling": {
             "evidence_list": [
@@ -159,6 +179,16 @@
             "fake_evidence_list": [],
             "strength": "None",
             "weakness": "Smudge sticks are more effective, preventing a hunt for longer"
+        },
+        "Thaye": {
+            "evidence_list": [
+                "Ghost orb",
+                "Ghost writing",
+                "D.O.T.S projector"
+            ],
+            "fake_evidence_list": [],
+            "strength": "Upon entering the location, Thaye will become active, defensive and agile",
+            "weakness": "Thaye will weaken over time, making them weaker, slower and less aggressive"
         },
         "The Mimic": {
             "evidence_list": [
