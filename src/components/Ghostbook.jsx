@@ -154,6 +154,7 @@ export default class Ghostbook extends React.Component {
                     />
                     <CandidateList
                         candidate_scores={this.state.candidate_scores}
+                        observed_evidence={this.state.observed_evidence}
                     />
                 </section>
             </div>
