@@ -17,10 +17,12 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build", 
     "start": "npx serve@latest ./build",
     "export": "next build",
-    "test:github-pages": "npm run build && mkdir -p test-deploy/ghostbook && cp -r build/* test-deploy/ghostbook/ && npx http-server test-deploy -p 3000"
+    "lint": "npx @next/codemod@canary next-lint-to-eslint-cli .",
+    "test:github-pages": "npm run build && rm -rf test-deploy && mkdir -p test-deploy/ghostbook && cp -r build/* test-deploy/ghostbook/ && echo 'Testing at http://localhost:3000/ghostbook/' && npx http-server test-deploy -p 3000",
+    "clean": "rm -rf test-deploy build .next"
   },
   "eslintConfig": {
     "extends": [
