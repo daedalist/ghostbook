@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import Ghost from '../lib/ghost';
+import Ghost from '../components/Ghost';
 import ghost_data_map from '../lib/ghost_data_map.json';
 
 class CandidateList extends React.Component {
