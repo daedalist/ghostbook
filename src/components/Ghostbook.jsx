@@ -7,7 +7,7 @@ import ObservationList from './ObservationList';
 import evidenceState from '../lib/evidenceState';
 import CandidateList from './CandidateList';
 
-function Header(props) {
+function Header() {
     return (
         <header>
             <h1>Phasmophobia Ghostbook</h1>
