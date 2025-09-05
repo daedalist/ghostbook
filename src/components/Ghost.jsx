@@ -2,17 +2,7 @@
 
 import React from 'react';
 
-import ghost_data_map from './ghost_data_map.json';
-
-export const evidence = {
-    GHOST_ORB: 'Ghost orb',
-    SPIRIT_BOX: 'Spirit box',
-    FINGERPRINTS: 'Fingerprints',
-    EMF_5: 'EMF Level 5',
-    FREEZING: 'Freezing temperatures',
-    GHOST_WRITING: 'Ghost writing',
-    DOTS_PROJECTOR: 'D.O.T.S projector',
-}
+import ghost_data_map from '../lib/ghost_data_map.json';
 
 class GhostDetails extends React.Component {
     constructor(props) {
