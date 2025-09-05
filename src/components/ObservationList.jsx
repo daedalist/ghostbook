@@ -1,7 +1,6 @@
 'use client'
 
 import React from 'react';
-import evidenceState from '../lib/evidenceState';
 
 function ResetButton(props) {
     const classNames = "button resetButton"
