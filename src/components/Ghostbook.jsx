@@ -88,7 +88,7 @@ export default class Ghostbook extends React.Component {
             break;
           }
         } else if (status === evidenceState.RULED_OUT) {
-          if (evidence_list.includes(evidence_name)) {
+          if (evidence_list.includes(evidence_name) || fake_evidence_list.includes(evidence_name)) {
             score = -10;
             break;
           }
