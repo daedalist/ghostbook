@@ -131,6 +131,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          
       - name: Download build artifacts
         uses: actions/download-artifact@v4
         with:
@@ -139,15 +144,26 @@ jobs:
           
       - name: Test static file serving
         run: |
-          # Install a simple static server
-          npm install -g http-server
-          # Start server in background
-          http-server ./build -p 8080 &
+          # Install serve locally (no global install needed)
+          npx --yes serve@latest ./build -l 8080 &
+          SERVER_PID=$!
+          
           # Wait for server to start
+          echo "Waiting for server to start..."
           sleep 5
+          
           # Test that the main page loads
-          curl -f http://localhost:8080/index.html || exit 1
-          echo "✅ Build can be served successfully"
+          echo "Testing server response..."
+          if curl -f http://localhost:8080/index.html; then
+            echo "✅ Build can be served successfully"
+          else
+            echo "❌ Failed to serve build"
+            kill $SERVER_PID 2>/dev/null || true
+            exit 1
+          fi
+          
+          # Clean up
+          kill $SERVER_PID 2>/dev/null || true
 
   # Security audit
   security:
