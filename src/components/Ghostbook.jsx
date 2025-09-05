@@ -142,21 +142,22 @@ export default class Ghostbook extends React.Component {
     });
   }
 
-  render() {
-    return (
-      <div className="ghostBook">
-        <Header />
-        <section className="content">
-          <ObservationList
-            observed_evidence={this.state.observed_evidence}
-            handleEvidenceClick={e => this.handleEvidenceClick(e)}
-            handleResetClick={() => this.handleResetClick()}
-          />
-          <CandidateList
-            candidate_scores={this.state.candidate_scores}
-          />
-        </section>
-      </div>
-    );
-  }
+    render() {
+        return (
+            <div className="ghostBook">
+                <Header />
+                <section className="content">
+                    <ObservationList
+                        observed_evidence={this.state.observed_evidence}
+                        handleEvidenceClick={e => this.handleEvidenceClick(e)}
+                        handleResetClick={() => this.handleResetClick()}
+                    />
+                    <CandidateList
+                        candidate_scores={this.state.candidate_scores}
+                        observed_evidence={this.state.observed_evidence}
+                    />
+                </section>
+            </div>
+        );
+    }
 }
