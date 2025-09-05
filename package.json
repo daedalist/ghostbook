@@ -1,12 +1,12 @@
 {
   "name": "ghostbook",
-  "version": "0.2.0", 
+  "version": "0.2.0",
   "private": true,
   "homepage": ".",
   "dependencies": {
     "@testing-library/jest-dom": "^5.15.0",
     "@testing-library/react": "^11.2.7",
-    "@testing-library/user-event": "^12.8.3", 
+    "@testing-library/user-event": "^12.8.3",
     "follow-redirects": "^1.15.6",
     "next": "^15.0.0",
     "node-forge": "^1.3.0",
@@ -18,8 +18,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start", 
-    "export": "next build"
+    "start": "npx serve@latest ./build",
+    "export": "next build",
+    "test:github-pages": "npm run build && mkdir -p test-deploy/ghostbook && cp -r build/* test-deploy/ghostbook/ && npx http-server test-deploy -p 3000"
   },
   "eslintConfig": {
     "extends": [
@@ -30,7 +31,7 @@
   "browserslist": {
     "production": [
       ">0.2%",
-      "not dead", 
+      "not dead",
       "not op_mini all"
     ],
     "development": [
@@ -38,5 +39,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/react": "19.1.12",
+    "eslint": "^9.34.0",
+    "typescript": "5.9.2"
   }
 }

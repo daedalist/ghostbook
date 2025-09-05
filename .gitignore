@@ -11,6 +11,11 @@
 # production
 /build
 
+# Next.js
+/.next/
+/out/
+next-env.d.ts
+
 # misc
 .DS_Store
 .env.local
@@ -22,6 +27,18 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# Local testing directory for GitHub Pages simulation
+/test-deploy/
+
+# Environment variables
+.env
+.env*.local
+
+# Vercel deployment (if you ever deploy to Vercel)
+.vercel
+
+# TypeScript
+*.tsbuildinfo
 
 # Created by https://www.toptal.com/developers/gitignore/api/react,reactnative,macos,windows,linux
 # Edit at https://www.toptal.com/developers/gitignore?templates=react,reactnative,macos,windows,linux
