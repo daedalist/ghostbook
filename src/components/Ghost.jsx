@@ -2,8 +2,8 @@
 
 import React from 'react';
 
-import ghost_data_map from './ghost_data_map.json';
-import evidenceState from './evidenceState';
+import ghost_data_map from '../lib/ghost_data_map.json';
+import evidenceState from '../lib/evidenceState';
 
 export const evidence = {
     GHOST_ORB: 'Ghost orb',
