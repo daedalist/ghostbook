@@ -1,21 +1,21 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
+'use client'
 
-import { evidence } from './ghost';
-import ghost_data_map from './ghost_data_map.json';
-import ObservationList, { evidence_state } from './observation_list';
-import CandidateList from './candidate_list';
+import React from 'react';
+import { evidence } from '../lib/ghost';
+import ghost_data_map from '../lib/ghost_data_map.json';
+import ObservationList from './ObservationList';
+import evidenceState from '../lib/evidenceState';
+import CandidateList from './CandidateList';
 
 function Header(props) {
     return (
         <header>
             <h1>Phasmophobia Ghostbook</h1>
-        </header >
+        </header>
     );
 }
 
-class Ghostbook extends React.Component {
+export default class Ghostbook extends React.Component {
     constructor(props) {
         super(props);
 
@@ -23,7 +23,7 @@ class Ghostbook extends React.Component {
         const observed_evidence = new Map();
         Object.values(evidence).forEach((e) => {
             observed_evidence.set(
-                e, evidence_state.NOT_SELECTED);
+                e, evidenceState.NOT_SELECTED);
         });
 
         // Initialize ghosts.
@@ -46,22 +46,22 @@ class Ghostbook extends React.Component {
 
         // Change the status of the clicked evidence.
         switch (current_status) {
-            case evidence_state.NOT_SELECTED:
+            case evidenceState.NOT_SELECTED:
                 observed_evidence.set(clicked_evidence,
-                    evidence_state.SELECTED);
+                  evidenceState.SELECTED);
                 break;
 
-            case evidence_state.SELECTED:
+            case evidenceState.SELECTED:
                 observed_evidence.set(clicked_evidence,
-                    evidence_state.RULED_OUT);
+                  evidenceState.RULED_OUT);
                 break;
 
-            case evidence_state.RULED_OUT:
+            case evidenceState.RULED_OUT:
                 observed_evidence.set(clicked_evidence,
-                    evidence_state.NOT_SELECTED)
+                  evidenceState.NOT_SELECTED)
                 break;
 
-            case evidence_state.DISABLED:
+            case evidenceState.DISABLED:
                 break; // User cannot directly change if it is disabled.
             default:
                 break;
@@ -78,7 +78,7 @@ class Ghostbook extends React.Component {
             const fake_evidence_list =
                 Array.from(ghost_data_map[0][ghost_name]['fake_evidence_list']);
             for (const [evidence_name, status] of observed_evidence) {
-                if (status === evidence_state.SELECTED) {
+                if (status === evidenceState.SELECTED) {
                     if (evidence_list.includes(evidence_name)) {
                         score += 10;
                     } else if (fake_evidence_list.includes(evidence_name)) {
@@ -87,7 +87,7 @@ class Ghostbook extends React.Component {
                         score = -10;
                         break;
                     }
-                } else if (status === evidence_state.RULED_OUT) {
+                } else if (status === evidenceState.RULED_OUT) {
                     if (evidence_list.includes(evidence_name)) {
                         score = -10;
                         break;
@@ -109,11 +109,11 @@ class Ghostbook extends React.Component {
         if (possible_evidence.size > 0) {
             for (const [ev, st] of observed_evidence) {
                 if (!possible_evidence.has(ev)
-                    && st === evidence_state.NOT_SELECTED) {
-                    observed_evidence.set(ev, evidence_state.DISABLED);
+                    && st === evidenceState.NOT_SELECTED) {
+                    observed_evidence.set(ev, evidenceState.DISABLED);
                 } else if (possible_evidence.has(ev)
-                    && st === evidence_state.DISABLED) {
-                    observed_evidence.set(ev, evidence_state.NOT_SELECTED);
+                    && st === evidenceState.DISABLED) {
+                    observed_evidence.set(ev, evidenceState.NOT_SELECTED);
                 }
             }
         }
@@ -128,7 +128,7 @@ class Ghostbook extends React.Component {
     handleResetClick() {
         const observed_evidence = this.state.observed_evidence;
         for (const key of observed_evidence.keys()) {
-            observed_evidence.set(key, evidence_state.NOT_SELECTED);
+            observed_evidence.set(key, evidenceState.NOT_SELECTED);
         }
 
         const candidate_scores = this.state.candidate_scores;
@@ -144,7 +144,7 @@ class Ghostbook extends React.Component {
 
     render() {
         return (
-            <div className="ghostBook" >
+            <div className="ghostBook">
                 <Header />
                 <section className="content">
                     <ObservationList
@@ -156,13 +156,7 @@ class Ghostbook extends React.Component {
                         candidate_scores={this.state.candidate_scores}
                     />
                 </section>
-            </div >
+            </div>
         );
     }
 }
-
-// === Run the app ===
-ReactDOM.render(
-    <Ghostbook />,
-    document.getElementById('root')
-);
