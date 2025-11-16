@@ -12,7 +12,7 @@ class GhostDetails extends React.Component {
   }
 
   handleDetailsClick() {
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       showDetails: !prevState.showDetails,
     }));
   }
@@ -20,12 +20,14 @@ class GhostDetails extends React.Component {
   render() {
     return (
       <div>
-        <button
-          className="detailsButton"
-          onClick={this.handleDetailsClick}>
-          {this.state.showDetails ? '-' : '+'} details</button>
+        <button className="detailsButton" onClick={this.handleDetailsClick}>
+          {this.state.showDetails ? '-' : '+'} details
+        </button>
         <div
-          className={this.state.showDetails ? 'ghostDetailsShown' : 'ghostDetailsHidden'}>
+          className={
+            this.state.showDetails ? 'ghostDetailsShown' : 'ghostDetailsHidden'
+          }
+        >
           <p>{this.props.strength}</p>
           <p>{this.props.weakness}</p>
         </div>
@@ -36,26 +38,23 @@ class GhostDetails extends React.Component {
 
 class Ghost extends React.Component {
   render() {
-    const evidences = this.props.evidence_list.map(
-      (e) => {
-        return (<li key={e}>{e}</li>);
-      },
-    );
-    const fake_evidences = this.props.fake_evidence_list.map(
-      (e) => {
-        return (<li className="fakeEvidence" key={e}>{e}</li>);
-      },
-    );
+    const evidences = this.props.evidence_list.map((e) => {
+      return <li key={e}>{e}</li>;
+    });
+    const fake_evidences = this.props.fake_evidence_list.map((e) => {
+      return (
+        <li className="fakeEvidence" key={e}>
+          {e}
+        </li>
+      );
+    });
     const strength = ghost_data_map[0][this.props.name]['strength'];
     const weakness = ghost_data_map[0][this.props.name]['weakness'];
 
     return (
       <div className="ghost">
         <div className="ghostName">{this.props.name}</div>
-        <GhostDetails
-          strength={strength}
-          weakness={weakness}
-        />
+        <GhostDetails strength={strength} weakness={weakness} />
         <ul className="evidenceList">
           {evidences}
           {fake_evidences}

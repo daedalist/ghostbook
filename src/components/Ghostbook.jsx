@@ -22,14 +22,12 @@ export default class Ghostbook extends React.Component {
     // Initialize evidence.
     const observed_evidence = new Map();
     Object.values(evidence).forEach((e) => {
-      observed_evidence.set(
-        e, evidenceState.NOT_SELECTED);
+      observed_evidence.set(e, evidenceState.NOT_SELECTED);
     });
 
     // Initialize ghosts.
     const candidate_scores = new Map();
-    Object.keys(ghost_data_map[0]).forEach(
-      (k) => candidate_scores.set(k, 0));
+    Object.keys(ghost_data_map[0]).forEach((k) => candidate_scores.set(k, 0));
 
     this.state = {
       observed_evidence: observed_evidence,
@@ -47,18 +45,15 @@ export default class Ghostbook extends React.Component {
     // Change the status of the clicked evidence.
     switch (current_status) {
       case evidenceState.NOT_SELECTED:
-        observed_evidence.set(clicked_evidence,
-          evidenceState.SELECTED);
+        observed_evidence.set(clicked_evidence, evidenceState.SELECTED);
         break;
 
       case evidenceState.SELECTED:
-        observed_evidence.set(clicked_evidence,
-          evidenceState.RULED_OUT);
+        observed_evidence.set(clicked_evidence, evidenceState.RULED_OUT);
         break;
 
       case evidenceState.RULED_OUT:
-        observed_evidence.set(clicked_evidence,
-          evidenceState.NOT_SELECTED);
+        observed_evidence.set(clicked_evidence, evidenceState.NOT_SELECTED);
         break;
 
       case evidenceState.DISABLED:
@@ -73,10 +68,12 @@ export default class Ghostbook extends React.Component {
     // Score < 0: ruled out.
     for (const ghost_name of candidate_scores.keys()) {
       let score = 0;
-      const evidence_list =
-        Array.from(ghost_data_map[0][ghost_name]['evidence_list']);
-      const fake_evidence_list =
-        Array.from(ghost_data_map[0][ghost_name]['fake_evidence_list']);
+      const evidence_list = Array.from(
+        ghost_data_map[0][ghost_name]['evidence_list']
+      );
+      const fake_evidence_list = Array.from(
+        ghost_data_map[0][ghost_name]['fake_evidence_list']
+      );
       for (const [evidence_name, status] of observed_evidence) {
         if (status === evidenceState.SELECTED) {
           if (evidence_list.includes(evidence_name)) {
@@ -88,7 +85,10 @@ export default class Ghostbook extends React.Component {
             break;
           }
         } else if (status === evidenceState.RULED_OUT) {
-          if (evidence_list.includes(evidence_name) || fake_evidence_list.includes(evidence_name)) {
+          if (
+            evidence_list.includes(evidence_name) ||
+            fake_evidence_list.includes(evidence_name)
+          ) {
             score = -10;
             break;
           }
@@ -102,17 +102,16 @@ export default class Ghostbook extends React.Component {
     for (const [ghost_name, score] of candidate_scores.entries()) {
       if (score >= 0) {
         const evidence_list = Array.from(
-          ghost_data_map[0][ghost_name]['evidence_list']);
+          ghost_data_map[0][ghost_name]['evidence_list']
+        );
         evidence_list.forEach((v) => possible_evidence.add(v));
       }
     }
     if (possible_evidence.size > 0) {
       for (const [ev, st] of observed_evidence) {
-        if (!possible_evidence.has(ev)
-          && st === evidenceState.NOT_SELECTED) {
+        if (!possible_evidence.has(ev) && st === evidenceState.NOT_SELECTED) {
           observed_evidence.set(ev, evidenceState.DISABLED);
-        } else if (possible_evidence.has(ev)
-          && st === evidenceState.DISABLED) {
+        } else if (possible_evidence.has(ev) && st === evidenceState.DISABLED) {
           observed_evidence.set(ev, evidenceState.NOT_SELECTED);
         }
       }
@@ -149,12 +148,10 @@ export default class Ghostbook extends React.Component {
         <section className="content">
           <ObservationList
             observed_evidence={this.state.observed_evidence}
-            handleEvidenceClick={e => this.handleEvidenceClick(e)}
+            handleEvidenceClick={(e) => this.handleEvidenceClick(e)}
             handleResetClick={() => this.handleResetClick()}
           />
-          <CandidateList
-            candidate_scores={this.state.candidate_scores}
-          />
+          <CandidateList candidate_scores={this.state.candidate_scores} />
         </section>
       </div>
     );

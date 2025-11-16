@@ -4,7 +4,11 @@ import React from 'react';
 
 function ResetButton(props) {
   const classNames = 'button resetButton';
-  return (<div className={classNames} onClick={props.onClick}>Reset</div>);
+  return (
+    <div className={classNames} onClick={props.onClick}>
+      Reset
+    </div>
+  );
 }
 
 function EvidenceButton(props) {
@@ -42,12 +46,11 @@ class ObservationList extends React.Component {
       <section className="observations">
         <h1>My observations</h1>
         <ul className="observationList">
-          {Array.from(this.state.observed_evidence.entries())
-            .map(this.renderEvidenceButton)}
+          {Array.from(this.state.observed_evidence.entries()).map(
+            this.renderEvidenceButton
+          )}
         </ul>
-        <ResetButton
-          onClick={() => this.props.handleResetClick()}
-        />
+        <ResetButton onClick={() => this.props.handleResetClick()} />
       </section>
     );
   }

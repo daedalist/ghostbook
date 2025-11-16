@@ -24,17 +24,20 @@ Built with Next.js and deployed as a static site.
 ### Installation
 
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/daedalist/ghostbook.git
    cd ghostbook
    ```
 
 2. Install dependencies:
+
    ```bash
    npm install
    ```
 
 3. Run the development server:
+
    ```bash
    npm run dev
    ```
@@ -44,11 +47,13 @@ Built with Next.js and deployed as a static site.
 ## Available Scripts
 
 ### Development
+
 - `npm run dev` - Start development server with hot reloading
 - `npm run build` - Build the app for production
 - `npm start` - Serve the built app locally
 
 ### Testing & Deployment
+
 - `npm run test:github-pages` - Test the app as it will appear on GitHub Pages
 - `npm run clean` - Remove build artifacts and test files
 
@@ -97,6 +102,7 @@ src/
 ### Migration from Create React App
 
 This project was migrated from Create React App to Next.js to take advantage of:
+
 - Better build optimization and tree-shaking
 - Automatic code splitting
 - Static site generation
@@ -107,6 +113,7 @@ The app currently runs as a Single Page Application (SPA) using Next.js static e
 ### Evidence State Management
 
 Evidence states are managed using JavaScript Maps and React class component state. Each evidence type can be in one of four states:
+
 - `NOT_SELECTED` - Default state
 - `SELECTED` - User has confirmed this evidence
 - `RULED_OUT` - User has confirmed this evidence is NOT present
@@ -115,8 +122,9 @@ Evidence states are managed using JavaScript Maps and React class component stat
 ### Ghost Scoring Algorithm
 
 Ghosts are scored based on evidence:
+
 - +10 points for each matching primary evidence
-- +5 points for each matching fake evidence  
+- +5 points for each matching fake evidence
 - -10 points (elimination) for contradictory evidence
 
 ## Deployment
@@ -124,6 +132,7 @@ Ghosts are scored based on evidence:
 The app is configured for static deployment to GitHub Pages:
 
 1. Build the static site:
+
    ```bash
    npm run build
    ```

@@ -7,6 +7,7 @@ argument-hint: [pr-number or branch-name]
 Review code changes for a pull request or branch, focusing on React and Next.js best practices.
 
 Steps:
+
 1. Get the diff of changes (use git diff or compare against main branch)
 2. Review the changes for:
    - React 19 and Next.js 16 compatibility

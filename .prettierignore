@@ -1,0 +1,30 @@
+# Build outputs
+build/
+.next/
+out/
+test-deploy/
+
+# Dependencies
+node_modules/
+
+# Lock files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Generated files
+*.tsbuildinfo
+next-env.d.ts
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+
+# Test coverage
+coverage/
