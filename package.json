@@ -25,12 +25,6 @@
     "test:github-pages": "npm run build && rm -rf test-deploy && mkdir -p test-deploy/ghostbook && cp -r build/* test-deploy/ghostbook/ && echo 'Testing at http://localhost:3000/ghostbook/' && npx http-server test-deploy -p 3000",
     "clean": "rm -rf test-deploy build .next"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
   "browserslist": {
     "production": [
       ">0.2%",
@@ -49,7 +43,7 @@
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
     "eslint": "^9.39.1",
-    "eslint-config-next": "^15.5.6",
+    "eslint-config-next": "^16.0.1",
     "typescript": "5.9.3"
   }
 }
