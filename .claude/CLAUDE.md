@@ -176,6 +176,31 @@ Four evidence states:
 - ESLint with Next.js config
 - TypeScript 5.9.3 (for type checking)
 
+## Working with Claude Code
+
+### Important Reminders
+
+**Working Directory Awareness:**
+- Sessions may start in different directories (e.g., `/Users/david/Code/ghostbook/.claude/notes`)
+- **ALWAYS check `pwd` before using relative paths** like `cd .claude/notes`
+- Use absolute paths or verify current location first to avoid "no such file or directory" errors
+- The Bash tool maintains a persistent working directory across tool calls
+
+**Example of common mistake:**
+```bash
+# BAD: Blindly using relative path
+cd .claude/notes && git status
+
+# GOOD: Check location first
+pwd                    # Verify current directory
+git status            # Use commands directly if already in right place
+```
+
+**Git in .claude/notes:**
+- `.claude/notes/` is a separate git repository (git-ignored in main repo)
+- Work directly from the notes directory or use git commands without cd
+- Changes stay local and private
+
 ## Recent Changes
 
 - Upgraded from Next.js 15 to 16
