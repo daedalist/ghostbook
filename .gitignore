@@ -412,8 +412,9 @@ $RECYCLE.BIN/
 *.lnk
 
 # Claude Code
-# Local settings and session data
-.claude/
+# Personal settings and private notes (not shared)
+.claude/settings.local.json
+.claude/notes/
 .claude-code/
 *.claude-session
 
