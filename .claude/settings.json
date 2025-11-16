@@ -1,0 +1,32 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "Bash(git status)",
+      "Bash(git log*)",
+      "Bash(git diff*)",
+      "Bash(node *)",
+      "Bash(npx *)"
+    ],
+    "deny": [
+      "Read(./.env*)",
+      "Write(./.env*)",
+      "Edit(./.env*)",
+      "Read(./node_modules/**)",
+      "Write(./node_modules/**)",
+      "Edit(./node_modules/**)",
+      "Bash(rm -rf /)",
+      "Bash(rm -rf ~)",
+      "Bash(git push --force*)"
+    ],
+    "ask": [
+      "Bash(git push*)",
+      "Bash(git commit*)",
+      "Write(./package.json)",
+      "Edit(./package.json)"
+    ]
+  },
+  "env": {
+    "NODE_ENV": "development"
+  }
+}
