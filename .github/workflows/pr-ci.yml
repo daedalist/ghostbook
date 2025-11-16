@@ -2,7 +2,7 @@ name: Pull Request CI
 
 on:
   pull_request:
-    branches: [ main ]
+    branches: [main]
     types: [opened, synchronize, reopened]
 
 # Cancel in-progress runs when a new push is made
@@ -17,16 +17,16 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
+
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version: '24'
           cache: 'npm'
-          
+
       - name: Install dependencies
         run: npm ci
-        
+
       - name: Cache dependencies
         uses: actions/cache@v4
         with:
@@ -40,22 +40,22 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
+
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version: '24'
           cache: 'npm'
-          
+
       - name: Restore dependencies
         uses: actions/cache@v4
         with:
           path: node_modules
           key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
-          
+
       - name: Install dependencies if cache miss
         run: npm ci
-        
+
       - name: Run ESLint
         run: npm run lint
 
@@ -66,26 +66,26 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
+
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version: '24'
           cache: 'npm'
-          
+
       - name: Restore dependencies
         uses: actions/cache@v4
         with:
           path: node_modules
           key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
-          
+
       - name: Install dependencies if cache miss
         run: npm ci
-        
+
       # Uncomment when you have tests
       # - name: Run tests
       #   run: npm test -- --coverage --watchAll=false
-      
+
       # For now, just validate that test dependencies work
       - name: Validate test setup
         run: echo "Test setup validated - no tests currently defined"
@@ -97,25 +97,25 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
+
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version: '24'
           cache: 'npm'
-          
+
       - name: Restore dependencies
         uses: actions/cache@v4
         with:
           path: node_modules
           key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
-          
+
       - name: Install dependencies if cache miss
         run: npm ci
-        
+
       - name: Build Next.js app
         run: npm run build
-        
+
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -130,40 +130,40 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
+
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version: '24'
-          
+
       - name: Download build artifacts
         uses: actions/download-artifact@v4
         with:
           name: build-output
           path: ./build
-          
+
       - name: Verify build contents
         run: |
           echo "Build directory contents:"
           ls -la ./build/
-          
+
           # Check if index.html exists
           if [ ! -f "./build/index.html" ]; then
             echo "❌ index.html not found in build directory"
             exit 1
           fi
-          
+
           echo "✅ Build files verified"
-          
+
       - name: Test static file serving
         run: |
           # Start serve in background and capture output
           echo "Starting server..."
           npx --yes serve@latest ./build -l 8080 > server.log 2>&1 &
           SERVER_PID=$!
-          
+
           echo "Server PID: $SERVER_PID"
-          
+
           # Wait for server to start with better detection
           echo "Waiting for server to start..."
           for i in {1..30}; do
@@ -185,10 +185,10 @@ jobs:
             echo "Attempt $i/30: Server not ready yet, waiting..."
             sleep 1
           done
-          
+
           # Test specific endpoints
           echo "Testing specific files..."
-          
+
           # Test index.html
           if curl -s -f http://localhost:8080/index.html > /dev/null; then
             echo "✅ index.html accessible"
@@ -199,7 +199,7 @@ jobs:
             kill $SERVER_PID 2>/dev/null || true
             exit 1
           fi
-          
+
           # Test root path
           if curl -s -f http://localhost:8080/ > /dev/null; then
             echo "✅ Root path accessible"
@@ -210,9 +210,9 @@ jobs:
             kill $SERVER_PID 2>/dev/null || true
             exit 1
           fi
-          
+
           echo "✅ All deployment tests passed"
-          
+
           # Clean up
           kill $SERVER_PID 2>/dev/null || true
           wait $SERVER_PID 2>/dev/null || true
@@ -223,19 +223,19 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
+
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version: '24'
           cache: 'npm'
-          
+
       - name: Install dependencies
         run: npm ci
-        
+
       - name: Run security audit
         run: npm audit --audit-level high
-        
+
       - name: Check for known vulnerabilities
         run: npm audit --audit-level moderate
 

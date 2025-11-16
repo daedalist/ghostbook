@@ -19,13 +19,13 @@ jobs:
         id: metadata
         uses: dependabot/fetch-metadata@v2
         with:
-          github-token: "${{ secrets.GITHUB_TOKEN }}"
+          github-token: '${{ secrets.GITHUB_TOKEN }}'
 
       - name: Add labels to Dependabot PRs
         run: |
           # Add dependency label
           gh pr edit "$PR_URL" --add-label "dependencies"
-          
+
           # Add update type label
           case "${{ steps.metadata.outputs.update-type }}" in
             "version-update:semver-patch")
@@ -46,14 +46,14 @@ jobs:
         if: steps.metadata.outputs.update-type == 'version-update:semver-patch'
         run: |
           gh pr comment "$PR_URL" --body "🔧 **Patch Update**
-          
+
           This is a patch-level dependency update that typically includes:
           - Bug fixes
           - Security patches
           - Performance improvements
-          
+
           **Dependencies updated:** ${{ steps.metadata.outputs.dependency-names }}
-          
+
           ✅ Generally safe to merge after CI passes."
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
@@ -63,14 +63,14 @@ jobs:
         if: steps.metadata.outputs.update-type == 'version-update:semver-minor'
         run: |
           gh pr comment "$PR_URL" --body "⬆️ **Minor Update**
-          
+
           This is a minor-level dependency update that typically includes:
           - New features (backward compatible)
           - Enhancements
           - Non-breaking API additions
-          
+
           **Dependencies updated:** ${{ steps.metadata.outputs.dependency-names }}
-          
+
           ⚠️ Review changes and test functionality before merging."
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
@@ -80,14 +80,14 @@ jobs:
         if: steps.metadata.outputs.update-type == 'version-update:semver-major'
         run: |
           gh pr comment "$PR_URL" --body "🚨 **Major Update - Manual Review Required**
-          
+
           This is a major-level dependency update that may include:
           - Breaking changes
           - API modifications
           - Removed or changed functionality
-          
+
           **Dependencies updated:** ${{ steps.metadata.outputs.dependency-names }}
-          
+
           ❗ **Action Required:**
           1. Review the changelog/release notes
           2. Test thoroughly for breaking changes
@@ -101,11 +101,11 @@ jobs:
         if: steps.metadata.outputs.update-type == 'version-update:semver-patch' && contains(github.event.pull_request.title, 'security')
         run: |
           gh pr comment "$PR_URL" --body "🔒 **Security Update Detected**
-          
+
           This appears to be a security-related update. 
-          
+
           **Dependencies updated:** ${{ steps.metadata.outputs.dependency-names }}
-          
+
           🚀 **Recommended:** Review and merge promptly after CI passes to address potential vulnerabilities."
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}

@@ -24,31 +24,38 @@ Built with Next.js and deployed as a static site.
 ### Installation
 
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/daedalist/ghostbook.git
    cd ghostbook
    ```
 
 2. Install dependencies:
+
    ```bash
    npm install
    ```
 
 3. Run the development server:
+
    ```bash
    npm run dev
    ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser
+4. Open [http://localhost:3000/ghostbook/](http://localhost:3000/ghostbook/) in your browser
+
+   ⚠️ **Note:** The app uses the `/ghostbook` base path to match the GitHub Pages deployment structure.
 
 ## Available Scripts
 
 ### Development
+
 - `npm run dev` - Start development server with hot reloading
 - `npm run build` - Build the app for production
-- `npm start` - Serve the built app locally
+- `npm start` - Build and serve the production version locally
 
 ### Testing & Deployment
+
 - `npm run test:github-pages` - Test the app as it will appear on GitHub Pages
 - `npm run clean` - Remove build artifacts and test files
 
@@ -67,8 +74,11 @@ Built with Next.js and deployed as a static site.
 
 ## Technology Stack
 
-- **Next.js 15** - React framework with static site generation
-- **React 18** - UI library
+- **Next.js 16** - React framework with static site generation
+- **React 19** - UI library
+- **TypeScript** - Type safety for app router files
+- **ESLint** - Code quality and best practices
+- **Prettier** - Automated code formatting
 - **CSS** - Custom styling with CSS Grid and Flexbox
 - **GitHub Pages** - Static site hosting
 
@@ -97,6 +107,7 @@ src/
 ### Migration from Create React App
 
 This project was migrated from Create React App to Next.js to take advantage of:
+
 - Better build optimization and tree-shaking
 - Automatic code splitting
 - Static site generation
@@ -107,6 +118,7 @@ The app currently runs as a Single Page Application (SPA) using Next.js static e
 ### Evidence State Management
 
 Evidence states are managed using JavaScript Maps and React class component state. Each evidence type can be in one of four states:
+
 - `NOT_SELECTED` - Default state
 - `SELECTED` - User has confirmed this evidence
 - `RULED_OUT` - User has confirmed this evidence is NOT present
@@ -115,8 +127,9 @@ Evidence states are managed using JavaScript Maps and React class component stat
 ### Ghost Scoring Algorithm
 
 Ghosts are scored based on evidence:
+
 - +10 points for each matching primary evidence
-- +5 points for each matching fake evidence  
+- +5 points for each matching fake evidence
 - -10 points (elimination) for contradictory evidence
 
 ## Deployment
@@ -124,6 +137,7 @@ Ghosts are scored based on evidence:
 The app is configured for static deployment to GitHub Pages:
 
 1. Build the static site:
+
    ```bash
    npm run build
    ```
@@ -134,11 +148,12 @@ The app is configured for static deployment to GitHub Pages:
 
 ## Contributing
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines on:
+
+- Setting up your development environment
+- Code style and formatting (Prettier & ESLint)
+- Making changes and submitting pull requests
+- Testing and build verification
 
 ## License
 

@@ -3,6 +3,7 @@ import globals from 'globals';
 import reactPlugin from 'eslint-plugin-react';
 import reactHooksPlugin from 'eslint-plugin-react-hooks';
 import tseslint from 'typescript-eslint';
+import prettierConfig from 'eslint-config-prettier';
 
 const eslintConfig = [
   js.configs.recommended,
@@ -10,7 +11,7 @@ const eslintConfig = [
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
     plugins: {
-      'react': reactPlugin,
+      react: reactPlugin,
       'react-hooks': reactHooksPlugin,
     },
     languageOptions: {
@@ -30,12 +31,6 @@ const eslintConfig = [
       },
     },
     rules: {
-      // Code style standards (from CLAUDE.md)
-      'indent': ['error', 2, { 'SwitchCase': 1 }],
-      'semi': ['error', 'always'],
-      'quotes': ['error', 'single', { 'avoidEscape': true, 'allowTemplateLiterals': true }],
-      'comma-dangle': ['error', 'always-multiline'],
-
       // React/Next.js best practices
       'react/prop-types': 'off', // Using TypeScript for type checking
       'react/react-in-jsx-scope': 'off', // Not needed in Next.js
@@ -43,7 +38,10 @@ const eslintConfig = [
       'react-hooks/exhaustive-deps': 'warn',
 
       // TypeScript adjustments
-      '@typescript-eslint/no-unused-vars': ['warn', { 'argsIgnorePattern': '^_' }],
+      '@typescript-eslint/no-unused-vars': [
+        'warn',
+        { argsIgnorePattern: '^_' },
+      ],
       '@typescript-eslint/no-explicit-any': 'warn',
     },
   },
@@ -58,6 +56,8 @@ const eslintConfig = [
       '.claude/notes/**',
     ],
   },
+  // Prettier config must be last to override conflicting rules
+  prettierConfig,
 ];
 
 export default eslintConfig;

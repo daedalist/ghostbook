@@ -32,15 +32,12 @@ class CandidateList extends React.Component {
     const ghosts = new Map();
     for (const [ghost_name, score] of this.state.candidate_scores) {
       if (score >= 0) {
-        ghosts.set(ghost_name,
-          {
-            'evidence_list':
-                            ghost_data_map[0][ghost_name]['evidence_list'],
-            'fake_evidence_list':
-                            ghost_data_map[0][ghost_name]['fake_evidence_list'],
-            'score': 0,
-          },
-        );
+        ghosts.set(ghost_name, {
+          evidence_list: ghost_data_map[0][ghost_name]['evidence_list'],
+          fake_evidence_list:
+            ghost_data_map[0][ghost_name]['fake_evidence_list'],
+          score: 0,
+        });
       }
     }
     return ghosts;
@@ -48,16 +45,19 @@ class CandidateList extends React.Component {
 
   render() {
     const total_ghost_count = Object.keys(ghost_data_map[0]).length;
-    if (this.getVisibleGhosts().size < total_ghost_count
-            && this.getVisibleGhosts().size > 0) {
+    if (
+      this.getVisibleGhosts().size < total_ghost_count &&
+      this.getVisibleGhosts().size > 0
+    ) {
       return (
         <section className="candidates">
           <h1> Possible ghosts</h1>
           <div className="candidateList">
-            {Array.from(this.getVisibleGhosts().entries())
-              .map(this.renderGhostEntry)}
-          </div></section >
-
+            {Array.from(this.getVisibleGhosts().entries()).map(
+              this.renderGhostEntry
+            )}
+          </div>
+        </section>
       );
     } else {
       return (
@@ -65,12 +65,11 @@ class CandidateList extends React.Component {
           <h1> Possible ghosts</h1>
           <div className="candidateList">
             <div>No ghosts match the selected evidence.</div>
-          </div></section >
-
+          </div>
+        </section>
       );
     }
   }
-
 }
 
 export default CandidateList;
