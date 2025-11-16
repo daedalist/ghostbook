@@ -33,6 +33,7 @@ Ghostbook is a web application for the game Phasmophobia that helps players trac
 
 Available custom commands:
 
+- `/pre-commit` - Run comprehensive pre-commit checks (format, type-check, lint)
 - `/test-deploy` - Test GitHub Pages deployment locally
 - `/clean-rebuild` - Clean all artifacts and rebuild from scratch
 - `/lint-fix` - Run ESLint with auto-fix
@@ -50,8 +51,10 @@ Available custom commands:
 
 - `npm run lint` - Check code with ESLint
 - `npm run lint:fix` - Auto-fix ESLint issues
-- `npm run format` - Auto-format code with Prettier (coming in #76)
-- `npm run format:check` - Check if code is formatted (coming in #76)
+- `npm run format` - Auto-format code with Prettier
+- `npm run format:check` - Check if code is formatted (CI-friendly)
+- `npm run type-check` - Check TypeScript types without building
+- `npm run lint:types` - Run both type-check and lint together
 
 ### Testing & Deployment
 
