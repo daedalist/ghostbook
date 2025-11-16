@@ -38,6 +38,8 @@ jobs:
       
     - name: Build Next.js app
       run: npm run build
+      env:
+        NEXT_PUBLIC_CLOUDFLARE_ANALYTICS_TOKEN: ${{ secrets.NEXT_PUBLIC_CLOUDFLARE_ANALYTICS_TOKEN }}
       
     - name: Upload build artifacts
       uses: actions/upload-pages-artifact@v3
