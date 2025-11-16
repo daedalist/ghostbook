@@ -411,4 +411,10 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+# Claude Code
+# Local settings and session data
+.claude/
+.claude-code/
+*.claude-session
+
 # End of https://www.toptal.com/developers/gitignore/api/react,reactnative,macos,windows,linux
