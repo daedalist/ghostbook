@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Cutive_Mono } from 'next/font/google';
+import Script from 'next/script';
 import './globals.css';
 
 const cutiveMono = Cutive_Mono({
@@ -7,6 +8,9 @@ const cutiveMono = Cutive_Mono({
   subsets: ['latin'],
   display: 'optional',
 });
+
+// Cloudflare Web Analytics - optional, only enabled if token is provided
+const cloudflareToken = process.env.NEXT_PUBLIC_CLOUDFLARE_ANALYTICS_TOKEN;
 
 export const metadata: Metadata = {
   title: 'Phasmophobia Ghostbook',
@@ -26,6 +30,13 @@ export default function RootLayout({
     <html lang="en">
       <body className={cutiveMono.className}>
         <div id="root">{children}</div>
+        {cloudflareToken && (
+          <Script
+            src="https://static.cloudflareinsights.com/beacon.min.js"
+            data-cf-beacon={`{"token": "${cloudflareToken}"}`}
+            strategy="afterInteractive"
+          />
+        )}
       </body>
     </html>
   );

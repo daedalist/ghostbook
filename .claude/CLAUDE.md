@@ -99,6 +99,26 @@ src/
 - Always test with `npm run test:github-pages` before deploying
 - Base path is configured in `next.config.js`
 
+### Analytics (Optional)
+The project supports **Cloudflare Web Analytics** for basic page view tracking.
+
+**Setup (Optional):**
+1. Create a free Cloudflare account
+2. Set up Web Analytics at https://dash.cloudflare.com
+3. Copy your analytics token
+4. Create `.env.local` file (git-ignored): `cp .env.local.example .env.local`
+5. Add your token: `NEXT_PUBLIC_CLOUDFLARE_ANALYTICS_TOKEN=your_token_here`
+
+**For GitHub Pages deployment:**
+- Add the token as a GitHub Actions secret: `NEXT_PUBLIC_CLOUDFLARE_ANALYTICS_TOKEN`
+- The token is embedded into the build during GitHub Actions
+- If no token is provided, the site works normally without analytics
+
+**Privacy:**
+- No cookies required (GDPR compliant)
+- Privacy-focused tracking (page views only)
+- Token is client-side by design (safe to be public)
+
 ### Evidence State Logic
 Four evidence states:
 - `NOT_SELECTED` - Default
