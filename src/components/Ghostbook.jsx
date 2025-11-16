@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import React from 'react';
 import evidence from '../lib/evidence';
@@ -33,7 +33,7 @@ export default class Ghostbook extends React.Component {
 
     this.state = {
       observed_evidence: observed_evidence,
-      candidate_scores: candidate_scores
+      candidate_scores: candidate_scores,
     };
   }
 
@@ -58,7 +58,7 @@ export default class Ghostbook extends React.Component {
 
       case evidenceState.RULED_OUT:
         observed_evidence.set(clicked_evidence,
-          evidenceState.NOT_SELECTED)
+          evidenceState.NOT_SELECTED);
         break;
 
       case evidenceState.DISABLED:
@@ -82,7 +82,7 @@ export default class Ghostbook extends React.Component {
           if (evidence_list.includes(evidence_name)) {
             score += 10;
           } else if (fake_evidence_list.includes(evidence_name)) {
-            score += 5
+            score += 5;
           } else {
             score = -10;
             break;
@@ -120,7 +120,7 @@ export default class Ghostbook extends React.Component {
 
     this.setState({
       observed_evidence: observed_evidence,
-      candidate_scores: candidate_scores
+      candidate_scores: candidate_scores,
     });
   }
 
@@ -138,7 +138,7 @@ export default class Ghostbook extends React.Component {
 
     this.setState({
       observed_evidence: observed_evidence,
-      candidate_scores: candidate_scores
+      candidate_scores: candidate_scores,
     });
   }
 

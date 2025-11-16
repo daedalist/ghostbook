@@ -1,11 +1,11 @@
-'use client'
+'use client';
 
-import dynamic from 'next/dynamic'
+import dynamic from 'next/dynamic';
 
 const Ghostbook = dynamic(() => import('../../components/Ghostbook'), { 
-  ssr: false 
-})
+  ssr: false, 
+});
 
 export function ClientOnly() {
-  return <Ghostbook />
+  return <Ghostbook />;
 }
