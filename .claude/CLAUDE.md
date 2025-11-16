@@ -77,6 +77,7 @@ Available custom commands:
 - **Trailing commas**: ES5 style
 
 **How to use:**
+
 - Run `npm run format` to auto-format all code
 - Enable "Format on Save" in your editor for automatic formatting
 - Prettier integrates with ESLint (no conflicts)
