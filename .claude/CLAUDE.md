@@ -201,6 +201,72 @@ git status            # Use commands directly if already in right place
 - Work directly from the notes directory or use git commands without cd
 - Changes stay local and private
 
+### Git Workflow Best Practices
+
+**When to Create a Pull Request:**
+- Feature work (new functionality)
+- Bug fixes
+- Refactoring
+- Any code changes that should be reviewed by CI
+
+**When to Commit Directly to Main:**
+- Documentation updates (README, CONTRIBUTING, etc.)
+- `.claude/*` configuration changes (settings, commands)
+- Typo fixes in documentation
+- **NEVER**: Code changes, dependency updates, or breaking changes
+
+**Branch Workflow:**
+```bash
+# Starting new work
+git checkout main
+git pull origin main
+git checkout -b type/descriptive-name
+
+# Make changes, then commit
+git add <files>
+git commit -m "type: description"
+
+# Push and create PR
+git push -u origin type/descriptive-name
+gh pr create --title "..." --body "..."
+```
+
+**After PR is Merged:**
+```bash
+git checkout main
+git pull origin main
+git branch -d type/descriptive-name      # Delete local branch
+git push origin --delete type/descriptive-name  # Delete remote if needed
+```
+
+**Avoid Unnecessary Complexity:**
+- ❌ Don't use `git cherry-pick` unless truly needed (hotfixes, specific commits across branches)
+- ❌ Don't create branches for simple doc changes - commit directly to main
+- ❌ Don't commit on wrong branch then try to move changes - start over on correct branch
+- ✅ Use simple, linear workflows when possible
+- ✅ Check current branch with `git status` before making changes
+
+**Branch Naming Conventions:**
+- `feat/` - New features
+- `fix/` - Bug fixes
+- `chore/` - Maintenance tasks (tooling, deps, config)
+- `docs/` - Documentation updates (if creating PR)
+- `refactor/` - Code refactoring
+
+**Commit Message Format:**
+```
+type: brief description (50 chars max)
+
+Longer explanation if needed (wrap at 72 chars).
+Can include multiple paragraphs.
+
+Resolves #123
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>
+```
+
 ## Recent Changes
 
 - Upgraded from Next.js 15 to 16
