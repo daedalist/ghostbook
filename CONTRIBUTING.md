@@ -64,6 +64,8 @@ This project uses **Prettier** for consistent code formatting. All formatting is
 ```bash
 npm run format        # Auto-format all code
 npm run format:check  # Check if code is formatted (CI-friendly)
+npm run type-check    # Check TypeScript types
+npm run lint:types    # Run both type-check and lint (comprehensive)
 ```
 
 **Editor Setup (Recommended):**
@@ -153,7 +155,9 @@ Run these checks:
 
 ```bash
 npm run format      # Format code
+npm run type-check  # Check TypeScript types
 npm run lint        # Check code quality
+npm run lint:types  # Or run both type-check and lint together
 npm run build       # Ensure build succeeds
 ```
 
