@@ -42,7 +42,9 @@ Built with Next.js and deployed as a static site.
    npm run dev
    ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser
+4. Open [http://localhost:3000/ghostbook/](http://localhost:3000/ghostbook/) in your browser
+
+   ⚠️ **Note:** The app uses the `/ghostbook` base path to match the GitHub Pages deployment structure.
 
 ## Available Scripts
 
@@ -50,7 +52,7 @@ Built with Next.js and deployed as a static site.
 
 - `npm run dev` - Start development server with hot reloading
 - `npm run build` - Build the app for production
-- `npm start` - Serve the built app locally
+- `npm start` - Build and serve the production version locally
 
 ### Testing & Deployment
 
@@ -72,8 +74,11 @@ Built with Next.js and deployed as a static site.
 
 ## Technology Stack
 
-- **Next.js 15** - React framework with static site generation
-- **React 18** - UI library
+- **Next.js 16** - React framework with static site generation
+- **React 19** - UI library
+- **TypeScript** - Type safety for app router files
+- **ESLint** - Code quality and best practices
+- **Prettier** - Automated code formatting
 - **CSS** - Custom styling with CSS Grid and Flexbox
 - **GitHub Pages** - Static site hosting
 
@@ -143,11 +148,12 @@ The app is configured for static deployment to GitHub Pages:
 
 ## Contributing
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines on:
+
+- Setting up your development environment
+- Code style and formatting (Prettier & ESLint)
+- Making changes and submitting pull requests
+- Testing and build verification
 
 ## License
 

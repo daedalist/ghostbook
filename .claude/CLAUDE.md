@@ -50,6 +50,8 @@ Available custom commands:
 
 - `npm run lint` - Check code with ESLint
 - `npm run lint:fix` - Auto-fix ESLint issues
+- `npm run format` - Auto-format code with Prettier (coming in #76)
+- `npm run format:check` - Check if code is formatted (coming in #76)
 
 ### Testing & Deployment
 
@@ -66,9 +68,18 @@ Available custom commands:
 
 ### Formatting
 
+**Prettier handles all code formatting automatically.** Configuration in `.prettierrc.json`:
+
 - **Indentation**: 2 spaces (no tabs)
-- **Quote style**: Follow existing patterns in the file
-- **Semicolons**: Use them consistently
+- **Quotes**: Single quotes for JavaScript/TypeScript, double quotes for JSX attributes
+- **Semicolons**: Always used
+- **Line width**: 80 characters
+- **Trailing commas**: ES5 style
+
+**How to use:**
+- Run `npm run format` to auto-format all code
+- Enable "Format on Save" in your editor for automatic formatting
+- Prettier integrates with ESLint (no conflicts)
 
 ### React Patterns
 
