@@ -181,12 +181,14 @@ Four evidence states:
 ### Important Reminders
 
 **Working Directory Awareness:**
+
 - Sessions may start in different directories (e.g., `/Users/david/Code/ghostbook/.claude/notes`)
 - **ALWAYS check `pwd` before using relative paths** like `cd .claude/notes`
 - Use absolute paths or verify current location first to avoid "no such file or directory" errors
 - The Bash tool maintains a persistent working directory across tool calls
 
 **Example of common mistake:**
+
 ```bash
 # BAD: Blindly using relative path
 cd .claude/notes && git status
@@ -197,6 +199,7 @@ git status            # Use commands directly if already in right place
 ```
 
 **Git in .claude/notes:**
+
 - `.claude/notes/` is a separate git repository (git-ignored in main repo)
 - Work directly from the notes directory or use git commands without cd
 - Changes stay local and private
@@ -204,18 +207,21 @@ git status            # Use commands directly if already in right place
 ### Git Workflow Best Practices
 
 **When to Create a Pull Request:**
+
 - Feature work (new functionality)
 - Bug fixes
 - Refactoring
 - Any code changes that should be reviewed by CI
 
 **When to Commit Directly to Main:**
+
 - Documentation updates (README, CONTRIBUTING, etc.)
 - `.claude/*` configuration changes (settings, commands)
 - Typo fixes in documentation
 - **NEVER**: Code changes, dependency updates, or breaking changes
 
 **Branch Workflow:**
+
 ```bash
 # Starting new work
 git checkout main
@@ -232,6 +238,7 @@ gh pr create --title "..." --body "..."
 ```
 
 **After PR is Merged:**
+
 ```bash
 git checkout main
 git pull origin main
@@ -240,6 +247,7 @@ git push origin --delete type/descriptive-name  # Delete remote if needed
 ```
 
 **Avoid Unnecessary Complexity:**
+
 - ❌ Don't use `git cherry-pick` unless truly needed (hotfixes, specific commits across branches)
 - ❌ Don't create branches for simple doc changes - commit directly to main
 - ❌ Don't commit on wrong branch then try to move changes - start over on correct branch
@@ -247,6 +255,7 @@ git push origin --delete type/descriptive-name  # Delete remote if needed
 - ✅ Check current branch with `git status` before making changes
 
 **Branch Naming Conventions:**
+
 - `feat/` - New features
 - `fix/` - Bug fixes
 - `chore/` - Maintenance tasks (tooling, deps, config)
@@ -254,6 +263,7 @@ git push origin --delete type/descriptive-name  # Delete remote if needed
 - `refactor/` - Code refactoring
 
 **Commit Message Format:**
+
 ```
 type: brief description (50 chars max)
 
