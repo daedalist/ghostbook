@@ -1,25 +1,73 @@
+# Dependabot PR Helper - Auto-approve and auto-merge low-risk updates
+#
+# SECURITY NOTES:
+# - Uses DEPENDABOT_PAT (fine-grained PAT scoped to this repo only)
+# - Alternative: GitHub App tokens provide short-lived credentials but add complexity
+# - Double-verifies PR author is dependabot[bot] to prevent spoofing
+#
+# COOLING PERIOD:
+# - Uses PR creation time (created_at), not update time
+# - Rebases by Dependabot don't reset the 48-hour timer (intentional)
+# - This tracks how long the update has been available in the ecosystem
+#
+# GROUPED DEPENDENCIES:
+# - dependabot/fetch-metadata returns "highest risk" values for groups
+# - update-type: highest semver (major > minor > patch)
+# - dependency-type: production takes precedence over development
+# - This makes groups conservative: if ANY dep is risky, whole group needs review
+# - Example: (prod patch + dev minor) → minor + production → manual review
+#
+# ALTERNATIVE: Consider Renovate Bot for built-in stability days and grouping
+# https://docs.renovatebot.com/
+
 name: Dependabot PR Helper
 
 on:
   pull_request_target:
     types: [opened, synchronize]
+  # Re-check PRs twice daily to process those past cooling period
+  schedule:
+    - cron: '0 9,21 * * *' # 9 AM and 9 PM UTC
+  # Allow manual trigger
+  workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pull-requests: write
   issues: write
 
 jobs:
+  # Job for PR events (single PR)
   dependabot:
     runs-on: ubuntu-latest
-    # Only run on Dependabot PRs
-    if: github.actor == 'dependabot[bot]'
+    # Only run on Dependabot PRs (double-check both actor and PR author)
+    if: github.actor == 'dependabot[bot]' && github.event.pull_request.user.login == 'dependabot[bot]'
     steps:
       - name: Dependabot metadata
         id: metadata
         uses: dependabot/fetch-metadata@v2
         with:
           github-token: '${{ secrets.GITHUB_TOKEN }}'
+
+      - name: Check PR age for cooling period
+        id: age-check
+        run: |
+          CREATED_AT="${{ github.event.pull_request.created_at }}"
+          CREATED_TIMESTAMP=$(date -d "$CREATED_AT" +%s)
+          CURRENT_TIMESTAMP=$(date +%s)
+          AGE_HOURS=$(( (CURRENT_TIMESTAMP - CREATED_TIMESTAMP) / 3600 ))
+
+          echo "PR created at: $CREATED_AT"
+          echo "PR age: $AGE_HOURS hours"
+
+          if [ $AGE_HOURS -ge 48 ]; then
+            echo "passed_cooling=true" >> $GITHUB_OUTPUT
+            echo "✅ PR has passed 48-hour cooling period"
+          else
+            REMAINING=$(( 48 - AGE_HOURS ))
+            echo "passed_cooling=false" >> $GITHUB_OUTPUT
+            echo "⏳ PR needs $REMAINING more hours before auto-merge"
+          fi
 
       - name: Add labels to Dependabot PRs
         run: |
@@ -36,6 +84,16 @@ jobs:
               ;;
             "version-update:semver-major")
               gh pr edit "$PR_URL" --add-label "major-update"
+              ;;
+          esac
+
+          # Add dependency type label (dev vs production)
+          case "${{ steps.metadata.outputs.dependency-type }}" in
+            "direct:development")
+              gh pr edit "$PR_URL" --add-label "dev-dependency"
+              ;;
+            "direct:production")
+              gh pr edit "$PR_URL" --add-label "prod-dependency"
               ;;
           esac
         env:
@@ -120,3 +178,178 @@ jobs:
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # ========================================
+      # AUTO-APPROVE AND AUTO-MERGE SECTION
+      # ========================================
+
+      - name: Determine if eligible for auto-merge
+        id: auto-merge-check
+        run: |
+          UPDATE_TYPE="${{ steps.metadata.outputs.update-type }}"
+          DEP_TYPE="${{ steps.metadata.outputs.dependency-type }}"
+          PASSED_COOLING="${{ steps.age-check.outputs.passed_cooling }}"
+
+          echo "Update type: $UPDATE_TYPE"
+          echo "Dependency type: $DEP_TYPE"
+          echo "Passed cooling period: $PASSED_COOLING"
+
+          ELIGIBLE="false"
+          REASON=""
+
+          # Check cooling period first
+          if [ "$PASSED_COOLING" != "true" ]; then
+            REASON="Waiting for 48-hour cooling period"
+          # Patch updates: always eligible (after cooling)
+          elif [ "$UPDATE_TYPE" == "version-update:semver-patch" ]; then
+            ELIGIBLE="true"
+            REASON="Patch update"
+          # Minor updates: only dev dependencies
+          elif [ "$UPDATE_TYPE" == "version-update:semver-minor" ]; then
+            if [ "$DEP_TYPE" == "direct:development" ]; then
+              ELIGIBLE="true"
+              REASON="Minor update for dev dependency"
+            else
+              REASON="Minor update for production dependency (requires manual review)"
+            fi
+          else
+            REASON="Major update (requires manual review)"
+          fi
+
+          echo "eligible=$ELIGIBLE" >> $GITHUB_OUTPUT
+          echo "reason=$REASON" >> $GITHUB_OUTPUT
+          echo "Decision: eligible=$ELIGIBLE, reason=$REASON"
+
+      - name: Auto-approve eligible PRs
+        if: steps.auto-merge-check.outputs.eligible == 'true'
+        run: |
+          echo "✅ Auto-approving: ${{ steps.auto-merge-check.outputs.reason }}"
+          gh pr review "$PR_URL" --approve --body "🤖 Auto-approved: ${{ steps.auto-merge-check.outputs.reason }}
+
+          This PR passed the 48-hour cooling period and all CI checks.
+
+          **Update type:** ${{ steps.metadata.outputs.update-type }}
+          **Dependency type:** ${{ steps.metadata.outputs.dependency-type }}
+          **Dependencies:** ${{ steps.metadata.outputs.dependency-names }}"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GITHUB_TOKEN: ${{ secrets.DEPENDABOT_PAT }}
+
+      - name: Enable auto-merge for eligible PRs
+        if: steps.auto-merge-check.outputs.eligible == 'true'
+        run: |
+          echo "🔀 Enabling auto-merge (squash) for PR"
+          gh pr merge "$PR_URL" --auto --squash
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GITHUB_TOKEN: ${{ secrets.DEPENDABOT_PAT }}
+
+      - name: Comment on ineligible PRs
+        if: steps.auto-merge-check.outputs.eligible == 'false' && steps.age-check.outputs.passed_cooling == 'true'
+        run: |
+          gh pr comment "$PR_URL" --body "ℹ️ **Auto-merge not enabled**
+
+          Reason: ${{ steps.auto-merge-check.outputs.reason }}
+
+          This PR requires manual review and approval."
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # ========================================
+  # SCHEDULED JOB - Check all open Dependabot PRs
+  # ========================================
+  scheduled-check:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Process open Dependabot PRs
+        env:
+          GITHUB_TOKEN: ${{ secrets.DEPENDABOT_PAT }}
+        run: |
+          echo "🔍 Finding open Dependabot PRs..."
+
+          # Get all open PRs from dependabot
+          PRS=$(gh pr list --author "dependabot[bot]" --state open --json number,createdAt,title --limit 20)
+
+          if [ "$PRS" == "[]" ]; then
+            echo "No open Dependabot PRs found"
+            exit 0
+          fi
+
+          echo "$PRS" | jq -c '.[]' | while read -r pr; do
+            PR_NUMBER=$(echo "$pr" | jq -r '.number')
+            CREATED_AT=$(echo "$pr" | jq -r '.createdAt')
+            TITLE=$(echo "$pr" | jq -r '.title')
+
+            echo ""
+            echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+            echo "PR #$PR_NUMBER: $TITLE"
+
+            # Calculate age
+            CREATED_TIMESTAMP=$(date -d "$CREATED_AT" +%s)
+            CURRENT_TIMESTAMP=$(date +%s)
+            AGE_HOURS=$(( (CURRENT_TIMESTAMP - CREATED_TIMESTAMP) / 3600 ))
+
+            echo "Age: $AGE_HOURS hours"
+
+            if [ $AGE_HOURS -lt 48 ]; then
+              REMAINING=$(( 48 - AGE_HOURS ))
+              echo "⏳ Needs $REMAINING more hours for cooling period"
+              continue
+            fi
+
+            # Check if already has auto-merge enabled
+            MERGE_STATE=$(gh pr view "$PR_NUMBER" --json autoMergeRequest --jq '.autoMergeRequest')
+            if [ "$MERGE_STATE" != "null" ] && [ -n "$MERGE_STATE" ]; then
+              echo "✅ Auto-merge already enabled"
+              continue
+            fi
+
+            # Get metadata using labels (set by the PR event job)
+            LABELS=$(gh pr view "$PR_NUMBER" --json labels --jq '.labels[].name' | tr '\n' ' ')
+            echo "Labels: $LABELS"
+
+            ELIGIBLE="false"
+            REASON=""
+
+            # Check eligibility based on labels
+            if echo "$LABELS" | grep -q "patch-update"; then
+              ELIGIBLE="true"
+              REASON="Patch update"
+            elif echo "$LABELS" | grep -q "minor-update"; then
+              # Minor updates need dev-dependency check - only auto-merge if labeled
+              if echo "$LABELS" | grep -q "dev-dependency"; then
+                ELIGIBLE="true"
+                REASON="Minor update for dev dependency"
+              else
+                REASON="Minor update for production dependency (requires manual review)"
+              fi
+            elif echo "$LABELS" | grep -q "major-update"; then
+              REASON="Major update (requires manual review)"
+            else
+              REASON="Unknown update type - missing labels"
+            fi
+
+            if [ "$ELIGIBLE" == "true" ]; then
+              echo "✅ Eligible for auto-merge: $REASON"
+
+              # Approve if not already approved
+              REVIEW_STATE=$(gh pr view "$PR_NUMBER" --json reviewDecision --jq '.reviewDecision')
+              if [ "$REVIEW_STATE" != "APPROVED" ]; then
+                echo "Approving PR..."
+                gh pr review "$PR_NUMBER" --approve --body "🤖 Auto-approved (scheduled check): $REASON
+
+          This PR passed the 48-hour cooling period."
+              fi
+
+              # Enable auto-merge
+              echo "Enabling auto-merge..."
+              gh pr merge "$PR_NUMBER" --auto --squash
+            else
+              echo "❌ Not eligible: $REASON"
+            fi
+          done

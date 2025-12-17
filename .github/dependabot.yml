@@ -1,29 +1,108 @@
-# To get started with Dependabot version updates, you'll need to specify which
-# package ecosystems to update and where the package manifests are located.
-# Please see the documentation for all configuration options:
-# https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
+# Dependabot configuration
+# Docs: https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
 
 version: 2
 updates:
-  # Enable version updates for npm
   - package-ecosystem: 'npm'
-    # Look for `package.json` and `lock` files in the `root` directory
     directory: '/'
-    # Check for updates once a week
     schedule:
       interval: 'weekly'
       day: 'monday'
       time: '09:00'
-    # Allow both development and production dependencies
-    open-pull-requests-limit: 5
-    # Add reviewers (optional - add your GitHub username)
+    open-pull-requests-limit: 10
     reviewers:
       - 'daedalist'
-    # Add labels to PRs
     labels:
       - 'dependencies'
       - 'npm'
-    # Commit message prefix
     commit-message:
       prefix: 'chore'
       include: 'scope'
+
+    # ========================================
+    # GROUPING - Reduce PR noise
+    # ========================================
+    # NOTE: Groups are explicitly scoped to dev dependencies to avoid
+    # mixing dev and prod deps, which would make the whole group
+    # require manual review (fetch-metadata returns "highest risk" type)
+    groups:
+      # Group all TypeScript type definitions together
+      typescript-types:
+        dependency-type: 'development'
+        patterns:
+          - '@types/*'
+        update-types:
+          - 'minor'
+          - 'patch'
+
+      # Group ESLint and related tooling
+      eslint:
+        dependency-type: 'development'
+        patterns:
+          - 'eslint*'
+          - '@eslint/*'
+          - 'typescript-eslint'
+          - '@typescript-eslint/*'
+        update-types:
+          - 'minor'
+          - 'patch'
+
+      # Group testing tools
+      testing:
+        dependency-type: 'development'
+        patterns:
+          - 'jest*'
+          - '@jest/*'
+          - '@testing-library/*'
+        update-types:
+          - 'minor'
+          - 'patch'
+
+      # Group Prettier and formatting
+      formatting:
+        dependency-type: 'development'
+        patterns:
+          - 'prettier*'
+          - 'eslint-config-prettier'
+          - 'eslint-plugin-prettier'
+        update-types:
+          - 'minor'
+          - 'patch'
+
+      # Group remaining dev dependency patches
+      dev-patches:
+        dependency-type: 'development'
+        update-types:
+          - 'patch'
+        exclude-patterns:
+          - '@types/*'
+          - 'eslint*'
+          - 'prettier*'
+          - 'jest*'
+          - 'typescript-eslint'
+
+      # Production patches get their own group (auto-merged after cooling)
+      prod-patches:
+        dependency-type: 'production'
+        update-types:
+          - 'patch'
+
+    # ========================================
+    # EXCLUSIONS - Risky packages requiring manual review
+    # ========================================
+    ignore:
+      # Major framework updates - always review manually
+      - dependency-name: 'next'
+        update-types: ['version-update:semver-major']
+      - dependency-name: 'react'
+        update-types: ['version-update:semver-major']
+      - dependency-name: 'react-dom'
+        update-types: ['version-update:semver-major']
+
+      # TypeScript major versions can have breaking changes
+      - dependency-name: 'typescript'
+        update-types: ['version-update:semver-major']
+
+      # Node.js types should match your Node version
+      - dependency-name: '@types/node'
+        update-types: ['version-update:semver-major']
