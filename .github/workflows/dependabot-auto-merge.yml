@@ -1,3 +1,25 @@
+# Dependabot PR Helper - Auto-approve and auto-merge low-risk updates
+#
+# SECURITY NOTES:
+# - Uses DEPENDABOT_PAT (fine-grained PAT scoped to this repo only)
+# - Alternative: GitHub App tokens provide short-lived credentials but add complexity
+# - Double-verifies PR author is dependabot[bot] to prevent spoofing
+#
+# COOLING PERIOD:
+# - Uses PR creation time (created_at), not update time
+# - Rebases by Dependabot don't reset the 48-hour timer (intentional)
+# - This tracks how long the update has been available in the ecosystem
+#
+# GROUPED DEPENDENCIES:
+# - dependabot/fetch-metadata returns "highest risk" values for groups
+# - update-type: highest semver (major > minor > patch)
+# - dependency-type: production takes precedence over development
+# - This makes groups conservative: if ANY dep is risky, whole group needs review
+# - Example: (prod patch + dev minor) → minor + production → manual review
+#
+# ALTERNATIVE: Consider Renovate Bot for built-in stability days and grouping
+# https://docs.renovatebot.com/
+
 name: Dependabot PR Helper
 
 on:
