@@ -5,7 +5,7 @@ on:
     types: [opened, synchronize]
   # Re-check PRs twice daily to process those past cooling period
   schedule:
-    - cron: '0 9,21 * * *'  # 9 AM and 9 PM UTC
+    - cron: '0 9,21 * * *' # 9 AM and 9 PM UTC
   # Allow manual trigger
   workflow_dispatch:
 
