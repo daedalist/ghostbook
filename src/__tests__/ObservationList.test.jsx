@@ -93,7 +93,7 @@ describe('ObservationList component', () => {
     const observed = makeObservedEvidence({
       'Ghost orb': evidenceState.SELECTED,
       'Spirit box': evidenceState.RULED_OUT,
-      'Fingerprints': evidenceState.DISABLED,
+      Fingerprints: evidenceState.DISABLED,
     });
 
     render(
@@ -104,12 +104,8 @@ describe('ObservationList component', () => {
       />
     );
 
-    expect(screen.getByText('Ghost orb')).toHaveClass(
-      evidenceState.SELECTED
-    );
-    expect(screen.getByText('Spirit box')).toHaveClass(
-      evidenceState.RULED_OUT
-    );
+    expect(screen.getByText('Ghost orb')).toHaveClass(evidenceState.SELECTED);
+    expect(screen.getByText('Spirit box')).toHaveClass(evidenceState.RULED_OUT);
     expect(screen.getByText('Fingerprints')).toHaveClass(
       evidenceState.DISABLED
     );

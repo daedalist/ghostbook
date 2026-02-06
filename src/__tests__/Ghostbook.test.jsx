@@ -39,10 +39,7 @@ function getVisibleGhostNames() {
 function expectedGhostsForEvidence(selected = [], ruledOut = []) {
   return ghostNames.filter((name) => {
     const data = ghost_data_map[0][name];
-    const allEvidence = [
-      ...data.evidence_list,
-      ...data.fake_evidence_list,
-    ];
+    const allEvidence = [...data.evidence_list, ...data.fake_evidence_list];
     const matchesSelected = selected.every((e) => allEvidence.includes(e));
     const matchesRuledOut = ruledOut.every((e) => !allEvidence.includes(e));
     return matchesSelected && matchesRuledOut;
@@ -53,9 +50,7 @@ describe('Ghostbook integration', () => {
   describe('initial state', () => {
     it('renders the app title', () => {
       render(<Ghostbook />);
-      expect(
-        screen.getByText('Phasmophobia Ghostbook')
-      ).toBeInTheDocument();
+      expect(screen.getByText('Phasmophobia Ghostbook')).toBeInTheDocument();
     });
 
     it('renders all seven evidence buttons', () => {
@@ -104,10 +99,7 @@ describe('Ghostbook integration', () => {
 
       expect(afterSecond.length).toBeLessThan(afterFirst.length);
 
-      const expected = expectedGhostsForEvidence([
-        'Fingerprints',
-        'Ghost orb',
-      ]);
+      const expected = expectedGhostsForEvidence(['Fingerprints', 'Ghost orb']);
       expect(afterSecond.sort()).toEqual(expected.sort());
     });
 
