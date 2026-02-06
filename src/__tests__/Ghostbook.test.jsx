@@ -8,6 +8,21 @@ import ghost_data_map from '../lib/ghost_data_map.json';
 const ghostNames = Object.keys(ghost_data_map[0]);
 
 /**
+ * Helper: return the observations section so evidence-button queries
+ * are scoped and won't collide with ghost-card evidence lists.
+ */
+function getObservations() {
+  return within(document.querySelector('.observations'));
+}
+
+/**
+ * Helper: click an evidence button by name (scoped to the observations panel).
+ */
+async function clickEvidence(user, name) {
+  await user.click(getObservations().getByText(name));
+}
+
+/**
  * Helper: find all ghost cards currently shown in the candidate list.
  * Each ghost card has className "ghost" and contains a "ghostName" div.
  */
@@ -45,8 +60,9 @@ describe('Ghostbook integration', () => {
 
     it('renders all seven evidence buttons', () => {
       render(<Ghostbook />);
+      const obs = getObservations();
       Object.values(evidence).forEach((name) => {
-        expect(screen.getByText(name)).toBeInTheDocument();
+        expect(obs.getByText(name)).toBeInTheDocument();
       });
     });
 
@@ -68,7 +84,7 @@ describe('Ghostbook integration', () => {
       const user = userEvent.setup();
       render(<Ghostbook />);
 
-      await user.click(screen.getByText('Fingerprints'));
+      await clickEvidence(user, 'Fingerprints');
 
       const visible = getVisibleGhostNames();
       const expected = expectedGhostsForEvidence(['Fingerprints']);
@@ -80,10 +96,10 @@ describe('Ghostbook integration', () => {
       const user = userEvent.setup();
       render(<Ghostbook />);
 
-      await user.click(screen.getByText('Fingerprints'));
+      await clickEvidence(user, 'Fingerprints');
       const afterFirst = getVisibleGhostNames();
 
-      await user.click(screen.getByText('Ghost orb'));
+      await clickEvidence(user, 'Ghost orb');
       const afterSecond = getVisibleGhostNames();
 
       expect(afterSecond.length).toBeLessThan(afterFirst.length);
@@ -100,9 +116,9 @@ describe('Ghostbook integration', () => {
       const user = userEvent.setup();
       render(<Ghostbook />);
 
-      await user.click(screen.getByText('Fingerprints'));
-      await user.click(screen.getByText('Ghost orb'));
-      await user.click(screen.getByText('D.O.T.S projector'));
+      await clickEvidence(user, 'Fingerprints');
+      await clickEvidence(user, 'Ghost orb');
+      await clickEvidence(user, 'D.O.T.S projector');
 
       const visible = getVisibleGhostNames();
       expect(visible).toContain('Banshee');
@@ -114,7 +130,7 @@ describe('Ghostbook integration', () => {
       const user = userEvent.setup();
       render(<Ghostbook />);
 
-      const button = screen.getByText('Ghost orb');
+      const button = getObservations().getByText('Ghost orb');
 
       // First click: NOT_SELECTED → SELECTED
       await user.click(button);
@@ -134,12 +150,12 @@ describe('Ghostbook integration', () => {
       render(<Ghostbook />);
 
       // Select Fingerprints to show some ghosts
-      await user.click(screen.getByText('Fingerprints'));
+      await clickEvidence(user, 'Fingerprints');
       const beforeRuleOut = getVisibleGhostNames();
 
       // Rule out Ghost orb (click twice: select then rule out)
-      await user.click(screen.getByText('Ghost orb'));
-      await user.click(screen.getByText('Ghost orb'));
+      await clickEvidence(user, 'Ghost orb');
+      await clickEvidence(user, 'Ghost orb');
 
       const afterRuleOut = getVisibleGhostNames();
 
@@ -166,8 +182,8 @@ describe('Ghostbook integration', () => {
       render(<Ghostbook />);
 
       // Select some evidence
-      await user.click(screen.getByText('Fingerprints'));
-      await user.click(screen.getByText('Ghost orb'));
+      await clickEvidence(user, 'Fingerprints');
+      await clickEvidence(user, 'Ghost orb');
 
       // Verify ghosts are shown (not the initial "no match" message)
       expect(getVisibleGhostNames().length).toBeGreaterThan(0);
@@ -185,13 +201,14 @@ describe('Ghostbook integration', () => {
       const user = userEvent.setup();
       render(<Ghostbook />);
 
-      await user.click(screen.getByText('Fingerprints'));
-      await user.click(screen.getByText('Ghost orb'));
+      await clickEvidence(user, 'Fingerprints');
+      await clickEvidence(user, 'Ghost orb');
 
       await user.click(screen.getByText('Reset'));
 
+      const obs = getObservations();
       Object.values(evidence).forEach((name) => {
-        expect(screen.getByText(name)).toHaveClass('evidenceNotSelected');
+        expect(obs.getByText(name)).toHaveClass('evidenceNotSelected');
       });
     });
   });
@@ -203,19 +220,19 @@ describe('Ghostbook integration', () => {
 
       // Select all three Banshee evidence types:
       // Fingerprints, Ghost orb, D.O.T.S projector
-      await user.click(screen.getByText('Fingerprints'));
-      await user.click(screen.getByText('Ghost orb'));
-      await user.click(screen.getByText('D.O.T.S projector'));
+      await clickEvidence(user, 'Fingerprints');
+      await clickEvidence(user, 'Ghost orb');
+      await clickEvidence(user, 'D.O.T.S projector');
 
       // Banshee doesn't have Spirit box, EMF Level 5,
       // Freezing temperatures, or Ghost writing.
       // These should be disabled if Banshee is the only match.
       const visible = getVisibleGhostNames();
       if (visible.length === 1 && visible[0] === 'Banshee') {
-        // Evidence not in Banshee's list should be disabled
+        const obs = getObservations();
         const bansheeEvidence = ghost_data_map[0]['Banshee'].evidence_list;
         Object.values(evidence).forEach((name) => {
-          const button = screen.getByText(name);
+          const button = obs.getByText(name);
           if (!bansheeEvidence.includes(name)) {
             expect(button).toHaveClass('evidenceDisabled');
           }
@@ -228,16 +245,17 @@ describe('Ghostbook integration', () => {
       render(<Ghostbook />);
 
       // Narrow down to Banshee
-      await user.click(screen.getByText('Fingerprints'));
-      await user.click(screen.getByText('Ghost orb'));
-      await user.click(screen.getByText('D.O.T.S projector'));
+      await clickEvidence(user, 'Fingerprints');
+      await clickEvidence(user, 'Ghost orb');
+      await clickEvidence(user, 'D.O.T.S projector');
 
       // Now reset
       await user.click(screen.getByText('Reset'));
 
       // All evidence should be back to NOT_SELECTED (not disabled)
+      const obs = getObservations();
       Object.values(evidence).forEach((name) => {
-        expect(screen.getByText(name)).toHaveClass('evidenceNotSelected');
+        expect(obs.getByText(name)).toHaveClass('evidenceNotSelected');
       });
     });
   });
@@ -250,7 +268,7 @@ describe('Ghostbook integration', () => {
       // The Mimic has primary: Spirit box, Fingerprints, Freezing temps
       // and fake: Ghost orb
       // Selecting Ghost orb should still show The Mimic
-      await user.click(screen.getByText('Ghost orb'));
+      await clickEvidence(user, 'Ghost orb');
       const visible = getVisibleGhostNames();
       expect(visible).toContain('The Mimic');
     });
@@ -259,33 +277,23 @@ describe('Ghostbook integration', () => {
       const user = userEvent.setup();
       render(<Ghostbook />);
 
-      // Select evidence + rule out evidence that creates an impossible combo.
       // Select Fingerprints, then rule out every other evidence.
-      await user.click(screen.getByText('Fingerprints'));
+      await clickEvidence(user, 'Fingerprints');
 
-      // Rule out Ghost orb
-      await user.click(screen.getByText('Ghost orb'));
-      await user.click(screen.getByText('Ghost orb'));
+      // Rule out each remaining evidence (click twice: select then rule out)
+      const toRuleOut = [
+        'Ghost orb',
+        'Spirit box',
+        'EMF Level 5',
+        'Freezing temperatures',
+        'Ghost writing',
+        'D.O.T.S projector',
+      ];
 
-      // Rule out Spirit box
-      await user.click(screen.getByText('Spirit box'));
-      await user.click(screen.getByText('Spirit box'));
-
-      // Rule out EMF Level 5
-      await user.click(screen.getByText('EMF Level 5'));
-      await user.click(screen.getByText('EMF Level 5'));
-
-      // Rule out Freezing temperatures
-      await user.click(screen.getByText('Freezing temperatures'));
-      await user.click(screen.getByText('Freezing temperatures'));
-
-      // Rule out Ghost writing
-      await user.click(screen.getByText('Ghost writing'));
-      await user.click(screen.getByText('Ghost writing'));
-
-      // Rule out D.O.T.S projector
-      await user.click(screen.getByText('D.O.T.S projector'));
-      await user.click(screen.getByText('D.O.T.S projector'));
+      for (const name of toRuleOut) {
+        await clickEvidence(user, name);
+        await clickEvidence(user, name);
+      }
 
       // No ghost can have only Fingerprints and nothing else
       expect(
