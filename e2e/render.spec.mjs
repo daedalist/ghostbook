@@ -39,9 +39,7 @@ test.describe('page rendering after deployment', () => {
     }
   });
 
-  test('evidence buttons start in the not-selected state', async ({
-    page,
-  }) => {
+  test('evidence buttons start in the not-selected state', async ({ page }) => {
     await page.locator('[data-testid="evidence-button"]').first().waitFor();
     const buttons = page.locator('[data-testid="evidence-button"]');
     const count = await buttons.count();
@@ -64,9 +62,7 @@ test.describe('page rendering after deployment', () => {
     await expect(section.locator('h1')).toContainText('Possible ghosts');
   });
 
-  test('initial state shows "No ghosts match" message', async ({
-    page,
-  }) => {
+  test('initial state shows "No ghosts match" message', async ({ page }) => {
     const message = page.locator('.candidateList');
     await expect(message).toContainText(
       'No ghosts match the selected evidence'
