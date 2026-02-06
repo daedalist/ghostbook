@@ -207,6 +207,43 @@ jobs:
           kill $SERVER_PID 2>/dev/null || true
           wait $SERVER_PID 2>/dev/null || true
 
+  # E2E render tests (verify page renders correctly after deployment)
+  e2e-render:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-output
+          path: ./build
+
+      - name: Run E2E render tests
+        run: npm run test:e2e -- --grep "page rendering"
+
+      - name: Upload test results
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-render-results
+          path: test-results/
+          retention-days: 3
+
   # Security audit
   security:
     runs-on: ubuntu-latest
@@ -232,7 +269,7 @@ jobs:
   # All checks must pass
   all-checks:
     runs-on: ubuntu-latest
-    needs: [format, type-check, lint, test, build, test-deployment, security]
+    needs: [format, type-check, lint, test, build, test-deployment, e2e-render, security]
     if: always()
     steps:
       - name: Check all jobs
@@ -259,6 +296,10 @@ jobs:
           fi
           if [[ "${{ needs.test-deployment.result }}" != "success" ]]; then
             echo "❌ Deployment test failed"
+            exit 1
+          fi
+          if [[ "${{ needs.e2e-render.result }}" != "success" ]]; then
+            echo "❌ E2E render tests failed"
             exit 1
           fi
           if [[ "${{ needs.security.result }}" != "success" ]]; then
