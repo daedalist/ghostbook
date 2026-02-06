@@ -12,11 +12,10 @@ export default defineConfig({
     screenshot: 'only-on-failure',
   },
   webServer: {
-    command:
-      'npx --yes serve@latest ./build -l 3000 --no-clipboard',
-    port: 3000,
+    command: 'npm run start',
+    url: 'http://localhost:3000/ghostbook/',
     reuseExistingServer: !process.env.CI,
-    timeout: 30_000,
+    timeout: 120 * 1000,
   },
   projects: [
     {

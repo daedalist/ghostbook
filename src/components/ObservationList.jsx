@@ -14,7 +14,11 @@ function ResetButton(props) {
 function EvidenceButton(props) {
   const classNames = 'evidenceButton button ' + props.state;
   return (
-    <li className={classNames} onClick={props.onClick}>
+    <li
+      className={classNames}
+      onClick={props.onClick}
+      data-testid="evidence-button"
+    >
       {props.name}
     </li>
   );

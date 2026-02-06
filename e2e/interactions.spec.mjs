@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('user interactions after deployment', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/ghostbook/');
   });
 
   test.describe('evidence button cycling', () => {
