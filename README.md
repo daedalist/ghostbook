@@ -54,9 +54,17 @@ Built with Next.js and deployed as a static site.
 - `npm run build` - Build the app for production
 - `npm start` - Build and serve the production version locally
 
-### Testing & Deployment
+### Testing
 
+- `npm test` - Run the unit test suite once
+- `npm run test:watch` - Run tests in watch mode during development
 - `npm run test:github-pages` - Test the app as it will appear on GitHub Pages
+
+### Code Quality
+
+- `npm run lint` - Run ESLint
+- `npm run format:check` - Check Prettier formatting
+- `npm run type-check` - Run TypeScript type checking
 - `npm run clean` - Remove build artifacts and test files
 
 ## How to Use
@@ -131,6 +139,22 @@ Ghosts are scored based on evidence:
 - +10 points for each matching primary evidence
 - +5 points for each matching fake evidence
 - -10 points (elimination) for contradictory evidence
+
+## Testing
+
+Unit tests are written with [Vitest](https://vitest.dev/) and [Testing Library](https://testing-library.com/). Run them with:
+
+```bash
+npm test
+```
+
+The test suite covers three areas:
+
+- **Data integrity** — validates evidence constants, evidence state values, and the ghost data map (correct evidence counts, no overlaps between primary and fake evidence, all entries reference valid evidence names).
+- **Component rendering** — verifies that Header, Ghost, ObservationList, and CandidateList render the expected elements, apply the correct CSS classes for each evidence state, and call the right callbacks on click.
+- **User journeys** — exercises the full Ghostbook component: selecting evidence and verifying ghost filtering, cycling evidence through all states, ruling out evidence to eliminate ghosts, resetting to the initial state, evidence auto-disabling when only one candidate remains, and The Mimic's fake-evidence scoring.
+
+Tests run in a jsdom environment so they don't need a browser. During development, `npm run test:watch` re-runs affected tests on file save.
 
 ## Deployment
 
