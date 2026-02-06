@@ -68,7 +68,7 @@ jobs:
       - name: Run ESLint
         run: npm run lint
 
-  # Run tests (if you have any)
+  # Run unit tests
   test:
     runs-on: ubuntu-latest
     steps:
@@ -84,13 +84,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # Uncomment when you have tests
-      # - name: Run tests
-      #   run: npm test -- --coverage --watchAll=false
-
-      # For now, just validate that test dependencies work
-      - name: Validate test setup
-        run: echo "Test setup validated - no tests currently defined"
+      - name: Run unit tests
+        run: npm test
 
   # Build the application
   build:
@@ -237,7 +232,7 @@ jobs:
   # All checks must pass
   all-checks:
     runs-on: ubuntu-latest
-    needs: [format, type-check, lint, build, test-deployment, security]
+    needs: [format, type-check, lint, test, build, test-deployment, security]
     if: always()
     steps:
       - name: Check all jobs
@@ -252,6 +247,10 @@ jobs:
           fi
           if [[ "${{ needs.lint.result }}" != "success" ]]; then
             echo "❌ Linting failed"
+            exit 1
+          fi
+          if [[ "${{ needs.test.result }}" != "success" ]]; then
+            echo "❌ Unit tests failed"
             exit 1
           fi
           if [[ "${{ needs.build.result }}" != "success" ]]; then
