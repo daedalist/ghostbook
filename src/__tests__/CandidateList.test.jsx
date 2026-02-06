@@ -4,7 +4,6 @@ import CandidateList from '../components/CandidateList';
 import ghost_data_map from '../lib/ghost_data_map.json';
 
 const ghostNames = Object.keys(ghost_data_map[0]);
-const totalGhostCount = ghostNames.length;
 
 function makeScores(overrides = {}) {
   const scores = new Map();
