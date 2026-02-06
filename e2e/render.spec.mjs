@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('page rendering after deployment', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/ghostbook/');
   });
 
   test('page loads with the correct title', async ({ page }) => {
@@ -42,7 +42,8 @@ test.describe('page rendering after deployment', () => {
   test('evidence buttons start in the not-selected state', async ({
     page,
   }) => {
-    const buttons = page.locator('.evidenceButton');
+    await page.locator('[data-testid="evidence-button"]').first().waitFor();
+    const buttons = page.locator('[data-testid="evidence-button"]');
     const count = await buttons.count();
     expect(count).toBe(7);
 

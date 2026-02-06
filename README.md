@@ -142,6 +142,8 @@ Ghosts are scored based on evidence:
 
 ## Testing
 
+### Unit Tests
+
 Unit tests are written with [Vitest](https://vitest.dev/) and [Testing Library](https://testing-library.com/). Run them with:
 
 ```bash
@@ -155,6 +157,23 @@ The test suite covers three areas:
 - **User journeys** — exercises the full Ghostbook component: selecting evidence and verifying ghost filtering, cycling evidence through all states, ruling out evidence to eliminate ghosts, resetting to the initial state, evidence auto-disabling when only one candidate remains, and The Mimic's fake-evidence scoring.
 
 Tests run in a jsdom environment so they don't need a browser. During development, `npm run test:watch` re-runs affected tests on file save.
+
+### End-to-End (E2E) Tests
+
+E2E tests are written with [Playwright](https://playwright.dev/) and verify the functionality of the deployed application in a real browser.
+
+To run the E2E tests:
+
+```bash
+npm run test:e2e
+```
+
+The E2E test suite covers two main areas:
+
+-   **Page Rendering**: Ensures that all UI elements, such as the header, evidence buttons, and candidate list, render correctly on page load.
+-   **User Interactions**: Simulates user behavior, such as clicking evidence buttons, filtering ghosts, and using the reset button, to verify that the application's features work as expected.
+
+Playwright is configured to automatically start the application server, run the tests, and then shut down the server.
 
 ## Deployment
 
