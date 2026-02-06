@@ -26,5 +26,7 @@ next-env.d.ts
 .vscode/
 .idea/
 
-# Test coverage
+# Test coverage and results
 coverage/
+test-results/
+playwright-report/
