@@ -170,8 +170,8 @@ npm run test:e2e
 
 The E2E test suite covers two main areas:
 
--   **Page Rendering**: Ensures that all UI elements, such as the header, evidence buttons, and candidate list, render correctly on page load.
--   **User Interactions**: Simulates user behavior, such as clicking evidence buttons, filtering ghosts, and using the reset button, to verify that the application's features work as expected.
+- **Page Rendering**: Ensures that all UI elements, such as the header, evidence buttons, and candidate list, render correctly on page load.
+- **User Interactions**: Simulates user behavior, such as clicking evidence buttons, filtering ghosts, and using the reset button, to verify that the application's features work as expected.
 
 Playwright is configured to automatically start the application server, run the tests, and then shut down the server.
 

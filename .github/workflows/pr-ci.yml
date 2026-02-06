@@ -306,7 +306,18 @@ jobs:
   # All checks must pass
   all-checks:
     runs-on: ubuntu-latest
-    needs: [format, type-check, lint, test, build, test-deployment, e2e-render, e2e-interactions, security]
+    needs:
+      [
+        format,
+        type-check,
+        lint,
+        test,
+        build,
+        test-deployment,
+        e2e-render,
+        e2e-interactions,
+        security,
+      ]
     if: always()
     steps:
       - name: Check all jobs
