@@ -10,7 +10,7 @@
     "nth-check": "^3.0.1",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
-    "web-vitals": "^5.1.0"
+    "web-vitals": "^5.2.0"
   },
   "scripts": {
     "build": "next build",
