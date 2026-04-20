@@ -4,7 +4,7 @@
   "private": true,
   "homepage": ".",
   "dependencies": {
-    "follow-redirects": "^1.15.11",
+    "follow-redirects": "^1.16.0",
     "next": "^16.2.3",
     "node-forge": "^1.3.3",
     "nth-check": "^3.0.1",
