@@ -106,9 +106,7 @@ describe('ObservationList component', () => {
 
     expect(screen.getByText('Ghost orb')).toHaveClass(evidenceState.SELECTED);
     expect(screen.getByText('Spirit box')).toHaveClass(evidenceState.RULED_OUT);
-    expect(screen.getByText('Ultraviolet')).toHaveClass(
-      evidenceState.DISABLED
-    );
+    expect(screen.getByText('Ultraviolet')).toHaveClass(evidenceState.DISABLED);
     expect(screen.getByText('EMF Level 5')).toHaveClass(
       evidenceState.NOT_SELECTED
     );
