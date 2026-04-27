@@ -11,7 +11,7 @@ describe('evidence constants', () => {
     const expectedNames = [
       'Ghost orb',
       'Spirit box',
-      'Fingerprints',
+      'Ultraviolet',
       'EMF Level 5',
       'Freezing temperatures',
       'Ghost writing',

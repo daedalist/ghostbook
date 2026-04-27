@@ -1,7 +1,7 @@
 const evidence = {
   GHOST_ORB: 'Ghost orb',
   SPIRIT_BOX: 'Spirit box',
-  FINGERPRINTS: 'Fingerprints',
+  ULTRAVIOLET: 'Ultraviolet',
   EMF_5: 'EMF Level 5',
   FREEZING: 'Freezing temperatures',
   GHOST_WRITING: 'Ghost writing',

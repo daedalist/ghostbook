@@ -87,10 +87,10 @@ describe('Ghostbook integration', () => {
       const user = userEvent.setup();
       render(<Ghostbook />);
 
-      await clickEvidence(user, 'Fingerprints');
+      await clickEvidence(user, 'Ultraviolet');
 
       const visible = getVisibleGhostNames();
-      const expected = expectedGhostsForEvidence(['Fingerprints']);
+      const expected = expectedGhostsForEvidence(['Ultraviolet']);
       expect(visible.sort()).toEqual(expected.sort());
       expect(visible.length).toBeGreaterThan(0);
     });
@@ -99,7 +99,7 @@ describe('Ghostbook integration', () => {
       const user = userEvent.setup();
       render(<Ghostbook />);
 
-      await clickEvidence(user, 'Fingerprints');
+      await clickEvidence(user, 'Ultraviolet');
       const afterFirst = getVisibleGhostNames();
 
       await clickEvidence(user, 'Ghost orb');
@@ -107,16 +107,16 @@ describe('Ghostbook integration', () => {
 
       expect(afterSecond.length).toBeLessThan(afterFirst.length);
 
-      const expected = expectedGhostsForEvidence(['Fingerprints', 'Ghost orb']);
+      const expected = expectedGhostsForEvidence(['Ultraviolet', 'Ghost orb']);
       expect(afterSecond.sort()).toEqual(expected.sort());
     });
 
     it('shows exactly one ghost when three unique evidence types are selected', async () => {
-      // Banshee: Fingerprints, Ghost orb, D.O.T.S projector
+      // Banshee: Ultraviolet, Ghost orb, D.O.T.S projector
       const user = userEvent.setup();
       render(<Ghostbook />);
 
-      await clickEvidence(user, 'Fingerprints');
+      await clickEvidence(user, 'Ultraviolet');
       await clickEvidence(user, 'Ghost orb');
       await clickEvidence(user, 'D.O.T.S projector');
 
@@ -149,8 +149,8 @@ describe('Ghostbook integration', () => {
       const user = userEvent.setup();
       render(<Ghostbook />);
 
-      // Select Fingerprints to show some ghosts
-      await clickEvidence(user, 'Fingerprints');
+      // Select Ultraviolet to show some ghosts
+      await clickEvidence(user, 'Ultraviolet');
       const beforeRuleOut = getVisibleGhostNames();
 
       // Rule out Ghost orb (click twice: select then rule out)
@@ -182,7 +182,7 @@ describe('Ghostbook integration', () => {
       render(<Ghostbook />);
 
       // Select some evidence
-      await clickEvidence(user, 'Fingerprints');
+      await clickEvidence(user, 'Ultraviolet');
       await clickEvidence(user, 'Ghost orb');
 
       // Verify ghosts are shown (not the initial "no match" message)
@@ -201,7 +201,7 @@ describe('Ghostbook integration', () => {
       const user = userEvent.setup();
       render(<Ghostbook />);
 
-      await clickEvidence(user, 'Fingerprints');
+      await clickEvidence(user, 'Ultraviolet');
       await clickEvidence(user, 'Ghost orb');
 
       await user.click(screen.getByText('Reset'));
@@ -219,8 +219,8 @@ describe('Ghostbook integration', () => {
       render(<Ghostbook />);
 
       // Select all three Banshee evidence types:
-      // Fingerprints, Ghost orb, D.O.T.S projector
-      await clickEvidence(user, 'Fingerprints');
+      // Ultraviolet, Ghost orb, D.O.T.S projector
+      await clickEvidence(user, 'Ultraviolet');
       await clickEvidence(user, 'Ghost orb');
       await clickEvidence(user, 'D.O.T.S projector');
 
@@ -245,7 +245,7 @@ describe('Ghostbook integration', () => {
       render(<Ghostbook />);
 
       // Narrow down to Banshee
-      await clickEvidence(user, 'Fingerprints');
+      await clickEvidence(user, 'Ultraviolet');
       await clickEvidence(user, 'Ghost orb');
       await clickEvidence(user, 'D.O.T.S projector');
 
@@ -265,7 +265,7 @@ describe('Ghostbook integration', () => {
       const user = userEvent.setup();
       render(<Ghostbook />);
 
-      // The Mimic has primary: Spirit box, Fingerprints, Freezing temps
+      // The Mimic has primary: Spirit box, Ultraviolet, Freezing temps
       // and fake: Ghost orb
       // Selecting Ghost orb should still show The Mimic
       await clickEvidence(user, 'Ghost orb');
@@ -277,8 +277,8 @@ describe('Ghostbook integration', () => {
       const user = userEvent.setup();
       render(<Ghostbook />);
 
-      // Select Fingerprints, then rule out every other evidence.
-      await clickEvidence(user, 'Fingerprints');
+      // Select Ultraviolet, then rule out every other evidence.
+      await clickEvidence(user, 'Ultraviolet');
 
       // Rule out each remaining evidence (click twice: select then rule out)
       const toRuleOut = [
@@ -295,7 +295,7 @@ describe('Ghostbook integration', () => {
         await clickEvidence(user, name);
       }
 
-      // No ghost can have only Fingerprints and nothing else
+      // No ghost can have only Ultraviolet and nothing else
       expect(
         screen.getByText(/no ghosts match the selected evidence/i)
       ).toBeInTheDocument();

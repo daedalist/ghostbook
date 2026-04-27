@@ -5,13 +5,13 @@ import Ghost from '../components/Ghost';
 
 const bansheeProps = {
   name: 'Banshee',
-  evidence_list: ['Fingerprints', 'Ghost orb', 'D.O.T.S projector'],
+  evidence_list: ['Ultraviolet', 'Ghost orb', 'D.O.T.S projector'],
   fake_evidence_list: [],
 };
 
 const mimicProps = {
   name: 'The Mimic',
-  evidence_list: ['Spirit box', 'Fingerprints', 'Freezing temperatures'],
+  evidence_list: ['Spirit box', 'Ultraviolet', 'Freezing temperatures'],
   fake_evidence_list: ['Ghost orb'],
 };
 
@@ -23,7 +23,7 @@ describe('Ghost component', () => {
 
   it('renders all primary evidence items', () => {
     render(<Ghost {...bansheeProps} />);
-    expect(screen.getByText('Fingerprints')).toBeInTheDocument();
+    expect(screen.getByText('Ultraviolet')).toBeInTheDocument();
     expect(screen.getByText('Ghost orb')).toBeInTheDocument();
     expect(screen.getByText('D.O.T.S projector')).toBeInTheDocument();
   });
