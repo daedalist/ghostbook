@@ -5,8 +5,8 @@ import ObservationList from '../components/ObservationList';
 import evidence from '../lib/evidence';
 import evidenceState from '../lib/evidenceState';
 
-function makeObservedEvidence(overrides = {}) {
-  const observed = new Map();
+function makeObservedEvidence(overrides: Record<string, string> = {}) {
+  const observed = new Map<string, string>();
   Object.values(evidence).forEach((e) => {
     observed.set(e, overrides[e] || evidenceState.NOT_SELECTED);
   });

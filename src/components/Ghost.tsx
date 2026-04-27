@@ -3,9 +3,24 @@
 import React from 'react';
 
 import ghost_data_map from '../lib/ghost_data_map.json';
+import type { GhostDataMap } from '../lib/types';
 
-class GhostDetails extends React.Component {
-  constructor(props) {
+const ghosts: GhostDataMap = ghost_data_map[0];
+
+interface GhostDetailsProps {
+  strength: string;
+  weakness: string;
+}
+
+interface GhostDetailsState {
+  showDetails: boolean;
+}
+
+class GhostDetails extends React.Component<
+  GhostDetailsProps,
+  GhostDetailsState
+> {
+  constructor(props: GhostDetailsProps) {
     super(props);
     this.state = { showDetails: false };
     this.handleDetailsClick = this.handleDetailsClick.bind(this);
@@ -36,7 +51,13 @@ class GhostDetails extends React.Component {
   }
 }
 
-class Ghost extends React.Component {
+interface GhostProps {
+  name: string;
+  evidence_list: string[];
+  fake_evidence_list: string[];
+}
+
+class Ghost extends React.Component<GhostProps> {
   render() {
     const evidences = this.props.evidence_list.map((e) => {
       return <li key={e}>{e}</li>;
@@ -48,8 +69,8 @@ class Ghost extends React.Component {
         </li>
       );
     });
-    const strength = ghost_data_map[0][this.props.name]['strength'];
-    const weakness = ghost_data_map[0][this.props.name]['weakness'];
+    const strength = ghosts[this.props.name]['strength'];
+    const weakness = ghosts[this.props.name]['weakness'];
 
     return (
       <div className="ghost">

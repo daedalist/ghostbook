@@ -6,6 +6,9 @@ import evidenceState from '../lib/evidenceState';
 import ghost_data_map from '../lib/ghost_data_map.json';
 import ObservationList from './ObservationList';
 import CandidateList from './CandidateList';
+import type { GhostDataMap } from '../lib/types';
+
+const ghosts: GhostDataMap = ghost_data_map[0];
 
 function Header() {
   return (
@@ -15,19 +18,27 @@ function Header() {
   );
 }
 
-export default class Ghostbook extends React.Component {
-  constructor(props) {
+interface GhostbookState {
+  observed_evidence: Map<string, string>;
+  candidate_scores: Map<string, number>;
+}
+
+export default class Ghostbook extends React.Component<
+  Record<string, never>,
+  GhostbookState
+> {
+  constructor(props: Record<string, never>) {
     super(props);
 
     // Initialize evidence.
-    const observed_evidence = new Map();
+    const observed_evidence = new Map<string, string>();
     Object.values(evidence).forEach((e) => {
       observed_evidence.set(e, evidenceState.NOT_SELECTED);
     });
 
     // Initialize ghosts.
-    const candidate_scores = new Map();
-    Object.keys(ghost_data_map[0]).forEach((k) => candidate_scores.set(k, 0));
+    const candidate_scores = new Map<string, number>();
+    Object.keys(ghosts).forEach((k) => candidate_scores.set(k, 0));
 
     this.state = {
       observed_evidence: observed_evidence,
@@ -36,7 +47,7 @@ export default class Ghostbook extends React.Component {
   }
 
   /** When user clicks an observation, calculate which ghosts are eligible. */
-  handleEvidenceClick(clicked_evidence) {
+  handleEvidenceClick(clicked_evidence: string) {
     // TODO: I don't know why I can't make this immutable with a new Map().
     const observed_evidence = this.state.observed_evidence;
     const current_status = observed_evidence.get(clicked_evidence);
@@ -68,11 +79,9 @@ export default class Ghostbook extends React.Component {
     // Score < 0: ruled out.
     for (const ghost_name of candidate_scores.keys()) {
       let score = 0;
-      const evidence_list = Array.from(
-        ghost_data_map[0][ghost_name]['evidence_list']
-      );
+      const evidence_list = Array.from(ghosts[ghost_name]['evidence_list']);
       const fake_evidence_list = Array.from(
-        ghost_data_map[0][ghost_name]['fake_evidence_list']
+        ghosts[ghost_name]['fake_evidence_list']
       );
       for (const [evidence_name, status] of observed_evidence) {
         if (status === evidenceState.SELECTED) {
@@ -98,12 +107,10 @@ export default class Ghostbook extends React.Component {
     }
 
     // Disable evidence that can be ruled out.
-    const possible_evidence = new Set();
+    const possible_evidence = new Set<string>();
     for (const [ghost_name, score] of candidate_scores.entries()) {
       if (score >= 0) {
-        const evidence_list = Array.from(
-          ghost_data_map[0][ghost_name]['evidence_list']
-        );
+        const evidence_list = Array.from(ghosts[ghost_name]['evidence_list']);
         evidence_list.forEach((v) => possible_evidence.add(v));
       }
     }
