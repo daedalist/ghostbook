@@ -26,7 +26,7 @@ test.describe('page rendering after deployment', () => {
     const evidenceNames = [
       'Ghost orb',
       'Spirit box',
-      'Fingerprints',
+      'Ultraviolet',
       'EMF Level 5',
       'Freezing temperatures',
       'Ghost writing',

@@ -45,9 +45,7 @@ test.describe('user interactions after deployment', () => {
 
   test.describe('ghost filtering', () => {
     test('selecting evidence shows matching ghosts', async ({ page }) => {
-      await page
-        .locator('.evidenceButton', { hasText: 'Fingerprints' })
-        .click();
+      await page.locator('.evidenceButton', { hasText: 'Ultraviolet' }).click();
 
       // Should show ghost cards now
       const ghosts = page.locator('.ghost');
@@ -60,9 +58,7 @@ test.describe('user interactions after deployment', () => {
     test('selecting multiple evidence narrows the results', async ({
       page,
     }) => {
-      await page
-        .locator('.evidenceButton', { hasText: 'Fingerprints' })
-        .click();
+      await page.locator('.evidenceButton', { hasText: 'Ultraviolet' }).click();
 
       const firstCount = await page.locator('.ghost').count();
 
@@ -75,10 +71,8 @@ test.describe('user interactions after deployment', () => {
     test('selecting three evidence for Banshee shows Banshee', async ({
       page,
     }) => {
-      // Banshee: Fingerprints, Ghost orb, D.O.T.S projector
-      await page
-        .locator('.evidenceButton', { hasText: 'Fingerprints' })
-        .click();
+      // Banshee: Ultraviolet, Ghost orb, D.O.T.S projector
+      await page.locator('.evidenceButton', { hasText: 'Ultraviolet' }).click();
       await page.locator('.evidenceButton', { hasText: 'Ghost orb' }).click();
       await page
         .locator('.evidenceButton', { hasText: 'D.O.T.S projector' })
@@ -91,12 +85,10 @@ test.describe('user interactions after deployment', () => {
     test('ruling out evidence eliminates ghosts with that evidence', async ({
       page,
     }) => {
-      // Select Fingerprints first
-      await page
-        .locator('.evidenceButton', { hasText: 'Fingerprints' })
-        .click();
+      // Select Ultraviolet first
+      await page.locator('.evidenceButton', { hasText: 'Ultraviolet' }).click();
 
-      // Banshee should be visible (has Fingerprints)
+      // Banshee should be visible (has Ultraviolet)
       await expect(
         page.locator('.ghostName', { hasText: 'Banshee' })
       ).toBeVisible();
@@ -117,10 +109,8 @@ test.describe('user interactions after deployment', () => {
     test('impossible evidence combination shows no ghosts message', async ({
       page,
     }) => {
-      // Select Fingerprints
-      await page
-        .locator('.evidenceButton', { hasText: 'Fingerprints' })
-        .click();
+      // Select Ultraviolet
+      await page.locator('.evidenceButton', { hasText: 'Ultraviolet' }).click();
 
       // Rule out all other evidence types
       const toRuleOut = [
@@ -147,9 +137,7 @@ test.describe('user interactions after deployment', () => {
   test.describe('reset button', () => {
     test('reset clears all selected evidence', async ({ page }) => {
       // Select a couple of evidence types
-      await page
-        .locator('.evidenceButton', { hasText: 'Fingerprints' })
-        .click();
+      await page.locator('.evidenceButton', { hasText: 'Ultraviolet' }).click();
       await page.locator('.evidenceButton', { hasText: 'Ghost orb' }).click();
 
       // Verify some ghosts are shown
@@ -167,9 +155,7 @@ test.describe('user interactions after deployment', () => {
     });
 
     test('reset restores the initial "no ghosts" message', async ({ page }) => {
-      await page
-        .locator('.evidenceButton', { hasText: 'Fingerprints' })
-        .click();
+      await page.locator('.evidenceButton', { hasText: 'Ultraviolet' }).click();
 
       await page.locator('.resetButton').click();
 
@@ -184,9 +170,7 @@ test.describe('user interactions after deployment', () => {
       page,
     }) => {
       // Select evidence to show some ghosts
-      await page
-        .locator('.evidenceButton', { hasText: 'Fingerprints' })
-        .click();
+      await page.locator('.evidenceButton', { hasText: 'Ultraviolet' }).click();
 
       // Find the first ghost's details button
       const firstGhost = page.locator('.ghost').first();
@@ -210,9 +194,7 @@ test.describe('user interactions after deployment', () => {
     test('clicking details button again hides the details', async ({
       page,
     }) => {
-      await page
-        .locator('.evidenceButton', { hasText: 'Fingerprints' })
-        .click();
+      await page.locator('.evidenceButton', { hasText: 'Ultraviolet' }).click();
 
       const firstGhost = page.locator('.ghost').first();
       const detailsBtn = firstGhost.locator('.detailsButton');
@@ -227,10 +209,8 @@ test.describe('user interactions after deployment', () => {
 
   test.describe('evidence disabling', () => {
     test('impossible evidence buttons become disabled', async ({ page }) => {
-      // Narrow down to Banshee: Fingerprints, Ghost orb, D.O.T.S projector
-      await page
-        .locator('.evidenceButton', { hasText: 'Fingerprints' })
-        .click();
+      // Narrow down to Banshee: Ultraviolet, Ghost orb, D.O.T.S projector
+      await page.locator('.evidenceButton', { hasText: 'Ultraviolet' }).click();
       await page.locator('.evidenceButton', { hasText: 'Ghost orb' }).click();
       await page
         .locator('.evidenceButton', { hasText: 'D.O.T.S projector' })
@@ -256,9 +236,7 @@ test.describe('user interactions after deployment', () => {
       page,
     }) => {
       // Narrow down to trigger disabling
-      await page
-        .locator('.evidenceButton', { hasText: 'Fingerprints' })
-        .click();
+      await page.locator('.evidenceButton', { hasText: 'Ultraviolet' }).click();
       await page.locator('.evidenceButton', { hasText: 'Ghost orb' }).click();
       await page
         .locator('.evidenceButton', { hasText: 'D.O.T.S projector' })
@@ -277,9 +255,7 @@ test.describe('user interactions after deployment', () => {
 
     test('disabled buttons do not respond to clicks', async ({ page }) => {
       // Narrow down to trigger disabling
-      await page
-        .locator('.evidenceButton', { hasText: 'Fingerprints' })
-        .click();
+      await page.locator('.evidenceButton', { hasText: 'Ultraviolet' }).click();
       await page.locator('.evidenceButton', { hasText: 'Ghost orb' }).click();
       await page
         .locator('.evidenceButton', { hasText: 'D.O.T.S projector' })
@@ -316,9 +292,7 @@ test.describe('user interactions after deployment', () => {
     }) => {
       // Select The Mimic's primary evidence
       await page.locator('.evidenceButton', { hasText: 'Spirit box' }).click();
-      await page
-        .locator('.evidenceButton', { hasText: 'Fingerprints' })
-        .click();
+      await page.locator('.evidenceButton', { hasText: 'Ultraviolet' }).click();
       await page
         .locator('.evidenceButton', {
           hasText: 'Freezing temperatures',

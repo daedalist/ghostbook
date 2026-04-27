@@ -1,14 +1,14 @@
 [
   {
     "Banshee": {
-      "evidence_list": ["Fingerprints", "Ghost orb", "D.O.T.S projector"],
+      "evidence_list": ["Ultraviolet", "Ghost orb", "D.O.T.S projector"],
       "fake_evidence_list": [],
       "strength": "Will target only one player at a time",
       "weakness": "Makes unique paranormal sounds on a parabolic microphone"
     },
     "Demon": {
       "evidence_list": [
-        "Fingerprints",
+        "Ultraviolet",
         "Ghost writing",
         "Freezing temperatures"
       ],
@@ -16,26 +16,38 @@
       "strength": "Can initiate hunts more often",
       "weakness": "Increased effective crucifix range"
     },
+    "Dayan": {
+      "evidence_list": ["EMF Level 5", "Ghost orb", "Spirit box"],
+      "fake_evidence_list": [],
+      "strength": "Gains speed and strength from nearby player movement",
+      "weakness": "Loses strength if people close to her stand still"
+    },
     "Deogen": {
       "evidence_list": ["Spirit box", "Ghost writing", "D.O.T.S projector"],
       "fake_evidence_list": [],
       "strength": "Always knows where players are during a hunt",
       "weakness": "Significantly slows down when in line-of-sight and near the player"
     },
+    "Gallu": {
+      "evidence_list": ["EMF Level 5", "Ultraviolet", "Spirit box"],
+      "fake_evidence_list": [],
+      "strength": "Using protective equipment pushes the ghost to become enraged, weakening equipment effects",
+      "weakness": "Being enraged exhausts the Gallu, making protective equipment more effective"
+    },
     "Goryo": {
-      "evidence_list": ["EMF Level 5", "Fingerprints", "D.O.T.S projector"],
+      "evidence_list": ["EMF Level 5", "Ultraviolet", "D.O.T.S projector"],
       "fake_evidence_list": [],
       "strength": "Can only be seen interacting with D.O.T.S. through a camera when nobody is nearby",
       "weakness": "Tends to wander away less from its ghost room"
     },
     "Hantu": {
-      "evidence_list": ["Fingerprints", "Ghost orb", "Freezing temperatures"],
+      "evidence_list": ["Ultraviolet", "Ghost orb", "Freezing temperatures"],
       "fake_evidence_list": [],
       "strength": "Lower temperatures allow the Hantu to move faster",
       "weakness": "Warmer areas slow the Hantu's movement"
     },
     "Jinn": {
-      "evidence_list": ["EMF Level 5", "Fingerprints", "Freezing temperatures"],
+      "evidence_list": ["EMF Level 5", "Ultraviolet", "Freezing temperatures"],
       "fake_evidence_list": [],
       "strength": "Travels at faster speeds if its victim is far away",
       "weakness": "Cannot use its ability if the site's fuse box is off"
@@ -53,16 +65,22 @@
       "weakness": "Strongly affected by smudge sticks"
     },
     "Myling": {
-      "evidence_list": ["EMF Level 5", "Fingerprints", "Ghost writing"],
+      "evidence_list": ["EMF Level 5", "Ultraviolet", "Ghost writing"],
       "fake_evidence_list": [],
       "strength": "Has quieter footsteps during a hunt",
       "weakness": "Produces paranormal sounds more frequently"
     },
     "Obake": {
-      "evidence_list": ["EMF Level 5", "Ghost orb", "Fingerprints"],
+      "evidence_list": ["EMF Level 5", "Ghost orb", "Ultraviolet"],
       "fake_evidence_list": [],
       "strength": "May leave fingerprints that disappear quicker",
       "weakness": "Has a small chance of leaving six-fingered handprints"
+    },
+    "Obambo": {
+      "evidence_list": ["Ultraviolet", "Ghost writing", "D.O.T.S projector"],
+      "fake_evidence_list": [],
+      "strength": "While aggressive, the Obambo is quicker to start hunting",
+      "weakness": "While calm, the Obambo is slower to start hunting and easier to track"
     },
     "Oni": {
       "evidence_list": [
@@ -81,13 +99,13 @@
       "weakness": "The presence of flames reduces the Onryo's ability to attack"
     },
     "Phantom": {
-      "evidence_list": ["Spirit box", "Fingerprints", "D.O.T.S projector"],
+      "evidence_list": ["Spirit box", "Ultraviolet", "D.O.T.S projector"],
       "fake_evidence_list": [],
       "strength": "Looking at a Phantom will lower the player's sanity considerably",
       "weakness": "Taking a photo of the Phantom will cause it to briefly disappear"
     },
     "Poltergeist": {
-      "evidence_list": ["Spirit box", "Fingerprints", "Ghost writing"],
+      "evidence_list": ["Spirit box", "Ultraviolet", "Ghost writing"],
       "fake_evidence_list": [],
       "strength": "Capable of throwing multiple objects at once",
       "weakness": "Becomes powerless with no throwables nearby"
@@ -127,7 +145,7 @@
       "weakness": "Thaye will weaken over time, making them weaker, slower and less aggressive"
     },
     "The Mimic": {
-      "evidence_list": ["Spirit box", "Fingerprints", "Freezing temperatures"],
+      "evidence_list": ["Spirit box", "Ultraviolet", "Freezing temperatures"],
       "fake_evidence_list": ["Ghost orb"],
       "strength": "Can mimic the abilities and traits of other ghosts",
       "weakness": "Will present Ghost Orbs as a secondary evidence"
