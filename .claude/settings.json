@@ -25,8 +25,5 @@
       "Write(./package.json)",
       "Edit(./package.json)"
     ]
-  },
-  "env": {
-    "NODE_ENV": "development"
   }
 }
