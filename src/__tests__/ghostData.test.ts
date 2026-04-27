@@ -1,9 +1,10 @@
 import { describe, it, expect } from 'vitest';
 import ghost_data_map from '../lib/ghost_data_map.json';
 import evidence from '../lib/evidence';
+import type { GhostDataMap } from '../lib/types';
 
-const ghosts = ghost_data_map[0];
-const validEvidenceNames = Object.values(evidence);
+const ghosts: GhostDataMap = ghost_data_map[0];
+const validEvidenceNames: string[] = Object.values(evidence);
 
 describe('ghost data map', () => {
   it('is a non-empty array with one entry', () => {

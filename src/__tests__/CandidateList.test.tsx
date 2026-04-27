@@ -5,8 +5,8 @@ import ghost_data_map from '../lib/ghost_data_map.json';
 
 const ghostNames = Object.keys(ghost_data_map[0]);
 
-function makeScores(overrides = {}) {
-  const scores = new Map();
+function makeScores(overrides: Record<string, number> = {}) {
+  const scores = new Map<string, number>();
   ghostNames.forEach((name) => {
     scores.set(name, overrides[name] ?? 0);
   });
@@ -29,7 +29,7 @@ describe('CandidateList component', () => {
   });
 
   it('shows "No ghosts match" when all ghosts are eliminated', () => {
-    const overrides = {};
+    const overrides: Record<string, number> = {};
     ghostNames.forEach((name) => {
       overrides[name] = -10;
     });
@@ -48,7 +48,7 @@ describe('CandidateList component', () => {
 
   it('does not render eliminated ghosts', () => {
     // Give one ghost a positive score and eliminate all others.
-    const overrides = {};
+    const overrides: Record<string, number> = {};
     ghostNames.forEach((name) => {
       overrides[name] = -10;
     });
@@ -61,7 +61,7 @@ describe('CandidateList component', () => {
   });
 
   it('renders multiple matching ghosts', () => {
-    const overrides = {};
+    const overrides: Record<string, number> = {};
     ghostNames.forEach((name) => {
       overrides[name] = -10;
     });

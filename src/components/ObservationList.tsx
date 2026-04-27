@@ -2,7 +2,11 @@
 
 import React from 'react';
 
-function ResetButton(props) {
+interface ResetButtonProps {
+  onClick: () => void;
+}
+
+function ResetButton(props: ResetButtonProps) {
   const classNames = 'button resetButton';
   return (
     <div className={classNames} onClick={props.onClick}>
@@ -11,7 +15,13 @@ function ResetButton(props) {
   );
 }
 
-function EvidenceButton(props) {
+interface EvidenceButtonProps {
+  name: string;
+  state: string;
+  onClick: () => void;
+}
+
+function EvidenceButton(props: EvidenceButtonProps) {
   const classNames = 'evidenceButton button ' + props.state;
   return (
     <li
@@ -24,15 +34,28 @@ function EvidenceButton(props) {
   );
 }
 
-class ObservationList extends React.Component {
-  constructor(props) {
+interface ObservationListProps {
+  observed_evidence: Map<string, string>;
+  handleEvidenceClick: (evidence: string) => void;
+  handleResetClick: () => void;
+}
+
+interface ObservationListState {
+  observed_evidence: Map<string, string>;
+}
+
+class ObservationList extends React.Component<
+  ObservationListProps,
+  ObservationListState
+> {
+  constructor(props: ObservationListProps) {
     super(props);
     this.state = {
       observed_evidence: props.observed_evidence,
     };
   }
 
-  renderEvidenceButton = (value) => {
+  renderEvidenceButton = (value: [string, string]) => {
     const evidence_name = value[0];
     const evidence_state = value[1];
     return (

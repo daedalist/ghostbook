@@ -4,21 +4,26 @@ import userEvent from '@testing-library/user-event';
 import Ghostbook from '../components/Ghostbook';
 import evidence from '../lib/evidence';
 import ghost_data_map from '../lib/ghost_data_map.json';
+import type { GhostDataMap } from '../lib/types';
 
-const ghostNames = Object.keys(ghost_data_map[0]);
+const ghosts: GhostDataMap = ghost_data_map[0];
+const ghostNames = Object.keys(ghosts);
 
 /**
  * Helper: return the observations section so evidence-button queries
  * are scoped and won't collide with ghost-card evidence lists.
  */
 function getObservations() {
-  return within(document.querySelector('.observations'));
+  return within(document.querySelector('.observations')!);
 }
 
 /**
  * Helper: click an evidence button by name (scoped to the observations panel).
  */
-async function clickEvidence(user, name) {
+async function clickEvidence(
+  user: ReturnType<typeof userEvent.setup>,
+  name: string
+) {
   await user.click(getObservations().getByText(name));
 }
 
@@ -36,9 +41,12 @@ function getVisibleGhostNames() {
  * evidence (all selected evidence must be in the ghost's evidence or
  * fake_evidence list, and no ruled-out evidence can be in either list).
  */
-function expectedGhostsForEvidence(selected = [], ruledOut = []) {
+function expectedGhostsForEvidence(
+  selected: string[] = [],
+  ruledOut: string[] = []
+) {
   return ghostNames.filter((name) => {
-    const data = ghost_data_map[0][name];
+    const data = ghosts[name];
     const allEvidence = [...data.evidence_list, ...data.fake_evidence_list];
     const matchesSelected = selected.every((e) => allEvidence.includes(e));
     const matchesRuledOut = ruledOut.every((e) => !allEvidence.includes(e));
@@ -153,7 +161,7 @@ describe('Ghostbook integration', () => {
 
       // Ghosts with Ghost orb should be eliminated
       const ghostsWithGhostOrb = ghostNames.filter((name) => {
-        const data = ghost_data_map[0][name];
+        const data = ghosts[name];
         return (
           data.evidence_list.includes('Ghost orb') ||
           data.fake_evidence_list.includes('Ghost orb')

@@ -6,6 +6,6 @@ const evidence = {
   FREEZING: 'Freezing temperatures',
   GHOST_WRITING: 'Ghost writing',
   DOTS_PROJECTOR: 'D.O.T.S projector',
-};
+} as const;
 
 export default evidence;
