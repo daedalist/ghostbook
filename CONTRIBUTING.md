@@ -59,7 +59,11 @@ Thank you for your interest in contributing to Ghostbook! This document provides
 
 This project uses **Prettier** for consistent code formatting. All formatting is handled automatically.
 
-**Before committing:**
+**Pre-commit hook:**
+
+A pre-commit hook runs **Prettier automatically** on staged files via [husky](https://typicode.github.io/husky/) and [lint-staged](https://github.com/lint-staged/lint-staged). After running `npm install`, the hook is set up automatically — no manual formatting step is needed before committing.
+
+**Manual commands:**
 
 ```bash
 npm run format        # Auto-format all code
@@ -151,10 +155,9 @@ Resolves #123
 
 ### Before Committing
 
-Run these checks:
+Prettier runs automatically on staged files via a pre-commit hook. You may also want to run these checks manually:
 
 ```bash
-npm run format      # Format code
 npm run type-check  # Check TypeScript types
 npm run lint        # Check code quality
 npm run lint:types  # Or run both type-check and lint together

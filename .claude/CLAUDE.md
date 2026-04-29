@@ -79,10 +79,11 @@ Available custom commands:
 - **Line width**: 80 characters
 - **Trailing commas**: ES5 style
 
-**How to use:**
+**Pre-commit hook:**
 
-- Run `npm run format` to auto-format all code
-- Enable "Format on Save" in your editor for automatic formatting
+- A husky pre-commit hook runs Prettier automatically on staged files via lint-staged
+- No manual formatting step needed before committing — just commit and the hook handles it
+- Run `npm run format` to manually format all files if needed
 - Prettier integrates with ESLint (no conflicts)
 
 ### React Patterns
