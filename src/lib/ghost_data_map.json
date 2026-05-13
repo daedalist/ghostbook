@@ -1,5 +1,15 @@
 [
   {
+    "Aswang": {
+      "evidence_list": [
+        "D.O.T.S projector",
+        "Freezing temperatures",
+        "Ghost writing"
+      ],
+      "fake_evidence_list": [],
+      "strength": "When they spot their target, Aswangs become faster in pursuit",
+      "weakness": "Aswangs prefer chasing over searching"
+    },
     "Banshee": {
       "evidence_list": ["Ultraviolet", "Ghost orb", "D.O.T.S projector"],
       "fake_evidence_list": [],
@@ -39,6 +49,12 @@
       "fake_evidence_list": [],
       "strength": "Can only be seen interacting with D.O.T.S. through a camera when nobody is nearby",
       "weakness": "Tends to wander away less from its ghost room"
+    },
+    "Kormos": {
+      "evidence_list": ["Ghost orb", "Spirit box", "Ultraviolet"],
+      "fake_evidence_list": [],
+      "strength": "Kormos have incredibly strong hearing",
+      "weakness": "Kormos are nearly blind"
     },
     "Hantu": {
       "evidence_list": ["Ultraviolet", "Ghost orb", "Freezing temperatures"],
