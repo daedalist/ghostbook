@@ -42,14 +42,14 @@
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.2",
     "eslint": "^9.39.4",
-    "eslint-config-next": "^16.2.7",
+    "eslint-config-next": "^16.2.9",
     "eslint-config-prettier": "^10.1.8",
     "husky": "^9.1.7",
     "jsdom": "^29.1.1",
     "lint-staged": "^17.0.7",
     "prettier": "^3.8.4",
     "typescript": "5.9.3",
-    "typescript-eslint": "^8.60.1",
+    "typescript-eslint": "^8.61.1",
     "vitest": "^4.1.9"
   }
 }
