@@ -27,7 +27,9 @@
     "prepare": "husky"
   },
   "overrides": {
-    "postcss": "^8.5.10"
+    "postcss": "^8.5.10",
+    "sharp": "^0.35.0",
+    "brace-expansion@1": "^1.1.16"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,mjs,json,css,md,yml,yaml}": "prettier --write"
