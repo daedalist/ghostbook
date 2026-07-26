@@ -32,6 +32,12 @@
       "strength": "Gains speed and strength from nearby player movement",
       "weakness": "Loses strength if people close to her stand still"
     },
+    "Deildegast": {
+      "evidence_list": ["EMF Level 5", "Ghost writing", "D.O.T.S projector"],
+      "fake_evidence_list": [],
+      "strength": "Moves faster than any other ghost, with the highest base speed",
+      "weakness": "Picking up and moving nearby objects steadily slows it down"
+    },
     "Deogen": {
       "evidence_list": ["Spirit box", "Ghost writing", "D.O.T.S projector"],
       "fake_evidence_list": [],
