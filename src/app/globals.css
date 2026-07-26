@@ -6,15 +6,16 @@
    ========================================================================= */
 
 :root {
-  --font-terminal: 'VT323', 'Cutive Mono', ui-monospace, monospace;
-  --font-mono: 'Cutive Mono', ui-monospace, monospace;
+  /* Silkscreen for the CRT look; high-legibility mode swaps in Source Code Pro. */
+  --font-terminal: var(--font-silkscreen), var(--font-cutive), monospace;
+  --font-mono: var(--font-cutive), ui-monospace, monospace;
 
   /* Phosphor palette */
   --crt-black: #050805;
   --crt-screen: #0a120a;
   --green: #33ff66;
   --green-bright: #b9ffcf;
-  --green-dim: #1f9a44;
+  --green-dim: #2fb35a;
   --green-faint: rgba(51, 255, 102, 0.35);
   --amber: #ffb638; /* ruled-out / warnings */
   --amber-dim: rgba(255, 182, 56, 0.5);
@@ -43,7 +44,7 @@ body {
   letter-spacing: 0.02em;
   padding: 1em;
   min-height: 100vh;
-  text-shadow: var(--glow-soft);
+  /* Glow lives on headings/accents only — body text stays crisp. */
 }
 
 /* The #root is the lit "screen": bezel, vignette, and clipped overlays. */
@@ -136,6 +137,13 @@ h1 {
   margin: 0.2em 0;
 }
 
+/* The main title is large in the pixel font, so keep its glow tight to
+   avoid a heavy blur. */
+.ghostBook > header h1,
+.ghostBook > header h1::after {
+  text-shadow: 0 0 2px rgba(51, 255, 102, 0.45);
+}
+
 /* Prompt marker + blinking cursor on the main title. */
 .ghostBook > header h1::before {
   content: 'C:\\GHOSTBOOK> ';
@@ -176,6 +184,39 @@ h1 {
 .button {
   cursor: pointer;
   font-size: 1em;
+}
+
+/* ---- Display / accessibility toggle ------------------------------------- */
+
+.displaySettings {
+  display: flex;
+  justify-content: flex-end;
+  margin: -0.4em 0 1.2em;
+}
+
+.legibleToggle {
+  font-family: var(--font-terminal);
+  font-size: 0.8em;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--green);
+  background: transparent;
+  border: 1px solid var(--green-faint);
+  padding: 0.35em 0.8em;
+  cursor: pointer;
+}
+.legibleToggle:hover {
+  border-color: var(--green);
+  box-shadow: var(--glow-soft);
+}
+.legibleToggle:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 2px;
+}
+.legibleToggle[aria-pressed='true'] {
+  color: var(--green-bright);
+  border-color: var(--green);
+  background: rgba(51, 255, 102, 0.12);
 }
 
 /* ---- Observations panel ------------------------------------------------- */
@@ -400,6 +441,44 @@ div.ghostDetailsHidden {
   content: '\2715 WEAK '; /* ✕ */
   color: var(--amber-dim);
   color: var(--amber);
+}
+
+/* ---- High-legibility mode ----------------------------------------------
+   Toggled by DisplaySettings (data-legible="on" on <html>) and defaulted from
+   the reader's OS contrast settings. Drops the CRT effects and raises
+   contrast: brighter phosphor, no glow, no scanlines/flicker, no dim text.
+   ------------------------------------------------------------------------ */
+
+:root[data-legible='on'] {
+  /* Source Code Pro reads far cleaner than the pixel font at small sizes. */
+  --font-terminal: var(--font-source-code-pro), var(--font-cutive), monospace;
+  --green: #74ffa4;
+  --green-bright: #e6fff0;
+  --green-dim: #57e88c;
+  --green-faint: rgba(116, 255, 164, 0.55);
+  --amber: #ffc861;
+  --amber-dim: rgba(255, 200, 97, 0.75);
+  --glow: none;
+  --glow-soft: none;
+}
+
+/* Kill every residual text glow for crisp edges. */
+:root[data-legible='on'] * {
+  text-shadow: none !important;
+}
+
+/* Remove the screen overlays and motion. */
+:root[data-legible='on'] #root {
+  animation: none;
+  border-color: var(--green-faint);
+  box-shadow: inset 0 0 0 1px rgba(116, 255, 164, 0.12);
+}
+:root[data-legible='on'] #root::before,
+:root[data-legible='on'] #root::after {
+  display: none;
+}
+:root[data-legible='on'] .evidenceSelected {
+  box-shadow: none;
 }
 
 /* ---- Animations --------------------------------------------------------- */
