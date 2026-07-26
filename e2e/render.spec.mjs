@@ -69,12 +69,24 @@ test.describe('page rendering after deployment', () => {
     );
   });
 
-  test('page uses the Cutive Mono font family', async ({ page }) => {
+  test('page uses the Silkscreen terminal font by default', async ({
+    page,
+  }) => {
     const body = page.locator('body');
     const fontFamily = await body.evaluate(
       (el) => getComputedStyle(el).fontFamily
     );
-    expect(fontFamily.toLowerCase()).toContain('cutive');
+    expect(fontFamily.toLowerCase()).toContain('silkscreen');
+  });
+
+  test('high-legibility mode toggle renders, off by default', async ({
+    page,
+  }) => {
+    const toggle = page.locator('.legibleToggle');
+    await expect(toggle).toBeVisible();
+    await expect(toggle).toContainText(/high-legibility mode/i);
+    await expect(toggle).toHaveAttribute('aria-pressed', 'false');
+    await expect(page.locator('html')).toHaveAttribute('data-legible', 'off');
   });
 
   test('no console errors on page load', async ({ page }) => {

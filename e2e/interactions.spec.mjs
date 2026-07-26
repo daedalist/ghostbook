@@ -310,4 +310,57 @@ test.describe('user interactions after deployment', () => {
       await expect(fakeEvidence).toContainText('Ghost orb');
     });
   });
+
+  test.describe('high-legibility mode', () => {
+    test('toggling on sets data-legible and persists across reload', async ({
+      page,
+    }) => {
+      const html = page.locator('html');
+      const toggle = page.locator('.legibleToggle');
+
+      await expect(html).toHaveAttribute('data-legible', 'off');
+
+      await toggle.click();
+      await expect(html).toHaveAttribute('data-legible', 'on');
+      await expect(toggle).toHaveAttribute('aria-pressed', 'true');
+
+      // The choice is restored from localStorage after a reload.
+      await page.reload();
+      await expect(page.locator('html')).toHaveAttribute('data-legible', 'on');
+      await expect(page.locator('.legibleToggle')).toHaveAttribute(
+        'aria-pressed',
+        'true'
+      );
+    });
+
+    test('toggling swaps the font between Silkscreen and Source Code Pro', async ({
+      page,
+    }) => {
+      const body = page.locator('body');
+      const fontOf = () =>
+        body.evaluate((el) => getComputedStyle(el).fontFamily.toLowerCase());
+
+      expect(await fontOf()).toContain('silkscreen');
+
+      await page.locator('.legibleToggle').click();
+      expect(await fontOf()).toContain('source'); // Source Code Pro
+
+      await page.locator('.legibleToggle').click();
+      expect(await fontOf()).toContain('silkscreen');
+    });
+
+    test('high-legibility mode removes the title glow', async ({ page }) => {
+      const heading = page.locator('header h1');
+      const shadowOf = () =>
+        heading.evaluate((el) => getComputedStyle(el).textShadow);
+
+      // Normal mode: the title carries a glow.
+      expect(await shadowOf()).not.toBe('none');
+
+      await page.locator('.legibleToggle').click();
+
+      // High-legibility mode strips every text-shadow.
+      expect(await shadowOf()).toBe('none');
+    });
+  });
 });

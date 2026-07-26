@@ -6,6 +6,7 @@ import evidenceState from '../lib/evidenceState';
 import ghost_data_map from '../lib/ghost_data_map.json';
 import ObservationList from './ObservationList';
 import CandidateList from './CandidateList';
+import DisplaySettings from './DisplaySettings';
 import type { GhostDataMap } from '../lib/types';
 
 const ghosts: GhostDataMap = ghost_data_map[0];
@@ -152,6 +153,7 @@ export default class Ghostbook extends React.Component<
     return (
       <div className="ghostBook">
         <Header />
+        <DisplaySettings />
         <section className="content">
           <ObservationList
             observed_evidence={this.state.observed_evidence}

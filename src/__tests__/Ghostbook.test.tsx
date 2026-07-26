@@ -80,6 +80,15 @@ describe('Ghostbook integration', () => {
       render(<Ghostbook />);
       expect(screen.getByText('Reset')).toBeInTheDocument();
     });
+
+    it('renders the high-legibility mode toggle', () => {
+      render(<Ghostbook />);
+      const toggle = screen.getByRole('button', {
+        name: /high-legibility mode/i,
+      });
+      expect(toggle).toBeInTheDocument();
+      expect(toggle).toHaveAttribute('aria-pressed', 'false');
+    });
   });
 
   describe('selecting evidence', () => {

@@ -1,38 +1,225 @@
-/* General Styles  */
+/* =========================================================================
+   Ghostbook — CRT terminal theme
+   Green phosphor on black, scanlines, flicker, blinking cursor.
+   All embellishments are pure CSS (pseudo-elements) so the DOM/text the
+   components render — and the tests that query it — stay untouched.
+   ========================================================================= */
+
+:root {
+  /* Silkscreen for the CRT look; high-legibility mode swaps in Source Code Pro. */
+  --font-terminal: var(--font-silkscreen), var(--font-cutive), monospace;
+  --font-mono: var(--font-cutive), ui-monospace, monospace;
+
+  /* Phosphor palette */
+  --crt-black: #050805;
+  --crt-screen: #0a120a;
+  --green: #33ff66;
+  --green-bright: #b9ffcf;
+  --green-dim: #2fb35a;
+  --green-faint: rgba(51, 255, 102, 0.35);
+  --amber: #ffb638; /* ruled-out / warnings */
+  --amber-dim: rgba(255, 182, 56, 0.5);
+
+  --glow: 0 0 4px rgba(51, 255, 102, 0.7), 0 0 11px rgba(51, 255, 102, 0.35);
+  --glow-soft: 0 0 3px rgba(51, 255, 102, 0.5);
+}
+
+/* ---- Base screen -------------------------------------------------------- */
+
+html {
+  background: var(--crt-black);
+}
 
 body {
-  background-color: black;
-  color: white;
-  font-family: 'Cutive Mono', monospace, sans-serif;
-  font-size: 100%;
+  background: radial-gradient(
+    ellipse at center,
+    var(--crt-screen) 0%,
+    #060a06 70%,
+    #030503 100%
+  );
+  color: var(--green);
+  font-family: var(--font-terminal);
+  font-size: 140%;
+  line-height: 1.25;
+  letter-spacing: 0.02em;
   padding: 1em;
+  min-height: 100vh;
+  /* Glow lives on headings/accents only — body text stays crisp. */
+}
+
+/* The #root is the lit "screen": bezel, vignette, and clipped overlays. */
+#root {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.4em 1.6em 2.4em;
+  border: 2px solid #0c1a0c;
+  border-radius: 14px;
+  background: linear-gradient(rgba(10, 22, 10, 0.35), rgba(4, 8, 4, 0.35));
+  box-shadow:
+    inset 0 0 120px rgba(0, 0, 0, 0.9),
+    inset 0 0 40px rgba(51, 255, 102, 0.06),
+    0 0 3px rgba(51, 255, 102, 0.25);
+  overflow: hidden;
+  animation: flicker 4s infinite steps(60);
+}
+
+/* Scanlines: fine horizontal lines painted over the whole screen. */
+#root::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0,
+    rgba(0, 0, 0, 0) 2px,
+    rgba(0, 0, 0, 0.28) 3px,
+    rgba(0, 0, 0, 0.28) 4px
+  );
+  mix-blend-mode: multiply;
+}
+
+/* Rolling refresh bar sweeping down the screen. */
+#root::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 22%;
+  z-index: 21;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgba(51, 255, 102, 0) 0%,
+    rgba(51, 255, 102, 0.04) 50%,
+    rgba(51, 255, 102, 0) 100%
+  );
+  animation: refresh-roll 7s linear infinite;
+}
+
+/* Keep real content above the overlays. */
+.ghostBook {
+  position: relative;
+  z-index: 1;
 }
 
 section {
-  margin: 2em;
+  margin: 1.6em 0;
+}
+
+/* ---- Headings / boot banner / cursor ------------------------------------ */
+
+.ghostBook > header {
+  border-bottom: 1px solid var(--green-faint);
+  padding-bottom: 0.6em;
+  margin-bottom: 1em;
+}
+
+/* Boot banner above the title. */
+.ghostBook > header::before {
+  content: '[ PARANORMAL DETECTION TERMINAL // v0.2.0 // ONLINE ]';
+  display: block;
+  color: var(--green-dim);
+  font-size: 0.62em;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 0.3em;
 }
 
 h1 {
-  font-size: 1.5em;
+  font-size: 1.6em;
+  font-weight: normal;
+  letter-spacing: 0.04em;
+  color: var(--green-bright);
+  text-shadow: var(--glow);
+  margin: 0.2em 0;
 }
 
-.button {
-  cursor: pointer;
-  font-size: 1.2em;
+/* The main title is large in the pixel font, so keep its glow tight to
+   avoid a heavy blur. */
+.ghostBook > header h1,
+.ghostBook > header h1::after {
+  text-shadow: 0 0 2px rgba(51, 255, 102, 0.45);
 }
+
+/* Prompt marker + blinking cursor on the main title. */
+.ghostBook > header h1::before {
+  content: 'C:\\GHOSTBOOK> ';
+  color: var(--green-dim);
+}
+
+.ghostBook > header h1::after {
+  content: '\2588'; /* full block */
+  margin-left: 0.15em;
+  color: var(--green-bright);
+  animation: blink 1.05s steps(1) infinite;
+}
+
+/* Section headings read like prompt lines. */
+.observations > h1,
+.candidates > h1 {
+  font-size: 1.05em;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.observations > h1::before,
+.candidates > h1::before {
+  content: '> ';
+  color: var(--green-dim);
+}
+
+/* ---- Layout ------------------------------------------------------------- */
 
 .content {
   display: flex;
   flex-direction: row;
   align-content: flex-start;
   align-items: flex-start;
+  gap: 1.5em;
 }
 
-.ghostBook {
-  /* nothing right now */
+.button {
+  cursor: pointer;
+  font-size: 1em;
 }
 
-/* Observation section  */
+/* ---- Display / accessibility toggle ------------------------------------- */
+
+.displaySettings {
+  display: flex;
+  justify-content: flex-end;
+  margin: -0.4em 0 1.2em;
+}
+
+.legibleToggle {
+  font-family: var(--font-terminal);
+  font-size: 0.8em;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--green);
+  background: transparent;
+  border: 1px solid var(--green-faint);
+  padding: 0.35em 0.8em;
+  cursor: pointer;
+}
+.legibleToggle:hover {
+  border-color: var(--green);
+  box-shadow: var(--glow-soft);
+}
+.legibleToggle:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 2px;
+}
+.legibleToggle[aria-pressed='true'] {
+  color: var(--green-bright);
+  border-color: var(--green);
+  background: rgba(51, 255, 102, 0.12);
+}
+
+/* ---- Observations panel ------------------------------------------------- */
 
 .observations {
   flex-grow: 0;
@@ -40,120 +227,334 @@ h1 {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
+  border: 1px solid var(--green-faint);
+  padding: 0.4em 1em 1em;
+  background: rgba(51, 255, 102, 0.02);
 }
 
 .observationList {
-  margin: 0.2em;
+  margin: 0.2em 0 0;
   padding-left: 0;
 }
 
 .observationList li {
   list-style-type: none;
-  padding: 0.5em;
-  padding-left: 1em;
-  padding-right: 1em;
-  margin-top: 0.5em;
-  margin-bottom: 0.5em;
+  position: relative;
+  padding: 0.4em 0.8em;
+  margin: 0.45em 0;
+  border: 1px solid var(--green-dim);
+  color: var(--green);
+  background: transparent;
+  transition:
+    background 0.08s linear,
+    box-shadow 0.08s linear,
+    color 0.08s linear;
 }
 
+.observationList li::before {
+  content: '[ ] ';
+  color: var(--green-dim);
+}
+
+.evidenceButton:hover {
+  box-shadow: var(--glow-soft);
+  border-color: var(--green);
+}
+
+/* --- Evidence states (class names are asserted by tests: keep them) --- */
+
 .evidenceSelected {
-  border: 1px solid white;
-  background-color: white;
-  color: black;
+  border-color: var(--green) !important;
+  background-color: var(--green) !important;
+  color: var(--crt-black) !important;
+  text-shadow: none;
+  box-shadow: var(--glow);
+}
+.evidenceSelected::before {
+  content: '[x] ' !important;
+  color: var(--crt-black) !important;
 }
 
 .evidenceNotSelected {
-  border: 1px solid white;
-  background-color: black;
-  color: white;
+  border-color: var(--green-dim);
+  background-color: transparent;
+  color: var(--green);
 }
 
 .evidenceDisabled {
-  border: 1px solid grey;
-  background-color: black;
-  color: grey;
+  border-color: rgba(51, 255, 102, 0.15);
+  background-color: transparent;
+  color: var(--green-dim);
+  opacity: 0.45;
   text-decoration: line-through;
+  text-shadow: none;
+  cursor: not-allowed;
+}
+.evidenceDisabled::before {
+  content: '[/] ';
+  color: var(--green-dim);
 }
 
 .evidenceRuledOut {
-  border: 1px solid white;
-  background-color: grey;
-  color: black;
+  border-color: var(--amber-dim);
+  background-color: transparent;
+  color: var(--amber);
   text-decoration: line-through;
+  text-shadow: 0 0 4px rgba(255, 182, 56, 0.4);
+}
+.evidenceRuledOut::before {
+  content: '[-] ';
+  color: var(--amber);
 }
 
 .resetButton {
   display: inline-block;
-  padding: 0.3em 1em 0.3em 1em;
-  margin: 0;
-  margin-left: auto;
-  margin-top: 0.4em;
-  border: 1px solid grey;
-  background-color: grey;
-  color: black;
+  align-self: flex-end;
+  padding: 0.3em 1em;
+  margin-top: 0.8em;
+  border: 1px solid var(--amber-dim);
+  background-color: transparent;
+  color: var(--amber);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-shadow: 0 0 4px rgba(255, 182, 56, 0.35);
+}
+.resetButton::before {
+  content: '[ ';
+  color: var(--amber-dim);
+}
+.resetButton::after {
+  content: ' ]';
+  color: var(--amber-dim);
+}
+.resetButton:hover {
+  background-color: rgba(255, 182, 56, 0.12);
+  box-shadow: 0 0 8px rgba(255, 182, 56, 0.25);
 }
 
-/* Ghost section  */
+/* ---- Ghost candidates --------------------------------------------------- */
+
+.candidates {
+  flex-grow: 1;
+}
 
 .candidateList {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   align-items: flex-start;
+  gap: 1em;
 }
 
 .ghost {
-  width: 200px;
-  font-size: 1em;
-  margin-bottom: 2em;
+  width: 220px;
+  font-size: 0.92em;
+  margin-bottom: 0.5em;
+  padding: 0.6em 0.8em 0.8em;
+  border: 1px solid var(--green-faint);
+  background: rgba(51, 255, 102, 0.02);
+  box-shadow: inset 0 0 20px rgba(51, 255, 102, 0.03);
+}
+
+.ghost::before {
+  content: '// DOSSIER';
+  display: block;
+  font-size: 0.72em;
+  letter-spacing: 0.16em;
+  color: var(--green-dim);
+  margin-bottom: 0.2em;
 }
 
 .ghostName {
-  font-size: 1.2em;
+  font-size: 1.35em;
+  color: var(--green-bright);
+  text-shadow: var(--glow);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px dashed var(--green-faint);
+  padding-bottom: 0.2em;
+  margin-bottom: 0.3em;
+}
+.ghostName::before {
+  content: '\25B8 '; /* ▸ */
+  color: var(--green-dim);
+}
+
+.evidenceList {
+  list-style: none;
+  padding-left: 0;
+  margin: 0.4em 0;
+}
+.evidenceList li {
+  padding: 0.05em 0;
+}
+.evidenceList li::before {
+  content: '\00B7 '; /* · */
+  color: var(--green-dim);
 }
 
 li.fakeEvidence {
-  color: grey;
+  color: var(--amber);
+  font-style: italic;
+  text-shadow: 0 0 4px rgba(255, 182, 56, 0.3);
+}
+li.fakeEvidence::before {
+  content: '\00B7 ? ';
+  color: var(--amber-dim);
 }
 
 .detailsButton {
-  text-decoration: underline;
   cursor: pointer;
-  background-color: black;
-  color: white;
-  font-family: 'Cutive Mono', monospace, sans-serif;
-  font-size: 100%;
+  background-color: transparent;
+  color: var(--green-dim);
+  font-family: var(--font-terminal);
+  font-size: 0.95em;
+  letter-spacing: 0.05em;
   border: none;
+  padding: 0.2em 0;
+  text-decoration: none;
+}
+.detailsButton:hover {
+  color: var(--green);
+  text-shadow: var(--glow-soft);
 }
 
 div.ghostDetailsShown {
-  font-size: 0.9em;
-  padding-right: 1em;
+  font-size: 0.95em;
+  padding: 0.3em 0.4em;
+  margin-top: 0.3em;
+  border-left: 2px solid var(--green-faint);
 }
-
 div.ghostDetailsHidden {
-  font-size: 0.9em;
-  padding-right: 1em;
   display: none;
 }
 
-/* Media queries */
+/* Label the two detail lines: first = strength, second = weakness. */
+.ghostDetailsShown p {
+  margin: 0.25em 0;
+}
+.ghostDetailsShown p:nth-of-type(1)::before {
+  content: '\26A1 STR  '; /* ⚡ */
+  color: var(--green-dim);
+}
+.ghostDetailsShown p:nth-of-type(2)::before {
+  content: '\2715 WEAK '; /* ✕ */
+  color: var(--amber-dim);
+  color: var(--amber);
+}
+
+/* ---- High-legibility mode ----------------------------------------------
+   Toggled by DisplaySettings (data-legible="on" on <html>) and defaulted from
+   the reader's OS contrast settings. Drops the CRT effects and raises
+   contrast: brighter phosphor, no glow, no scanlines/flicker, no dim text.
+   ------------------------------------------------------------------------ */
+
+:root[data-legible='on'] {
+  /* Source Code Pro reads far cleaner than the pixel font at small sizes. */
+  --font-terminal: var(--font-source-code-pro), var(--font-cutive), monospace;
+  --green: #74ffa4;
+  --green-bright: #e6fff0;
+  --green-dim: #57e88c;
+  --green-faint: rgba(116, 255, 164, 0.55);
+  --amber: #ffc861;
+  --amber-dim: rgba(255, 200, 97, 0.75);
+  --glow: none;
+  --glow-soft: none;
+}
+
+/* Kill every residual text glow for crisp edges. */
+:root[data-legible='on'] * {
+  text-shadow: none !important;
+}
+
+/* Remove the screen overlays and motion. */
+:root[data-legible='on'] #root {
+  animation: none;
+  border-color: var(--green-faint);
+  box-shadow: inset 0 0 0 1px rgba(116, 255, 164, 0.12);
+}
+:root[data-legible='on'] #root::before,
+:root[data-legible='on'] #root::after {
+  display: none;
+}
+:root[data-legible='on'] .evidenceSelected {
+  box-shadow: none;
+}
+
+/* ---- Animations --------------------------------------------------------- */
+
+@keyframes blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  50.01%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes refresh-roll {
+  0% {
+    transform: translateY(-120%);
+  }
+  100% {
+    transform: translateY(560%);
+  }
+}
+
+@keyframes flicker {
+  0%,
+  96%,
+  100% {
+    opacity: 1;
+  }
+  97% {
+    opacity: 0.94;
+  }
+  98% {
+    opacity: 0.99;
+  }
+  99% {
+    opacity: 0.92;
+  }
+}
+
+/* ---- Motion / responsiveness ------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  #root {
+    animation: none;
+  }
+  #root::after {
+    animation: none;
+    display: none;
+  }
+  .ghostBook > header h1::after {
+    animation: none;
+  }
+}
 
 @media only screen and (max-width: 900px) {
   body {
-    font-size: 1.1em;
+    font-size: 120%;
+  }
+  #root {
+    padding: 1em 1em 1.8em;
+    border-radius: 10px;
   }
   section {
-    margin: 0;
-    margin-bottom: 1em;
+    margin: 0 0 1em;
   }
-
   .content {
     flex-direction: column;
     align-items: stretch;
+    gap: 1em;
   }
-
   .observations {
-    max-width: 60%;
+    max-width: 100%;
+  }
+  .ghost {
+    width: 100%;
   }
 }
