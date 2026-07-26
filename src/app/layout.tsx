@@ -1,11 +1,20 @@
 import type { Metadata } from 'next';
-import { Cutive_Mono } from 'next/font/google';
+import { Cutive_Mono, VT323 } from 'next/font/google';
 import Script from 'next/script';
 import './globals.css';
+
+// VT323 drives the CRT-terminal look; Cutive Mono is a graceful fallback.
+const vt323 = VT323({
+  weight: '400',
+  subsets: ['latin'],
+  variable: '--font-terminal',
+  display: 'swap',
+});
 
 const cutiveMono = Cutive_Mono({
   weight: '400',
   subsets: ['latin'],
+  variable: '--font-mono',
   display: 'optional',
 });
 
@@ -28,7 +37,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={cutiveMono.className}>
+      <body className={`${vt323.variable} ${cutiveMono.variable}`}>
         <div id="root">{children}</div>
         {cloudflareToken && (
           <Script
