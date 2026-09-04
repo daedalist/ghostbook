@@ -10,6 +10,12 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+# Least-privilege default for every job in this workflow. Jobs here only read
+# the repo and run npm scripts, so no write scopes are needed; a job that ever
+# needs more should opt in with its own permissions block.
+permissions:
+  contents: read
+
 jobs:
   # Check code formatting
   format:
@@ -320,6 +326,8 @@ jobs:
   # All checks must pass
   all-checks:
     runs-on: ubuntu-latest
+    # Reads no repository content - only the results of the jobs it needs.
+    permissions: {}
     needs:
       [
         format,
