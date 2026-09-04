@@ -282,6 +282,46 @@ npm run build
 
 The build should complete without errors or warnings.
 
+### CI Tooling Must Be Pinned, Never Fetched at Runtime
+
+Anything CI executes belongs in `devDependencies`, pinned to an exact version,
+so `npm ci` installs it from `package-lock.json`. Never reach for
+`npx some-tool@latest` in a workflow step or an npm script.
+
+This is not a style preference - it broke CI. The `test-deployment` job used to
+run:
+
+```bash
+npx --yes serve@latest ./build -l 8080   # don't do this
+```
+
+`serve` was not a dependency, so every run downloaded it from the registry
+_inside_ the job's own 30-second server-readiness budget. On a fast runner the
+download took ~24 seconds and passed with 6 seconds to spare; on a runner in a
+slower region it exceeded 30 seconds and the job failed. Same commit, same
+Node, same npm - only the runner's region differed. The e2e jobs had the same
+problem via `npx http-server` inside Playwright's 120-second `webServer`
+timeout.
+
+Both are now pinned devDependencies, invoked as local binaries:
+
+- **Workflow steps** run `./node_modules/.bin/serve` (the job needs its own
+  `npm ci` step first - `node_modules` is not inherited between jobs).
+- **npm scripts** call `http-server` bare; npm puts `node_modules/.bin` on
+  `PATH` automatically.
+
+Startup went from ~24s to ~2s, and the results are reproducible.
+
+There is a second reason to avoid `npx <tool> <args>`: npm may consume
+single-letter flags meant for the tool. `-l` (npm's `--long`) and `-p`
+(`--parseable`) are both live hazards - on some npm versions
+`npx serve ./build -l 8080` silently drops `-l`, and the tool never binds the
+port you asked for. Calling the binary directly removes npm from the argument
+path entirely.
+
+Dependabot keeps these pins current through the `npm` ecosystem, so pinning
+does not mean going stale.
+
 ## Technical Details
 
 ### Evidence State Management

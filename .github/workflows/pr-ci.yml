@@ -131,6 +131,14 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: '24'
+          cache: 'npm'
+
+      # Installs the pinned `serve` from the lockfile. Without this the serve
+      # step below had to fetch it from the registry inside its own 30s
+      # readiness budget - a download that measured ~24s on a good run and
+      # timed out the job on a slow one.
+      - name: Install dependencies
+        run: npm ci
 
       - name: Download build artifacts
         uses: actions/download-artifact@v7
@@ -155,7 +163,7 @@ jobs:
         run: |
           # Start serve in background and capture output
           echo "Starting server..."
-          npx --yes serve@latest ./build -l 8080 > server.log 2>&1 &
+          ./node_modules/.bin/serve ./build -l 8080 > server.log 2>&1 &
           SERVER_PID=$!
 
           echo "Server PID: $SERVER_PID"
