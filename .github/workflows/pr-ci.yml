@@ -319,10 +319,13 @@ jobs:
       # which the CommonJS minimatch@3 pulled by eslint-config-next's plugins
       # cannot consume. Dependabot alerts track dev deps and will surface the
       # upstream fix when it lands.
-      - name: Run security audit (production deps)
-        run: npm audit --audit-level high --omit=dev
-
-      - name: Check for known vulnerabilities (production deps)
+      #
+      # One call, not two: --audit-level moderate already fails on anything
+      # moderate or above, so a separate high-level audit added no coverage -
+      # only a second request to npm's advisories endpoint, which is a network
+      # dependency that does go down. It took this job with it on 2026-09-04:
+      # the high audit passed, the redundant moderate one timed out.
+      - name: Audit production dependencies (blocking)
         run: npm audit --audit-level moderate --omit=dev
 
       # Full-graph audit including dev deps — informational only, does not
