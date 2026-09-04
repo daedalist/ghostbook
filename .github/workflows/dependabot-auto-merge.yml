@@ -191,20 +191,38 @@ jobs:
 
       - name: Determine if eligible for auto-merge
         id: auto-merge-check
+        # Labels arrive via env, not inline interpolation, so PR-controlled
+        # text can never be expanded as shell.
+        env:
+          PR_LABELS: ${{ join(github.event.pull_request.labels.*.name, ' ') }}
         run: |
           UPDATE_TYPE="${{ steps.metadata.outputs.update-type }}"
           DEP_TYPE="${{ steps.metadata.outputs.dependency-type }}"
+          ECOSYSTEM="${{ steps.metadata.outputs.package-ecosystem }}"
           PASSED_COOLING="${{ steps.age-check.outputs.passed_cooling }}"
 
           echo "Update type: $UPDATE_TYPE"
           echo "Dependency type: $DEP_TYPE"
+          echo "Ecosystem: $ECOSYSTEM"
           echo "Passed cooling period: $PASSED_COOLING"
 
           ELIGIBLE="false"
           REASON=""
 
-          # Check cooling period first
-          if [ "$PASSED_COOLING" != "true" ]; then
+          # GitHub Actions updates never auto-merge, at any update type. These
+          # PRs move the commit SHAs this workflow pins, and they land in a job
+          # that holds DEPENDABOT_PAT - merging one unreviewed would hand that
+          # credential to whatever the new SHA contains, which is exactly what
+          # pinning exists to prevent. Normalise the separator: dependabot.yml
+          # spells it github-actions, the metadata output github_actions.
+          # Two independent signals, because this one must not fail open: if
+          # the metadata output were ever empty an Actions bump would fall
+          # through to the patch branch and merge itself.
+          if [ "${ECOSYSTEM//_/-}" == "github-actions" ] ||
+            echo " $PR_LABELS " | grep -q " github-actions "; then
+            REASON="GitHub Actions update (requires manual review)"
+          # Check cooling period next
+          elif [ "$PASSED_COOLING" != "true" ]; then
             REASON="Waiting for 48-hour cooling period"
           # Patch updates: always eligible (after cooling)
           elif [ "$UPDATE_TYPE" == "version-update:semver-patch" ]; then
@@ -322,8 +340,11 @@ jobs:
             ELIGIBLE="false"
             REASON=""
 
-            # Check eligibility based on labels
-            if echo "$LABELS" | grep -q "patch-update"; then
+            # Check eligibility based on labels. GitHub Actions updates never
+            # auto-merge - see the ecosystem gate in the PR event job above.
+            if echo "$LABELS" | grep -q "github-actions"; then
+              REASON="GitHub Actions update (requires manual review)"
+            elif echo "$LABELS" | grep -q "patch-update"; then
               ELIGIBLE="true"
               REASON="Patch update"
             elif echo "$LABELS" | grep -q "minor-update"; then

@@ -115,6 +115,12 @@ updates:
   # Without this block the pin silently rots - the usual symptom is the action
   # declaring a Node runtime GitHub has since retired, which fails the job.
   # Dependabot rewrites both the SHA and its trailing version comment.
+  #
+  # Deliberately ungrouped, and dependabot-auto-merge.yml refuses to
+  # auto-merge this ecosystem at any update type. Pinning exists to stop
+  # unreviewed third-party code reaching a job that holds DEPENDABOT_PAT;
+  # auto-merging the bumps that move those pins would give that back. Each
+  # update arrives as its own one-line SHA diff for a human to look at.
   - package-ecosystem: 'github-actions'
     directory: '/'
     schedule:
@@ -130,14 +136,3 @@ updates:
     commit-message:
       prefix: 'chore'
       include: 'scope'
-
-    groups:
-      # Patch bumps only. Actions report as production dependencies, so the
-      # auto-merge gate treats a patch group as auto-mergeable after the
-      # 48-hour cooling period, while minor and major updates arrive as
-      # individual PRs that need a manual look.
-      actions-patches:
-        patterns:
-          - '*'
-        update-types:
-          - 'patch'
