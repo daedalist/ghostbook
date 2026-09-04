@@ -106,3 +106,38 @@ updates:
       # Node.js types should match your Node version
       - dependency-name: '@types/node'
         update-types: ['version-update:semver-major']
+
+  # ========================================
+  # GITHUB ACTIONS
+  # ========================================
+  # Required, not optional: dependabot/fetch-metadata is pinned to a commit
+  # SHA in dependabot-auto-merge.yml, and a SHA pin never moves on its own.
+  # Without this block the pin silently rots - the usual symptom is the action
+  # declaring a Node runtime GitHub has since retired, which fails the job.
+  # Dependabot rewrites both the SHA and its trailing version comment.
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+      day: 'monday'
+      time: '09:00'
+    open-pull-requests-limit: 5
+    reviewers:
+      - 'daedalist'
+    labels:
+      - 'dependencies'
+      - 'github-actions'
+    commit-message:
+      prefix: 'chore'
+      include: 'scope'
+
+    groups:
+      # Patch bumps only. Actions report as production dependencies, so the
+      # auto-merge gate treats a patch group as auto-mergeable after the
+      # 48-hour cooling period, while minor and major updates arrive as
+      # individual PRs that need a manual look.
+      actions-patches:
+        patterns:
+          - '*'
+        update-types:
+          - 'patch'
