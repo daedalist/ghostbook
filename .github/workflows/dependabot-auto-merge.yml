@@ -194,7 +194,7 @@ jobs:
         # Labels arrive via env, not inline interpolation, so PR-controlled
         # text can never be expanded as shell.
         env:
-          PR_LABELS: ${{ join(github.event.pull_request.labels.*.name, ' ') }}
+          PR_HEAD_REF: ${{ github.event.pull_request.head.ref }}
         run: |
           UPDATE_TYPE="${{ steps.metadata.outputs.update-type }}"
           DEP_TYPE="${{ steps.metadata.outputs.dependency-type }}"
@@ -217,9 +217,13 @@ jobs:
           # spells it github-actions, the metadata output github_actions.
           # Two independent signals, because this one must not fail open: if
           # the metadata output were ever empty an Actions bump would fall
-          # through to the patch branch and merge itself.
+          # through to the patch branch and merge itself. The second signal is
+          # Dependabot's own branch prefix, which is intrinsic to the PR. It
+          # used to be a label, but Dependabot only applies a configured label
+          # when that label already exists in the repo - github-actions does
+          # not, so the label was silently never set and the check never fired.
           if [ "${ECOSYSTEM//_/-}" == "github-actions" ] ||
-            echo " $PR_LABELS " | grep -q " github-actions "; then
+            [[ "$PR_HEAD_REF" == dependabot/github_actions/* ]]; then
             REASON="GitHub Actions update (requires manual review)"
           # Check cooling period next
           elif [ "$PASSED_COOLING" != "true" ]; then
@@ -297,7 +301,7 @@ jobs:
           echo "🔍 Finding open Dependabot PRs..."
 
           # Get all open PRs from dependabot
-          PRS=$(gh pr list --author "dependabot[bot]" --state open --json number,createdAt,title --limit 20)
+          PRS=$(gh pr list --author "dependabot[bot]" --state open --json number,createdAt,title,headRefName --limit 20)
 
           if [ "$PRS" == "[]" ]; then
             echo "No open Dependabot PRs found"
@@ -308,6 +312,7 @@ jobs:
             PR_NUMBER=$(echo "$pr" | jq -r '.number')
             CREATED_AT=$(echo "$pr" | jq -r '.createdAt')
             TITLE=$(echo "$pr" | jq -r '.title')
+            BRANCH=$(echo "$pr" | jq -r '.headRefName')
 
             echo ""
             echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
@@ -342,7 +347,10 @@ jobs:
 
             # Check eligibility based on labels. GitHub Actions updates never
             # auto-merge - see the ecosystem gate in the PR event job above.
-            if echo "$LABELS" | grep -q "github-actions"; then
+            # Keyed on the branch prefix, not a label: this job has no
+            # fetch-metadata output to fall back on, so a label that is never
+            # applied would leave it with no gate at all.
+            if [[ "$BRANCH" == dependabot/github_actions/* ]]; then
               REASON="GitHub Actions update (requires manual review)"
             elif echo "$LABELS" | grep -q "patch-update"; then
               ELIGIBLE="true"
