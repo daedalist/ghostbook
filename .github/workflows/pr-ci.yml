@@ -16,6 +16,17 @@ concurrency:
 permissions:
   contents: read
 
+# DEPENDENCY CACHING
+#
+# Every job below restores node_modules from a cache keyed on the lockfile and
+# skips `npm ci` on a hit. setup-node's `cache: 'npm'` is not a substitute: it
+# caches only the npm download cache in ~/.npm, so `npm ci` still relinks the
+# whole tree on every job of every run. That cost is what makes this workflow
+# slow when the npm registry is having a bad day - nine jobs each paying it.
+#
+# The key includes the lockfile hash, so any dependency change misses the cache
+# and reinstalls from scratch. Nothing stale can survive a lockfile edit.
+
 jobs:
   # Check code formatting
   format:
@@ -30,7 +41,15 @@ jobs:
           node-version: '24'
           cache: 'npm'
 
+      - name: Cache node_modules
+        id: node-modules-cache
+        uses: actions/cache@v6
+        with:
+          path: node_modules
+          key: node-modules-${{ runner.os }}-node24-${{ hashFiles('package-lock.json') }}
+
       - name: Install dependencies
+        if: steps.node-modules-cache.outputs.cache-hit != 'true'
         run: npm ci
 
       - name: Check code formatting
@@ -49,7 +68,15 @@ jobs:
           node-version: '24'
           cache: 'npm'
 
+      - name: Cache node_modules
+        id: node-modules-cache
+        uses: actions/cache@v6
+        with:
+          path: node_modules
+          key: node-modules-${{ runner.os }}-node24-${{ hashFiles('package-lock.json') }}
+
       - name: Install dependencies
+        if: steps.node-modules-cache.outputs.cache-hit != 'true'
         run: npm ci
 
       - name: Check TypeScript types
@@ -68,7 +95,15 @@ jobs:
           node-version: '24'
           cache: 'npm'
 
+      - name: Cache node_modules
+        id: node-modules-cache
+        uses: actions/cache@v6
+        with:
+          path: node_modules
+          key: node-modules-${{ runner.os }}-node24-${{ hashFiles('package-lock.json') }}
+
       - name: Install dependencies
+        if: steps.node-modules-cache.outputs.cache-hit != 'true'
         run: npm ci
 
       - name: Run ESLint
@@ -87,7 +122,15 @@ jobs:
           node-version: '24'
           cache: 'npm'
 
+      - name: Cache node_modules
+        id: node-modules-cache
+        uses: actions/cache@v6
+        with:
+          path: node_modules
+          key: node-modules-${{ runner.os }}-node24-${{ hashFiles('package-lock.json') }}
+
       - name: Install dependencies
+        if: steps.node-modules-cache.outputs.cache-hit != 'true'
         run: npm ci
 
       - name: Run unit tests
@@ -106,7 +149,15 @@ jobs:
           node-version: '24'
           cache: 'npm'
 
+      - name: Cache node_modules
+        id: node-modules-cache
+        uses: actions/cache@v6
+        with:
+          path: node_modules
+          key: node-modules-${{ runner.os }}-node24-${{ hashFiles('package-lock.json') }}
+
       - name: Install dependencies
+        if: steps.node-modules-cache.outputs.cache-hit != 'true'
         run: npm ci
 
       - name: Build Next.js app
@@ -137,7 +188,15 @@ jobs:
       # step below had to fetch it from the registry inside its own 30s
       # readiness budget - a download that measured ~24s on a good run and
       # timed out the job on a slow one.
+      - name: Cache node_modules
+        id: node-modules-cache
+        uses: actions/cache@v6
+        with:
+          path: node_modules
+          key: node-modules-${{ runner.os }}-node24-${{ hashFiles('package-lock.json') }}
+
       - name: Install dependencies
+        if: steps.node-modules-cache.outputs.cache-hit != 'true'
         run: npm ci
 
       - name: Download build artifacts
@@ -235,7 +294,15 @@ jobs:
           node-version: '24'
           cache: 'npm'
 
+      - name: Cache node_modules
+        id: node-modules-cache
+        uses: actions/cache@v6
+        with:
+          path: node_modules
+          key: node-modules-${{ runner.os }}-node24-${{ hashFiles('package-lock.json') }}
+
       - name: Install dependencies
+        if: steps.node-modules-cache.outputs.cache-hit != 'true'
         run: npm ci
 
       - name: Install Playwright browsers
@@ -272,7 +339,15 @@ jobs:
           node-version: '24'
           cache: 'npm'
 
+      - name: Cache node_modules
+        id: node-modules-cache
+        uses: actions/cache@v6
+        with:
+          path: node_modules
+          key: node-modules-${{ runner.os }}-node24-${{ hashFiles('package-lock.json') }}
+
       - name: Install dependencies
+        if: steps.node-modules-cache.outputs.cache-hit != 'true'
         run: npm ci
 
       - name: Install Playwright browsers
@@ -308,7 +383,15 @@ jobs:
           node-version: '24'
           cache: 'npm'
 
+      - name: Cache node_modules
+        id: node-modules-cache
+        uses: actions/cache@v6
+        with:
+          path: node_modules
+          key: node-modules-${{ runner.os }}-node24-${{ hashFiles('package-lock.json') }}
+
       - name: Install dependencies
+        if: steps.node-modules-cache.outputs.cache-hit != 'true'
         run: npm ci
 
       # Blocking audit of production dependencies only. This is a static
