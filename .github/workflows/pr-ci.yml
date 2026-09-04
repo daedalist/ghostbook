@@ -314,11 +314,9 @@ jobs:
       # Blocking audit of production dependencies only. This is a static
       # export (output: 'export'); dev-only tooling (eslint, typescript-eslint
       # and its plugins) is never shipped and cannot be a runtime vector.
-      # Some dev-tooling advisories currently have no clean fix — e.g.
-      # brace-expansion GHSA-mh99-v99m-4gvg is only patched in ESM-only 5.0.8,
-      # which the CommonJS minimatch@3 pulled by eslint-config-next's plugins
-      # cannot consume. Dependabot alerts track dev deps and will surface the
-      # upstream fix when it lands.
+      # Dev-dependency advisories are tracked via Dependabot alerts and the
+      # non-blocking full-graph audit below, and are resolved by a lockfile
+      # refresh once upstream publishes a fix.
       #
       # One call, not two: --audit-level moderate already fails on anything
       # moderate or above, so a separate high-level audit added no coverage -
