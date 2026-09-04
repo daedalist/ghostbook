@@ -155,6 +155,20 @@ The project supports **Cloudflare Web Analytics** for basic page view tracking.
 - Privacy-focused tracking (page views only)
 - Token is client-side by design (safe to be public)
 
+### CI Tooling Is Pinned (Do Not Use `npx tool@latest`)
+
+Anything CI runs must be an exact-pinned `devDependency` installed by `npm ci`,
+invoked as a local binary - never fetched at runtime.
+
+- Workflow steps: `./node_modules/.bin/serve` (the job needs its own `npm ci`)
+- npm scripts: bare `http-server` (npm puts `node_modules/.bin` on `PATH`)
+
+`npx serve@latest` previously downloaded `serve` inside the `test-deployment`
+job's 30-second readiness budget; the download took ~24s and failed whenever a
+runner landed in a slower region. `npx` can also swallow single-letter flags
+meant for the tool (`-l`, `-p`). See CONTRIBUTING.md → "CI Tooling Must Be
+Pinned" for the full write-up.
+
 ### Evidence State Logic
 
 Four evidence states:
