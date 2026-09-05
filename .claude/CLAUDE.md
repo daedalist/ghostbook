@@ -14,6 +14,7 @@ Ghostbook is a web application for the game Phasmophobia that helps players trac
 ├── settings.json          # Team permissions & config (committed)
 ├── settings.local.json    # Personal overrides (git-ignored)
 ├── commands/              # Custom slash commands (committed)
+│   ├── pre-commit.md
 │   ├── test-deploy.md
 │   ├── clean-rebuild.md
 │   ├── lint-fix.md
@@ -65,19 +66,14 @@ Available custom commands:
 
 ### File Organization
 
-- **TypeScript**: Use for Next.js app directory files (.tsx)
-- **JavaScript**: Acceptable for components and utilities (.js, .jsx)
-- **Mixed approach**: Keep existing JS files as-is, use TS for new App Router files
+- **TypeScript throughout** (.ts, .tsx). The JavaScript migration is complete -
+  no `.js`/`.jsx` remains in `src/`, and new files should not add any.
 
 ### Formatting
 
-**Prettier handles all code formatting automatically.** Configuration in `.prettierrc.json`:
-
-- **Indentation**: 2 spaces (no tabs)
-- **Quotes**: Single quotes for JavaScript/TypeScript, double quotes for JSX attributes
-- **Semicolons**: Always used
-- **Line width**: 80 characters
-- **Trailing commas**: ES5 style
+**Prettier handles all code formatting automatically.** The rules live in
+`.prettierrc.json` - read that rather than a copy of it here. Note it also
+formats Markdown, so documentation changes can fail `format:check` in CI.
 
 **Pre-commit hook:**
 
@@ -89,13 +85,13 @@ Available custom commands:
 ### React Patterns
 
 - Use functional components with hooks for new code
-- Class components exist in legacy code (Ghostbook.jsx) - OK to keep
+- Class components exist in legacy code (Ghostbook.tsx) - OK to keep
 - Client components must have `'use client'` directive (Next.js 16 requirement)
 
 ### Naming Conventions
 
-- **Components**: PascalCase (e.g., `ObservationList.jsx`)
-- **Utilities**: camelCase (e.g., `evidenceState.js`)
+- **Components**: PascalCase (e.g., `ObservationList.tsx`)
+- **Utilities**: camelCase (e.g., `evidenceState.ts`)
 - **Constants**: UPPER_SNAKE_CASE (e.g., `NOT_SELECTED`)
 
 ## Project Architecture
@@ -104,24 +100,19 @@ Available custom commands:
 
 ```
 src/
-├── app/              # Next.js App Router (TypeScript)
-├── components/       # React components (JS/JSX)
-└── lib/              # Utilities and data (JavaScript)
+├── app/              # Next.js App Router
+├── components/       # React components
+└── lib/              # Utilities, types and game data
 ```
+
+Full file-by-file tree: [README.md → Project Structure](../README.md#project-structure).
 
 ### Key Files
 
 - `src/lib/ghost_data_map.json` - Ghost evidence mappings (game data)
-- `src/lib/evidenceState.js` - Evidence state constants
-- `next.config.js` - Next.js configuration for static export
+- `src/lib/evidenceState.ts` - Evidence state constants
+- `next.config.mjs` - Next.js configuration for static export
 - `eslint.config.mjs` - ESLint configuration
-
-### Static Site Generation
-
-- Uses Next.js `output: 'export'` for static builds
-- Base path: `/ghostbook` for GitHub Pages
-- Build output: `build/` directory
-- Images are unoptimized for static compatibility
 
 ## Important Notes
 
@@ -129,7 +120,7 @@ src/
 
 - The site is deployed at `daedalist.github.io/ghostbook/`
 - Always test with `npm run test:github-pages` before deploying
-- Base path is configured in `next.config.js`
+- Base path is configured in `next.config.mjs`
 
 ### Analytics (Optional)
 
@@ -169,27 +160,17 @@ runner landed in a slower region. `npx` can also swallow single-letter flags
 meant for the tool (`-l`, `-p`). See CONTRIBUTING.md → "CI Tooling Must Be
 Pinned" for the full write-up.
 
-### Evidence State Logic
+### Domain Logic
 
-Four evidence states:
-
-- `NOT_SELECTED` - Default
-- `SELECTED` - User confirmed evidence
-- `RULED_OUT` - User confirmed NOT present
-- `DISABLED` - Impossible based on current candidates
-
-### Ghost Scoring Algorithm
-
-- +10 points: matching primary evidence
-- +5 points: matching fake evidence
-- -10 points: contradictory evidence (elimination)
+The four evidence states and the ghost scoring algorithm are described in
+[README.md → Development Notes](../README.md#development-notes), and implemented
+in `src/components/Ghostbook.tsx`. The code is the authority.
 
 ## Dependencies
 
-- Next.js 16.0.3
-- React 19.2.0
-- ESLint with Next.js config
-- TypeScript 5.9.3 (for type checking)
+Read `package.json`. Versions are not restated here - Dependabot moves them
+weekly, so any copy is wrong within days. Production dependencies are just
+`next`, `react` and `react-dom`.
 
 ## Working with Claude Code
 
@@ -197,21 +178,8 @@ Four evidence states:
 
 **Working Directory Awareness:**
 
-- Sessions may start in different directories (e.g., `/Users/david/Code/ghostbook/.claude/notes`)
-- **ALWAYS check `pwd` before using relative paths** like `cd .claude/notes`
-- Use absolute paths or verify current location first to avoid "no such file or directory" errors
-- The Bash tool maintains a persistent working directory across tool calls
-
-**Example of common mistake:**
-
-```bash
-# BAD: Blindly using relative path
-cd .claude/notes && git status
-
-# GOOD: Check location first
-pwd                    # Verify current directory
-git status            # Use commands directly if already in right place
-```
+Sessions do not always start in the repository root, and the Bash tool keeps a
+persistent working directory. Check `pwd` before relying on a relative path.
 
 **Git in .claude/notes:**
 
@@ -221,50 +189,14 @@ git status            # Use commands directly if already in right place
 
 ### Git Workflow Best Practices
 
-**When to Create a Pull Request:**
-
-- Feature work (new functionality)
-- Bug fixes
-- Refactoring
-- Any code changes that should be reviewed by CI
-
-**When to Commit Directly to Main:**
-
-- Documentation updates (README, CONTRIBUTING, etc.)
-- `.claude/*` configuration changes (settings, commands)
-- Typo fixes in documentation
-- **NEVER**: Code changes, dependency updates, or breaking changes
-
-**Branch Workflow:**
-
-```bash
-# Starting new work
-git checkout main
-git pull origin main
-git checkout -b type/descriptive-name
-
-# Make changes, then commit
-git add <files>
-git commit -m "type: description"
-
-# Push and create PR
-git push -u origin type/descriptive-name
-gh pr create --title "..." --body "..."
-```
-
-**After PR is Merged:**
-
-```bash
-git checkout main
-git pull origin main
-git branch -d type/descriptive-name      # Delete local branch
-git push origin --delete type/descriptive-name  # Delete remote if needed
-```
+**Everything goes through a pull request**, documentation included. `main`
+requires a passing `all-checks` status, and `format:check` covers Markdown - so
+a docs commit can fail CI just as a code change can. Admins can bypass branch
+protection; don't.
 
 **Avoid Unnecessary Complexity:**
 
 - ❌ Don't use `git cherry-pick` unless truly needed (hotfixes, specific commits across branches)
-- ❌ Don't create branches for simple doc changes - commit directly to main
 - ❌ Don't commit on wrong branch then try to move changes - start over on correct branch
 - ✅ Use simple, linear workflows when possible
 - ✅ Check current branch with `git status` before making changes
@@ -291,10 +223,3 @@ Resolves #123
 
 Co-Authored-By: Claude <noreply@anthropic.com>
 ```
-
-## Recent Changes
-
-- Upgraded from Next.js 15 to 16
-- Upgraded Node.js to v24 for compatibility
-- Migrated from Create React App to Next.js
-- Updated ESLint config to Next.js 16 format

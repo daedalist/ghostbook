@@ -104,20 +104,20 @@ npm run lint:fix   # Auto-fix ESLint issues
 
 ### File Organization
 
-- **TypeScript (.tsx, .ts):** Use for Next.js app directory files
-- **JavaScript (.jsx, .js):** Acceptable for components and utilities
-- **Mixed approach:** Keep existing JS files as-is, use TS for new App Router files
+- **TypeScript (.tsx, .ts):** Used throughout. The migration from JavaScript
+  is complete - there is no remaining `.js` or `.jsx` in `src/`, and new files
+  should not introduce any.
 
 ### Naming Conventions
 
-- **Components:** PascalCase (e.g., `ObservationList.jsx`)
-- **Utilities:** camelCase (e.g., `evidenceState.js`)
+- **Components:** PascalCase (e.g., `ObservationList.tsx`)
+- **Utilities:** camelCase (e.g., `evidenceState.ts`)
 - **Constants:** UPPER_SNAKE_CASE (e.g., `NOT_SELECTED`)
 
 ### React Patterns
 
 - Use **functional components with hooks** for new code
-- Class components exist in legacy code (`Ghostbook.jsx`) - OK to keep
+- Class components exist in legacy code (`Ghostbook.tsx`) - OK to keep
 - Client components must have `'use client'` directive (Next.js 16 requirement)
 
 ## Making Changes
@@ -214,24 +214,8 @@ npm run build       # Ensure build succeeds
 
 ## Project Structure
 
-```
-src/
-├── app/                  # Next.js App Router (TypeScript)
-│   ├── layout.tsx        # Root layout with metadata
-│   ├── globals.css       # Global styles
-│   └── [[...slug]]/      # Catch-all route for SPA behavior
-│       ├── page.tsx      # Main page component
-│       └── client.tsx    # Client-side wrapper
-├── components/           # React components (JavaScript/JSX)
-│   ├── Ghostbook.jsx     # Main application component (class)
-│   ├── ObservationList.jsx  # Evidence tracking interface
-│   ├── CandidateList.jsx    # Ghost filtering display
-│   └── Ghost.jsx         # Individual ghost component
-└── lib/                  # Utilities and data (JavaScript)
-    ├── evidence.js       # Evidence definitions
-    ├── evidenceState.js  # Evidence state constants
-    └── ghost_data_map.json  # Ghost evidence mappings
-```
+See [README.md → Project Structure](README.md#project-structure). It is kept
+there rather than duplicated here, so there is one tree to keep accurate.
 
 ### Key Files
 
@@ -268,6 +252,7 @@ When testing your changes, verify:
 - [ ] Ghost list updates based on selected evidence
 - [ ] Impossible evidence is disabled appropriately
 - [ ] Reset button clears all evidence
+- [ ] Display settings toggle the CRT theme and high-legibility mode
 - [ ] UI is responsive on mobile and desktop
 - [ ] No console errors or warnings
 - [ ] App works at `/ghostbook/` path (matches GitHub Pages)
@@ -324,22 +309,12 @@ does not mean going stale.
 
 ## Technical Details
 
-### Evidence State Management
+### Evidence States and Ghost Scoring
 
-Evidence states are managed using JavaScript Maps and React class component state. Each evidence type can be in one of four states:
-
-- `NOT_SELECTED` - Default state
-- `SELECTED` - User has confirmed this evidence
-- `RULED_OUT` - User has confirmed this evidence is NOT present
-- `DISABLED` - Evidence is impossible based on current ghost candidates
-
-### Ghost Scoring Algorithm
-
-Ghosts are scored based on evidence:
-
-- **+10 points** - Each matching primary evidence
-- **+5 points** - Each matching fake evidence
-- **-10 points** - Contradictory evidence (elimination)
+Described once in
+[README.md → Development Notes](README.md#development-notes). The implementation
+lives in `src/components/Ghostbook.tsx`, which is the authority if the two ever
+disagree.
 
 ### Static Site Generation
 
@@ -350,8 +325,8 @@ Ghosts are scored based on evidence:
 
 ## Getting Help
 
-- **Issues:** Check existing issues or create a new one
-- **Discussions:** Use GitHub Discussions for questions
+- **Issues:** Check existing issues or open a new one - this is the place for
+  questions as well as bugs (Discussions is not enabled on this repository)
 - **Documentation:** See [README.md](README.md) and [.claude/CLAUDE.md](.claude/CLAUDE.md)
 
 ## License

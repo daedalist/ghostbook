@@ -12,13 +12,14 @@ Built with Next.js and deployed as a static site.
 - **Smart Ghost Filtering**: Automatically filters possible ghosts based on your evidence
 - **Evidence Disabling**: Grays out evidence that's impossible based on current selections
 - **Reset Function**: Clear all evidence with one click
+- **Display Settings**: CRT terminal theme, with a high-legibility mode for readability
 - **Responsive Design**: Works on desktop and mobile devices
 
 ## Getting Started
 
 ### Prerequisites
 
-- Node.js (version 14 or higher)
+- Node.js v24 (matches CI; Next.js 16 requires v20.9+)
 - npm
 
 ### Installation
@@ -65,7 +66,7 @@ Built with Next.js and deployed as a static site.
 - `npm run lint` - Run ESLint
 - `npm run format:check` - Check Prettier formatting
 - `npm run type-check` - Run TypeScript type checking
-- `npm run clean` - Remove build artifacts and test files
+- `npm run clean` - Remove build artifacts (`build/`, `.next/`, `test-deploy/`)
 
 ## How to Use
 
@@ -84,7 +85,7 @@ Built with Next.js and deployed as a static site.
 
 - **Next.js 16** - React framework with static site generation
 - **React 19** - UI library
-- **TypeScript** - Type safety for app router files
+- **TypeScript** - Used throughout; there is no remaining JavaScript in `src/`
 - **ESLint** - Code quality and best practices
 - **Prettier** - Automated code formatting
 - **CSS** - Custom styling with CSS Grid and Flexbox
@@ -95,33 +96,29 @@ Built with Next.js and deployed as a static site.
 ```
 src/
 ├── app/
-│   ├── layout.tsx          # Root layout with metadata
-│   ├── globals.css         # Global styles
-│   └── [[...slug]]/        # Catch-all route for SPA behavior
-│       ├── page.tsx        # Main page component
-│       └── client.tsx      # Client-side wrapper
+│   ├── layout.tsx            # Root layout with metadata
+│   ├── globals.css           # Global styles
+│   └── [[...slug]]/          # Catch-all route for SPA behavior
+│       ├── page.tsx          # Main page component
+│       └── client.tsx        # Client-side wrapper
 ├── components/
-│   ├── Ghostbook.jsx       # Main application component
-│   ├── ObservationList.jsx # Evidence tracking interface
-│   └── CandidateList.jsx   # Ghost filtering display
+│   ├── Ghostbook.tsx         # Main application component (class)
+│   ├── ObservationList.tsx   # Evidence tracking interface
+│   ├── CandidateList.tsx     # Ghost filtering display
+│   ├── Ghost.tsx             # Individual ghost row
+│   ├── DisplaySettings.tsx   # Theme and legibility controls
+│   └── Header.tsx            # Page header
 └── lib/
-    ├── ghost.js            # Ghost and evidence data
-    ├── ghost_data_map.json # Ghost evidence mappings
-    └── evidenceState.js    # Evidence state constants
+    ├── evidence.ts           # Evidence names
+    ├── evidenceState.ts      # Evidence state constants
+    ├── types.ts              # Shared types
+    └── ghost_data_map.json   # Ghost evidence mappings
 ```
 
 ## Development Notes
 
-### Migration from Create React App
-
-This project was migrated from Create React App to Next.js to take advantage of:
-
-- Better build optimization and tree-shaking
-- Automatic code splitting
-- Static site generation
-- Foundation for future server-side features
-
-The app currently runs as a Single Page Application (SPA) using Next.js static export for GitHub Pages compatibility.
+The app runs as a Single Page Application using Next.js static export, for
+GitHub Pages compatibility.
 
 ### Evidence State Management
 
@@ -187,7 +184,7 @@ The app is configured for static deployment to GitHub Pages:
 
 2. The `build/` directory contains all static files ready for deployment
 
-3. GitHub Pages serves from the `/ghostbook` path, configured via `basePath` in `next.config.js`
+3. GitHub Pages serves from the `/ghostbook` path, configured via `basePath` in `next.config.mjs`
 
 ## Contributing
 
