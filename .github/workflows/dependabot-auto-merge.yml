@@ -11,6 +11,15 @@
 # layer that catches a dependency bump breaking the app, which source-level
 # unit tests cannot.
 #
+# `main` still requires one approving review, and that rule is deliberate -
+# it is what gates human contributors. Branch protection has no author
+# conditions, so the only way to keep that gate while letting Dependabot
+# through is to approve Dependabot's low-risk PRs here. That approval uses
+# GITHUB_TOKEN, not a PAT: the repository already allows Actions to approve
+# pull requests. The approval is not a rubber stamp of the diff - it is the
+# policy below asserting the update is low risk, and required checks still
+# have to pass before GitHub will merge.
+#
 # `pull_request_target` is deliberate. Workflows triggered by Dependabot on a
 # plain `pull_request` event get a read-only GITHUB_TOKEN, which cannot enable
 # auto-merge. `pull_request_target` runs in the context of the base branch and
@@ -64,13 +73,54 @@ jobs:
       # Grouped PRs report the highest risk in the group (major > minor >
       # patch, production > development), so a mixed group is held to the
       # riskiest member.
-      - name: Enable auto-merge for low-risk updates
-        if: >
-          !startsWith(github.event.pull_request.head.ref, 'dependabot/github_actions/') &&
-          steps.meta.outputs.package-ecosystem != 'github_actions' &&
-          (steps.meta.outputs.update-type == 'version-update:semver-patch' ||
-          (steps.meta.outputs.update-type == 'version-update:semver-minor' &&
-          steps.meta.outputs.dependency-type == 'direct:development'))
+      #
+      # PR-controlled values arrive via env, never inline interpolation, so
+      # they cannot be expanded as shell.
+      - name: Apply auto-merge policy
+        id: policy
+        env:
+          HEAD_REF: ${{ github.event.pull_request.head.ref }}
+          ECOSYSTEM: ${{ steps.meta.outputs.package-ecosystem }}
+          UPDATE_TYPE: ${{ steps.meta.outputs.update-type }}
+          DEP_TYPE: ${{ steps.meta.outputs.dependency-type }}
+        run: |
+          eligible=false
+          reason=""
+
+          # Normalise the separator: dependabot.yml spells it github-actions,
+          # the metadata output github_actions.
+          if [[ "$HEAD_REF" == dependabot/github_actions/* ]] ||
+             [ "${ECOSYSTEM//_/-}" = "github-actions" ]; then
+            reason="GitHub Actions update"
+          elif [ "$UPDATE_TYPE" = "version-update:semver-patch" ]; then
+            eligible=true
+            reason="patch update"
+          elif [ "$UPDATE_TYPE" = "version-update:semver-minor" ] &&
+               [ "$DEP_TYPE" = "direct:development" ]; then
+            eligible=true
+            reason="minor update to a dev dependency"
+          elif [ "$UPDATE_TYPE" = "version-update:semver-minor" ]; then
+            reason="minor update to a production dependency"
+          else
+            reason="major update"
+          fi
+
+          echo "eligible=$eligible" >> "$GITHUB_OUTPUT"
+          echo "reason=$reason" >> "$GITHUB_OUTPUT"
+          echo "eligible=$eligible ($reason)"
+
+      - name: Approve
+        if: steps.policy.outputs.eligible == 'true'
+        run: |
+          gh pr review "$PR_URL" --approve \
+            --body "Auto-approved: ${REASON}. Required checks still gate the merge."
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          REASON: ${{ steps.policy.outputs.reason }}
+          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+
+      - name: Enable auto-merge
+        if: steps.policy.outputs.eligible == 'true'
         run: gh pr merge "$PR_URL" --auto --squash
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
