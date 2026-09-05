@@ -11,8 +11,11 @@
 # layer that catches a dependency bump breaking the app, which source-level
 # unit tests cannot.
 #
-# `main` still requires one approving review, and that rule is deliberate -
-# it is what gates human contributors. Branch protection has no author
+# `main` still requires one approving review, and that rule is deliberate.
+# It is the standing gate on human contributors: the sole account today is
+# an admin, who bypasses it, so right now it gates nobody - but it means
+# anyone granted write later is gated by default, rather than by someone
+# remembering to switch it back on. Branch protection has no author
 # conditions, so the only way to keep that gate while letting Dependabot
 # through is to approve Dependabot's low-risk PRs here. That approval uses
 # GITHUB_TOKEN, not a PAT: the repository already allows Actions to approve
