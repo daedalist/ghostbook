@@ -81,7 +81,8 @@ updates:
           - 'jest*'
           - 'typescript-eslint'
 
-      # Production patches get their own group (auto-merged after cooling)
+      # Production patches get their own group (auto-merged once the
+      # required checks pass)
       prod-patches:
         dependency-type: 'production'
         update-types:
@@ -118,9 +119,10 @@ updates:
   #
   # Deliberately ungrouped, and dependabot-auto-merge.yml refuses to
   # auto-merge this ecosystem at any update type. Pinning exists to stop
-  # unreviewed third-party code reaching a job that holds DEPENDABOT_PAT;
-  # auto-merging the bumps that move those pins would give that back. Each
-  # update arrives as its own one-line SHA diff for a human to look at.
+  # unreviewed third-party code reaching a job that holds a token with
+  # contents:write and the ability to approve pull requests; auto-merging
+  # the bumps that move those pins would give that back. Each update
+  # arrives as its own one-line SHA diff for a human to look at.
   - package-ecosystem: 'github-actions'
     directory: '/'
     schedule:
