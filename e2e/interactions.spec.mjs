@@ -1,5 +1,8 @@
 // @ts-check
 import { test, expect } from '@playwright/test';
+import ghost_data_map from '../src/lib/ghost_data_map.json' with { type: 'json' };
+
+const ghostNames = Object.keys(ghost_data_map[0]);
 
 test.describe('user interactions after deployment', () => {
   test.beforeEach(async ({ page }) => {
@@ -154,14 +157,55 @@ test.describe('user interactions after deployment', () => {
       }
     });
 
-    test('reset restores the initial "no ghosts" message', async ({ page }) => {
+    test('reset restores the initial "select evidence" prompt', async ({
+      page,
+    }) => {
       await page.locator('.evidenceButton', { hasText: 'Ultraviolet' }).click();
 
       await page.locator('.resetButton').click();
 
       await expect(page.locator('.candidateList')).toContainText(
-        'No ghosts match the selected evidence'
+        'Select evidence to narrow down the ghosts'
       );
+      await expect(page.locator('.ghost')).toHaveCount(0);
+    });
+  });
+
+  test.describe('show all ghosts toggle', () => {
+    test('is off by default and lists every ghost when switched on', async ({
+      page,
+    }) => {
+      const toggle = page.locator('.showAllToggle');
+      await expect(toggle).toHaveAttribute('aria-pressed', 'false');
+      await expect(page.locator('.ghost')).toHaveCount(0);
+
+      await toggle.click();
+      await expect(toggle).toHaveAttribute('aria-pressed', 'true');
+      await expect(page.locator('.ghost')).toHaveCount(ghostNames.length);
+
+      await toggle.click();
+      await expect(toggle).toHaveAttribute('aria-pressed', 'false');
+      await expect(page.locator('.ghost')).toHaveCount(0);
+    });
+
+    test('is hidden again after a reload (not persisted)', async ({ page }) => {
+      await page.locator('.showAllToggle').click();
+      await expect(page.locator('.ghost')).toHaveCount(ghostNames.length);
+
+      await page.reload();
+      await expect(page.locator('.showAllToggle')).toHaveAttribute(
+        'aria-pressed',
+        'false'
+      );
+      await expect(page.locator('.ghost')).toHaveCount(0);
+    });
+
+    test('is not offered once evidence is selected', async ({ page }) => {
+      await page.locator('.showAllToggle').click();
+      await page.locator('.evidenceButton', { hasText: 'Ultraviolet' }).click();
+
+      await expect(page.locator('.showAllToggle')).toHaveCount(0);
+      await expect(page.locator('.ghost').first()).toBeVisible();
     });
   });
 

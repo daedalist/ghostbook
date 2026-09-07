@@ -186,7 +186,7 @@ h1 {
   font-size: 1em;
 }
 
-/* ---- Display / accessibility toggle ------------------------------------- */
+/* ---- Settings toggles ------------------------------------------------- */
 
 .displaySettings {
   display: flex;
@@ -194,7 +194,8 @@ h1 {
   margin: -0.4em 0 1.2em;
 }
 
-.legibleToggle {
+/* Shared look for the [ ]/[x] toggle buttons (legibility, show all ghosts). */
+.settingsToggle {
   font-family: var(--font-terminal);
   font-size: 0.8em;
   letter-spacing: 0.08em;
@@ -205,15 +206,15 @@ h1 {
   padding: 0.35em 0.8em;
   cursor: pointer;
 }
-.legibleToggle:hover {
+.settingsToggle:hover {
   border-color: var(--green);
   box-shadow: var(--glow-soft);
 }
-.legibleToggle:focus-visible {
+.settingsToggle:focus-visible {
   outline: 2px solid var(--green);
   outline-offset: 2px;
 }
-.legibleToggle[aria-pressed='true'] {
+.settingsToggle[aria-pressed='true'] {
   color: var(--green-bright);
   border-color: var(--green);
   background: rgba(51, 255, 102, 0.12);
@@ -344,6 +345,15 @@ h1 {
   flex-wrap: wrap;
   align-items: flex-start;
   gap: 1em;
+}
+
+/* Empty-evidence prompt plus the "show all ghosts" toggle, on its own row. */
+.candidatePrompt {
+  flex-basis: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6em 1.2em;
 }
 
 .ghost {

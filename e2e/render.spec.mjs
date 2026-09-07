@@ -62,11 +62,17 @@ test.describe('page rendering after deployment', () => {
     await expect(section.locator('h1')).toContainText('Possible ghosts');
   });
 
-  test('initial state shows "No ghosts match" message', async ({ page }) => {
-    const message = page.locator('.candidateList');
-    await expect(message).toContainText(
-      'No ghosts match the selected evidence'
+  test('initial state prompts for evidence and offers the show-all toggle', async ({
+    page,
+  }) => {
+    await expect(page.locator('.candidateList')).toContainText(
+      'Select evidence to narrow down the ghosts'
     );
+    await expect(page.locator('.showAllToggle')).toHaveAttribute(
+      'aria-pressed',
+      'false'
+    );
+    await expect(page.locator('.ghost')).toHaveCount(0);
   });
 
   test('page uses the Silkscreen terminal font by default', async ({
