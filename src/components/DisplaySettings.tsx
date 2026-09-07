@@ -63,7 +63,7 @@ export default function DisplaySettings() {
     <div className="displaySettings">
       <button
         type="button"
-        className="button legibleToggle"
+        className="button settingsToggle legibleToggle"
         onClick={toggle}
         aria-pressed={legible}
       >

@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 
 import Ghost from '../components/Ghost';
 import ghost_data_map from '../lib/ghost_data_map.json';
@@ -12,82 +12,81 @@ interface CandidateListProps {
   candidate_scores: Map<string, number>;
 }
 
-interface CandidateListState {
-  candidate_scores: Map<string, number>;
+/** Names of the ghosts that have not been ruled out (score >= 0). */
+function getCandidateNames(candidate_scores: Map<string, number>): string[] {
+  const names: string[] = [];
+  for (const [ghost_name, score] of candidate_scores) {
+    if (score >= 0) names.push(ghost_name);
+  }
+  return names;
 }
 
-class CandidateList extends React.Component<
-  CandidateListProps,
-  CandidateListState
-> {
-  constructor(props: CandidateListProps) {
-    super(props);
-    this.state = {
-      candidate_scores: props.candidate_scores,
-    };
+/**
+ * True when no evidence has been selected or ruled out. A selected evidence
+ * gives every ghost a non-zero score, and a ruled-out evidence eliminates at
+ * least one ghost, so "all scores are zero" is exactly the untouched state.
+ */
+function hasNoEvidence(candidate_scores: Map<string, number>): boolean {
+  for (const score of candidate_scores.values()) {
+    if (score !== 0) return false;
   }
+  return true;
+}
 
-  renderGhostEntry = (
-    value: [string, { evidence_list: string[]; fake_evidence_list: string[] }]
-  ) => {
-    const name = value[0];
-    const evidence_list = value[1]['evidence_list'];
-    const fake_evidence_list = value[1]['fake_evidence_list'];
-    return (
-      <Ghost
-        name={name}
-        evidence_list={evidence_list}
-        fake_evidence_list={fake_evidence_list}
-        key={name}
-      />
+function renderGhostEntry(name: string) {
+  return (
+    <Ghost
+      name={name}
+      evidence_list={ghosts[name]['evidence_list']}
+      fake_evidence_list={ghosts[name]['fake_evidence_list']}
+      key={name}
+    />
+  );
+}
+
+/**
+ * The "Possible ghosts" panel. With evidence selected it lists the ghosts
+ * still in play. With none selected it prompts for evidence and offers a
+ * "Show all ghosts" toggle, hidden by default and not persisted, so a fresh
+ * load always starts with the list collapsed.
+ */
+export default function CandidateList({
+  candidate_scores,
+}: CandidateListProps) {
+  const [showAll, setShowAll] = useState(false);
+
+  const candidates = getCandidateNames(candidate_scores);
+  const noEvidence = hasNoEvidence(candidate_scores);
+
+  let body: React.ReactNode;
+  if (noEvidence) {
+    body = (
+      <>
+        <div className="candidatePrompt">
+          <span>Select evidence to narrow down the ghosts.</span>
+          <button
+            type="button"
+            className="button settingsToggle showAllToggle"
+            onClick={() => setShowAll((prev) => !prev)}
+            aria-pressed={showAll}
+          >
+            <span aria-hidden="true">{showAll ? '[x]' : '[ ]'}</span> Show all
+            ghosts
+          </button>
+        </div>
+        {showAll && candidates.map(renderGhostEntry)}
+      </>
     );
-  };
-
-  /** Return a map of Ghost names to their evidences and candidate scores. */
-  getVisibleGhosts() {
-    const visible = new Map<
-      string,
-      { evidence_list: string[]; fake_evidence_list: string[]; score: number }
-    >();
-    for (const [ghost_name, score] of this.state.candidate_scores) {
-      if (score >= 0) {
-        visible.set(ghost_name, {
-          evidence_list: ghosts[ghost_name]['evidence_list'],
-          fake_evidence_list: ghosts[ghost_name]['fake_evidence_list'],
-          score: 0,
-        });
-      }
-    }
-    return visible;
+  } else if (candidates.length === 0) {
+    body = <div>No ghosts match the selected evidence.</div>;
+  } else {
+    body = candidates.map(renderGhostEntry);
   }
 
-  render() {
-    const total_ghost_count = Object.keys(ghosts).length;
-    if (
-      this.getVisibleGhosts().size < total_ghost_count &&
-      this.getVisibleGhosts().size > 0
-    ) {
-      return (
-        <section className="candidates">
-          <h1> Possible ghosts</h1>
-          <div className="candidateList">
-            {Array.from(this.getVisibleGhosts().entries()).map(
-              this.renderGhostEntry
-            )}
-          </div>
-        </section>
-      );
-    } else {
-      return (
-        <section className="candidates">
-          <h1> Possible ghosts</h1>
-          <div className="candidateList">
-            <div>No ghosts match the selected evidence.</div>
-          </div>
-        </section>
-      );
-    }
-  }
+  return (
+    <section className="candidates">
+      <h1> Possible ghosts</h1>
+      <div className="candidateList">{body}</div>
+    </section>
+  );
 }
-
-export default CandidateList;

@@ -137,6 +137,12 @@ Ghosts are scored based on evidence:
 - +5 points for each matching fake evidence
 - -10 points (elimination) for contradictory evidence
 
+A ghost is listed as a candidate while its score is zero or above. With no
+evidence selected every score is zero, so the list would contain all ghosts;
+by default it is collapsed to a "select evidence" prompt instead. A "Show all
+ghosts" toggle in that prompt expands the full list. The toggle is off on
+every page load and is not persisted.
+
 ## Testing
 
 ### Unit Tests

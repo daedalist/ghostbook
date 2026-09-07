@@ -69,11 +69,18 @@ describe('Ghostbook integration', () => {
       });
     });
 
-    it('shows "No ghosts match" initially (before any evidence is selected)', () => {
+    it('prompts for evidence initially, with no ghosts listed', () => {
       render(<Ghostbook />);
       expect(
-        screen.getByText(/no ghosts match the selected evidence/i)
+        screen.getByText(/select evidence to narrow down the ghosts/i)
       ).toBeInTheDocument();
+      expect(getVisibleGhostNames()).toEqual([]);
+    });
+
+    it('renders the "Show all ghosts" toggle, off by default', () => {
+      render(<Ghostbook />);
+      const toggle = screen.getByRole('button', { name: /show all ghosts/i });
+      expect(toggle).toHaveAttribute('aria-pressed', 'false');
     });
 
     it('renders the Reset button', () => {
@@ -185,6 +192,45 @@ describe('Ghostbook integration', () => {
     });
   });
 
+  describe('show all ghosts toggle', () => {
+    function getShowAllToggle() {
+      return screen.getByRole('button', { name: /show all ghosts/i });
+    }
+
+    it('lists every ghost when switched on', async () => {
+      const user = userEvent.setup();
+      render(<Ghostbook />);
+
+      await user.click(getShowAllToggle());
+
+      expect(getShowAllToggle()).toHaveAttribute('aria-pressed', 'true');
+      expect(getVisibleGhostNames()).toEqual(ghostNames);
+    });
+
+    it('still narrows the list once evidence is selected, and restores all on reset', async () => {
+      const user = userEvent.setup();
+      render(<Ghostbook />);
+
+      await user.click(getShowAllToggle());
+      await clickEvidence(user, 'Ultraviolet');
+
+      // The toggle only applies to the no-evidence state; it is not shown
+      // while evidence is selected and the list narrows as usual.
+      expect(
+        screen.queryByRole('button', { name: /show all ghosts/i })
+      ).toBeNull();
+      expect(getVisibleGhostNames()).toEqual(
+        expectedGhostsForEvidence(['Ultraviolet'])
+      );
+
+      await user.click(screen.getByText('Reset'));
+
+      // The toggle keeps its setting across a reset.
+      expect(getShowAllToggle()).toHaveAttribute('aria-pressed', 'true');
+      expect(getVisibleGhostNames()).toEqual(ghostNames);
+    });
+  });
+
   describe('reset functionality', () => {
     it('clears all evidence and restores initial state', async () => {
       const user = userEvent.setup();
@@ -202,8 +248,9 @@ describe('Ghostbook integration', () => {
 
       // Should be back to initial state
       expect(
-        screen.getByText(/no ghosts match the selected evidence/i)
+        screen.getByText(/select evidence to narrow down the ghosts/i)
       ).toBeInTheDocument();
+      expect(getVisibleGhostNames()).toEqual([]);
     });
 
     it('resets all evidence buttons to NOT_SELECTED state', async () => {
