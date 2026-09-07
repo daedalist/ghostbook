@@ -347,13 +347,23 @@ h1 {
   gap: 1em;
 }
 
-/* Empty-evidence prompt plus the "show all ghosts" toggle, on its own row. */
+/* Empty-evidence prompt on the left, "show all ghosts" toggle pushed to the
+   right edge of the panel (in line with the legibility toggle above). */
 .candidatePrompt {
   flex-basis: 100%;
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
+  justify-content: space-between;
   gap: 0.6em 1.2em;
+}
+.candidatePrompt > span {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.showAllToggle {
+  flex-shrink: 0;
+  margin-left: auto;
+  white-space: nowrap;
 }
 
 .ghost {
@@ -566,5 +576,13 @@ div.ghostDetailsHidden {
   }
   .ghost {
     width: 100%;
+  }
+  /* Not enough room for prompt and toggle side by side: stack them, with
+     the toggle on its own row, still flush right. */
+  .candidatePrompt {
+    flex-wrap: wrap;
+  }
+  .candidatePrompt > span {
+    flex-basis: 100%;
   }
 }
