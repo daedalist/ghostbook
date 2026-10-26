@@ -10,20 +10,13 @@
     ],
     "deny": [
       "Read(./.env*)",
-      "Write(./.env*)",
       "Edit(./.env*)",
       "Read(./node_modules/**)",
-      "Write(./node_modules/**)",
       "Edit(./node_modules/**)",
       "Bash(rm -rf /)",
       "Bash(rm -rf ~)",
       "Bash(git push --force*)"
     ],
-    "ask": [
-      "Bash(git push*)",
-      "Bash(git commit*)",
-      "Write(./package.json)",
-      "Edit(./package.json)"
-    ]
+    "ask": ["Bash(git push*)", "Bash(git commit*)", "Edit(./package.json)"]
   }
 }
