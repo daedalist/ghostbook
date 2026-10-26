@@ -133,10 +133,10 @@ jobs:
           node-version: '24'
           cache: 'npm'
 
-      # Installs the pinned `serve` from the lockfile. Without this the serve
-      # step below had to fetch it from the registry inside its own 30s
-      # readiness budget - a download that measured ~24s on a good run and
-      # timed out the job on a slow one.
+      # Installs the pinned `http-server` from the lockfile. Without this the
+      # serving step below had to fetch a server from the registry inside its
+      # own 30s readiness budget - a download that measured ~24s on a good run
+      # and timed out the job on a slow one.
       - name: Install dependencies
         run: npm ci
 
@@ -161,9 +161,9 @@ jobs:
 
       - name: Test static file serving
         run: |
-          # Start serve in background and capture output
+          # Start http-server in background and capture output
           echo "Starting server..."
-          ./node_modules/.bin/serve ./build -l 8080 > server.log 2>&1 &
+          ./node_modules/.bin/http-server ./build -p 8080 > server.log 2>&1 &
           SERVER_PID=$!
 
           echo "Server PID: $SERVER_PID"
@@ -181,7 +181,7 @@ jobs:
               echo "Server log:"
               cat server.log
               echo "Process status:"
-              ps aux | grep -E "(serve|node)" || echo "No serve/node processes found"
+              ps aux | grep -E "(http-server|node)" || echo "No http-server/node processes found"
               kill $SERVER_PID 2>/dev/null || true
               exit 1
             fi
