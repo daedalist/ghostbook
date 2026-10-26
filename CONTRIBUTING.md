@@ -288,10 +288,12 @@ Node, same npm - only the runner's region differed. The e2e jobs had the same
 problem via `npx http-server` inside Playwright's 120-second `webServer`
 timeout.
 
-Both are now pinned devDependencies, invoked as local binaries:
+Both now use the single pinned devDependency `http-server`, invoked as a local
+binary (`serve` was dropped: it pinned a `compression` release with a known
+DoS, and because the pin was exact Dependabot could not bump it):
 
-- **Workflow steps** run `./node_modules/.bin/serve` (the job needs its own
-  `npm ci` step first - `node_modules` is not inherited between jobs).
+- **Workflow steps** run `./node_modules/.bin/http-server` (the job needs its
+  own `npm ci` step first - `node_modules` is not inherited between jobs).
 - **npm scripts** call `http-server` bare; npm puts `node_modules/.bin` on
   `PATH` automatically.
 

@@ -151,12 +151,14 @@ The project supports **Cloudflare Web Analytics** for basic page view tracking.
 Anything CI runs must be an exact-pinned `devDependency` installed by `npm ci`,
 invoked as a local binary - never fetched at runtime.
 
-- Workflow steps: `./node_modules/.bin/serve` (the job needs its own `npm ci`)
+- Workflow steps: `./node_modules/.bin/http-server` (the job needs its own `npm ci`)
 - npm scripts: bare `http-server` (npm puts `node_modules/.bin` on `PATH`)
 
 `npx serve@latest` previously downloaded `serve` inside the `test-deployment`
 job's 30-second readiness budget; the download took ~24s and failed whenever a
-runner landed in a slower region. `npx` can also swallow single-letter flags
+runner landed in a slower region. `serve` itself was later dropped in favour of
+the already-pinned `http-server`: it pinned a vulnerable `compression` version
+that Dependabot could not move, and the job only needs plain static files. `npx` can also swallow single-letter flags
 meant for the tool (`-l`, `-p`). See CONTRIBUTING.md → "CI Tooling Must Be
 Pinned" for the full write-up.
 
